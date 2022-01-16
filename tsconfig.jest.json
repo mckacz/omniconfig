@@ -3,6 +3,7 @@
   "exclude": [],
 
   "compilerOptions": {
+    "module": "es6",
     "isolatedModules": false,
     "esModuleInterop": true
   }

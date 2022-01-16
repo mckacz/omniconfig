@@ -7,7 +7,7 @@ import { ResolverError } from './resolverError.js'
 export class Resolver<T = unknown> {
   constructor(
     private readonly loaders: Loader<unknown | undefined>[],
-    private readonly processors: Processor<unknown, unknown>[] = [],
+    private readonly processors: Processor<unknown, T>[] = [],
   ) {
   }
 
@@ -15,7 +15,7 @@ export class Resolver<T = unknown> {
     const sources = this.load()
     const resolved = this.process(sources)
 
-    return resolved as T
+    return resolved
   }
 
   private load() {
@@ -32,7 +32,7 @@ export class Resolver<T = unknown> {
   }
 
   private process(sources: unknown[]) {
-    let merged = _.merge({}, ...sources)
+    let merged = _.merge({}, ...sources) as T
 
     for (const processor of this.processors) {
       try {

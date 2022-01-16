@@ -9,7 +9,9 @@ export class OptionalLoader<T> implements Loader<T | undefined> {
   load(): T | undefined {
     try {
       return this.loader.load()
-    } catch { }
+    } catch {
+      // ignore
+    }
   }
 
   referenceFor(path: string): Reference | undefined {
