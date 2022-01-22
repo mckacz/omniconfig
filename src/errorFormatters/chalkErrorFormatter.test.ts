@@ -4,7 +4,7 @@ import { ProcessorError, ProcessorErrorType } from '../processors/processorError
 import { ChalkErrorFormatter } from './chalkErrorFormatter.js'
 
 describe('ChalkErrorFormatter', () => {
-  test('works', async () => {
+  test('works', () => {
     const error = new ResolverError(
       new ProcessorError('something is undefined', undefined, 'obj.foo', ProcessorErrorType.undefinedValue),
       undefined,
@@ -26,7 +26,7 @@ describe('ChalkErrorFormatter', () => {
       ],
     )
 
-    const formatter = new ChalkErrorFormatter()
+    const formatter = new ChalkErrorFormatter({ chalk })
     // expect(formatter.format(error)).toEqual(``)
 
     console.log(formatter.format(error))

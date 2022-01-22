@@ -1,64 +1,84 @@
-import chalk, { ChalkInstance } from 'chalk'
-import { ResolverError } from '../resolver/resolverError.js'
-import { TextErrorFormatter, TextErrorFormatterView } from './textErrorFormatter.js'
+import _ from 'lodash'
+import type { ChalkInstance } from 'chalk'
+import type { DeepPartial, MembersOfType, RecordWithSuffix } from '../helpers.js'
+import {
+  TextErrorFormatter,
+  TextErrorFormatterOptions,
+  TextErrorFormatterPlaceholders,
+  TextErrorFormatterTemplates,
+} from './textErrorFormatter.js'
 
-const defaultTemplate = `{{#style.header}}Configuration error:{{/style.header}} {{#style.message}}{{{message}}}{{/style.message}}
-{{#isUndefined}}
+type ChalkStylePath = Array<keyof MembersOfType<ChalkInstance, ChalkInstance>>
 
-The value can be defined in:
-  {{#hints}}
-  - {{#style.container}}{{{container}}}{{/style.container}}{{#identifier}} as {{#style.identifier}}{{{.}}}{{/style.identifier}}{{/identifier}}
-  {{/hints}}
-{{/isUndefined}}
-{{^isUndefined}}{{#cause}}
-The causing value is defined in {{#style.container}}{{{container}}}{{/style.container}}{{#identifier}} as {{#style.identifier}}{{{.}}}{{/style.identifier}}{{/identifier}}
-{{/cause}}{{/isUndefined}}`
-
-const defaultStyles: Record<string, ChalkInstance> = {
-  header:     chalk.bold.redBright,
-  message:    chalk.bold,
-  container:  chalk.yellow,
-  identifier: chalk.italic.cyan,
-  code:       chalk.underline,
+export interface ChalkErrorFormatterStyles extends Partial<RecordWithSuffix<TextErrorFormatterTemplates, ChalkStylePath, 'Template'>>,
+  Partial<Record<TextErrorFormatterPlaceholders, ChalkStylePath>> {
+  code?: ChalkStylePath
 }
 
-export interface ChalkErrorFormatterView extends TextErrorFormatterView {
-  style: Record<string, Function>
+export type ChalkErrorFormatterStyleKey = keyof ChalkErrorFormatterStyles
+
+const defaultStyles: ChalkErrorFormatterStyles = {
+  // headerTemplate: chalk.bold.redBright,
+  // message: chalk.yellow,
+  // container:      chalk.yellow,
+  // code:           chalk.underline,
+
+  identifier: ['cyan', 'italic'],
+
+}
+
+
+export interface ChalkErrorFormatterOptions extends DeepPartial<TextErrorFormatterOptions> {
+  chalk: ChalkInstance
+  styles?: DeepPartial<ChalkErrorFormatterStyles>
 }
 
 export class ChalkErrorFormatter extends TextErrorFormatter {
-  constructor(
-    template = defaultTemplate,
-    protected readonly styles = defaultStyles,
-  ) {
-    super(template)
+  private readonly chalk: ChalkInstance
+  private readonly styles: ChalkErrorFormatterStyles
+
+  constructor(options: ChalkErrorFormatterOptions) {
+    super(options)
+
+    this.chalk = options.chalk
+    this.styles = _.merge({}, defaultStyles, options.styles)
   }
 
-  format(err: ResolverError | unknown): string | undefined {
-    return this.formatCode(super.format(err))
+  protected renderTemplate(template: string, dictionary: Record<string, string>): string {
+    const templateStyleKey = `${template}Template` as ChalkErrorFormatterStyleKey
+
+    for (const placeholder of Object.keys(dictionary)) {
+      dictionary[placeholder] = this.applyStyle(placeholder as ChalkErrorFormatterStyleKey, dictionary[placeholder])
+    }
+
+    return this.formatCode(
+      this.applyStyle(
+        templateStyleKey,
+        super.renderTemplate(template, dictionary),
+      ),
+    )
   }
 
-  protected getView(err: ResolverError): ChalkErrorFormatterView {
-    const view = super.getView(err)
-    const style: Record<string, Function> = {}
+  private formatCode(text: string): string {
+    return text.replace(
+      /`(.*?)`/g,
+      (_, value: string) => this.applyStyle('code', value),
+    )
+  }
 
-    for (const [styleKey, styleFunc] of Object.entries(this.styles)) {
-      style[styleKey] = () => (text: string, render: Function) => {
-        return styleFunc(render(text))
+  private applyStyle(styleKey: ChalkErrorFormatterStyleKey, text: string): string {
+    if (this.styles[styleKey]) {
+      const style: unknown = _.get(this.chalk, this.styles[styleKey] as ChalkStylePath)
+
+      if (this.isChalkInstance(style)) {
+        text = style(text)
       }
     }
 
-    return { ...view, style }
+    return text
   }
 
-  protected formatCode(text: string | undefined): string | undefined {
-    if (text && this.styles.code) {
-      text = text.replace(
-        /`(.*?)`/g,
-        (_, value) => this.styles.code(value),
-      )
-    }
-
-    return text
+  private isChalkInstance(subject: ChalkInstance | unknown): subject is ChalkInstance {
+    return typeof subject === 'function' && 'reset' in subject
   }
 }

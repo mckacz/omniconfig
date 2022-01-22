@@ -17,26 +17,27 @@
   },
   "dependencies": {
     "callsites": "^4.0.0",
-    "chalk": "^5.0.0",
     "dotenv": "^10.0.0",
-    "lodash": "^4.17.21",
-    "mustache": "^4.2.0"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
+    "chalk": "^5.0.0",
     "yup": "^0.32.11"
   },
   "peerDependenciesMeta": {
+    "chalk": {
+      "optional": true
+    },
     "yup": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@types/color-support": "^1.1.1",
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
-    "@types/mustache": "^4.1.2",
+    "eslint": "^8.6.0",
     "jest": "^27.4.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.2",
