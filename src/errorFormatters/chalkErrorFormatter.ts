@@ -1,51 +1,107 @@
 import _ from 'lodash'
 import type { ChalkInstance } from 'chalk'
-import type { DeepPartial, MembersOfType, RecordWithSuffix } from '../helpers.js'
+import type { MembersOfType, RecordWithSuffix } from '../helpers.js'
 import {
   TextErrorFormatter,
-  TextErrorFormatterOptions,
   TextErrorFormatterPlaceholders,
   TextErrorFormatterTemplates,
 } from './textErrorFormatter.js'
 
+/**
+ * Type helper - array of chalk's method call chain.
+ */
 type ChalkStylePath = Array<keyof MembersOfType<ChalkInstance, ChalkInstance>>
 
-export interface ChalkErrorFormatterStyles extends Partial<RecordWithSuffix<TextErrorFormatterTemplates, ChalkStylePath, 'Template'>>,
-  Partial<Record<TextErrorFormatterPlaceholders, ChalkStylePath>> {
-  code?: ChalkStylePath
+/**
+ * Type helper - chalk's method call chain or chalk instance.
+ */
+type ChalkStylePathOrInstance = ChalkStylePath | ChalkInstance
+
+/**
+ * Type helper - key of ChalkErrorFormatterTheme
+ */
+type ChalkErrorFormatterStyleKey = keyof ChalkErrorFormatterTheme
+
+/**
+ * Theme for ChalkErrorFormatter.
+ *
+ * Keys are:
+ *  - TextErrorFormatterPlaceholders keys - styles for the placeholders
+ *  - TextErrorFormatterTemplates keys with `Template` suffix - styles for message templates
+ *  - `code` - additional style for code fragments between backticks in error message
+ *
+ *  Values are chalk's method call chain path or chalk instance itself.
+ */
+export interface ChalkErrorFormatterTheme extends Partial<RecordWithSuffix<TextErrorFormatterTemplates, ChalkStylePathOrInstance, 'Template'>>,
+  Partial<Record<TextErrorFormatterPlaceholders, ChalkStylePathOrInstance>> {
+  code?: ChalkStylePathOrInstance
 }
 
-export type ChalkErrorFormatterStyleKey = keyof ChalkErrorFormatterStyles
-
-const defaultStyles: ChalkErrorFormatterStyles = {
-  // headerTemplate: chalk.bold.redBright,
-  // message: chalk.yellow,
-  // container:      chalk.yellow,
-  // code:           chalk.underline,
-
-  identifier: ['cyan', 'italic'],
-
-}
-
-
-export interface ChalkErrorFormatterOptions extends DeepPartial<TextErrorFormatterOptions> {
+/**
+ * ChalkErrorFormatter options.
+ */
+export interface ChalkErrorFormatterOptions {
+  /**
+   * Chalk instance to use.
+   */
   chalk: ChalkInstance
-  styles?: DeepPartial<ChalkErrorFormatterStyles>
+
+  /**
+   * Theme for the instance.
+   */
+  theme?: ChalkErrorFormatterTheme
+
+  /**
+   * Message templates to use.
+   */
+  templates?: Partial<TextErrorFormatterTemplates>
 }
 
+/**
+ * Formats ResolverError as human-readable plain text message with applied terminal styles using chalk.
+ */
 export class ChalkErrorFormatter extends TextErrorFormatter {
-  private readonly chalk: ChalkInstance
-  private readonly styles: ChalkErrorFormatterStyles
-
-  constructor(options: ChalkErrorFormatterOptions) {
-    super(options)
-
-    this.chalk = options.chalk
-    this.styles = _.merge({}, defaultStyles, options.styles)
+  /**
+   * Default styling theme.
+   */
+  static readonly defaultTheme: ChalkErrorFormatterTheme = {
+    headerTemplate: ['red'],
+    message:        ['reset'],
+    identifier:     ['cyan', 'italic'],
+    container:      ['yellow', 'italic'],
+    code:           ['greenBright', 'italic'],
   }
 
-  protected renderTemplate(template: string, dictionary: Record<string, string>): string {
-    const templateStyleKey = `${template}Template` as ChalkErrorFormatterStyleKey
+  /**
+   * Chalk instance to use.
+   */
+  private readonly chalk: ChalkInstance
+
+  /**
+   * Styling theme.
+   */
+  private readonly theme: ChalkErrorFormatterTheme
+
+  /**
+   * Creates a new instance or ChalkErrorFormatter.
+   *
+   * @param options Formatter options.
+   */
+  constructor(options: ChalkErrorFormatterOptions) {
+    super(options.templates)
+
+    this.chalk = options.chalk
+    this.theme = options.theme ?? ChalkErrorFormatter.defaultTheme
+  }
+
+  /**
+   * Decorates `renderTemplate()` from `TextErrorFormatter` to apply styles.
+   *
+   * @param templateKey Template key.
+   * @param dictionary Dictionary with placeholder replacements.
+   */
+  protected renderTemplate(templateKey: keyof TextErrorFormatterTemplates, dictionary: Record<string, string> = {}): string {
+    const templateStyleKey = `${templateKey}Template` as ChalkErrorFormatterStyleKey
 
     for (const placeholder of Object.keys(dictionary)) {
       dictionary[placeholder] = this.applyStyle(placeholder as ChalkErrorFormatterStyleKey, dictionary[placeholder])
@@ -54,11 +110,16 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
     return this.formatCode(
       this.applyStyle(
         templateStyleKey,
-        super.renderTemplate(template, dictionary),
+        super.renderTemplate(templateKey, dictionary),
       ),
     )
   }
 
+  /**
+   * Formats code blocks in error message.
+   *
+   * @param text Text to format code blocks in.
+   */
   private formatCode(text: string): string {
     return text.replace(
       /`(.*?)`/g,
@@ -66,11 +127,25 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
     )
   }
 
+  /**
+   * Applies style represented by given style key to the passed text.
+   *
+   * @param styleKey Style key.
+   * @param text Text to apply style to.
+   */
   private applyStyle(styleKey: ChalkErrorFormatterStyleKey, text: string): string {
-    if (this.styles[styleKey]) {
-      const style: unknown = _.get(this.chalk, this.styles[styleKey] as ChalkStylePath)
+    const styleOrPath = this.theme[styleKey]
 
-      if (this.isChalkInstance(style)) {
+    if (styleOrPath) {
+      let style: ChalkInstance | unknown
+
+      if (styleOrPath instanceof Array) {
+        style = _.get(this.chalk, styleOrPath)
+      } else {
+        style = styleOrPath
+      }
+
+      if (ChalkErrorFormatter.isChalkInstance(style)) {
         text = style(text)
       }
     }
@@ -78,7 +153,14 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
     return text
   }
 
-  private isChalkInstance(subject: ChalkInstance | unknown): subject is ChalkInstance {
+  /**
+   * Type guard that checks if passed value is chalk instance.
+   * Is needed to check because chalk is optional dependency of this library
+   * and the user must pass the chalk instance to the constructor.
+   *
+   * @param subject Thing to check if it is a ChalkInstance.
+   */
+  private static isChalkInstance(subject: ChalkInstance | unknown): subject is ChalkInstance {
     return typeof subject === 'function' && 'reset' in subject
   }
 }

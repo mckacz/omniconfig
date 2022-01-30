@@ -1,34 +1,50 @@
 import { ResolverError } from '../resolver/resolverError.js'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError.js'
-import { TextErrorFormatter } from './textErrorFormatter.js'
+import { TextErrorFormatter, TextErrorFormatterTemplates } from './textErrorFormatter.js'
+import {
+  processingErrorMock,
+  processingErrorWithoutReferencesMock,
+  undefinedErrorMock,
+  undefinedErrorWithoutReferencesMock,
+} from '../../mocks/errors.js'
 
 describe('TextErrorFormatter', () => {
-  test('works', () => {
-    const error = new ResolverError(
-      new ProcessorError('something is undefined', undefined, 'obj.foo', ProcessorErrorType.undefinedValue),
-      undefined,
-      undefined,
-      'obj.foo',
-      [
-        { container: 'Environment variables', identifier: 'OBJ__FOO' },
-        { container: 'Command line arguments', identifier: '--obj.foo' },
-      ],
-    )
+  describe('Default templates', () => {
+    test.each([
+      ['Processing error', processingErrorMock],
+      ['Processing error without references', processingErrorWithoutReferencesMock],
+      ['Undefined value error', undefinedErrorMock],
+      ['Undefined value error without references', undefinedErrorWithoutReferencesMock],
+    ])('%s', (_: string, error: ResolverError) => {
+      const formatter = new TextErrorFormatter()
+      expect(formatter.format(error)).toMatchSnapshot()
+    })
+  })
 
-    const error2 = new ResolverError(
-      new ProcessorError('something is wrong', undefined, 'obj.foo'),
-      undefined,
-      undefined,
-      'obj.foo',
-      [
-        { container: 'Command line arguments', identifier: '--obj.foo' },
-      ],
-    )
+  describe('Custom templates', () => {
+    const customTemplates: TextErrorFormatterTemplates = {
+      header:            'Oh no! [message]',
+      causeDescription:  'Update the value of [hint]',
+      hintListHeader:    'You can provide the value using:',
+      hintListItem:      '  * [hint]',
+      hintFull:          '[identifier] ([container])',
+      hintContainerOnly: '[container]',
+      lineSeparator:     '\n',
+    }
 
+    test.each([
+      ['Processing error', processingErrorMock],
+      ['Processing error without references', processingErrorWithoutReferencesMock],
+      ['Undefined value error', undefinedErrorMock],
+      ['Undefined value error without references', undefinedErrorWithoutReferencesMock],
+    ])('%s', (_: string, error: ResolverError) => {
+      const formatter = new TextErrorFormatter(customTemplates)
+      expect(formatter.format(error)).toMatchSnapshot()
+    })
+  })
+
+  test('ignore non-ResolverError', () => {
     const formatter = new TextErrorFormatter()
-    // expect(formatter.format(error)).toEqual(``)
 
-    console.log(formatter.format(error))
-    console.log(formatter.format(error2))
+    expect(formatter.format(new Error('Oh no!'))).toBeUndefined()
   })
 })

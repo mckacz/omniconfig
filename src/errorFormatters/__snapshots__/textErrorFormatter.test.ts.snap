@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextErrorFormatter Custom templates Processing error 1`] = `
+"Oh no! The value \`11\` must be grater than or equal to \`42\`
+Update the value of --obj.foo (Command line arguments)"
+`;
+
+exports[`TextErrorFormatter Custom templates Processing error without references 1`] = `"Oh no! The value \`11\` must be grater than or equal to \`42\`"`;
+
+exports[`TextErrorFormatter Custom templates Undefined value error 1`] = `
+"Oh no! The value is required
+You can provide the value using:
+  * OBJ__FOO (Environment variables)
+  * --obj.foo (Command line arguments)"
+`;
+
+exports[`TextErrorFormatter Custom templates Undefined value error without references 1`] = `"Oh no! The value is required"`;
+
+exports[`TextErrorFormatter Default templates Processing error 1`] = `
+"Configuration error: The value \`11\` must be grater than or equal to \`42\`
+The causing value is defined in Command line arguments as --obj.foo"
+`;
+
+exports[`TextErrorFormatter Default templates Processing error without references 1`] = `"Configuration error: The value \`11\` must be grater than or equal to \`42\`"`;
+
+exports[`TextErrorFormatter Default templates Undefined value error 1`] = `
+"Configuration error: The value is required
+The value can be defined in:
+  - Environment variables as OBJ__FOO
+  - Command line arguments as --obj.foo"
+`;
+
+exports[`TextErrorFormatter Default templates Undefined value error without references 1`] = `"Configuration error: The value is required"`;

@@ -10,7 +10,11 @@ export class YupProcessor<Schema extends AnyObjectSchema> implements Processor<u
 
   process(payload: unknown): Asserts<Schema> {
     try {
+
+      // Return type is determined from passed schema.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return this.schema.validateSync(payload, { stripUnknown: true })
+
     } catch (ex) {
       if (YupProcessor.isYupValidationError(ex)) {
         throw new ProcessorError(

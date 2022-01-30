@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChalkErrorFormatter Custom templates and theme Processing error 1`] = `
+"Oh no! <red>The value <bgGreen.underline>11</bgGreen.underline> must be grater than or equal to <bgGreen.underline>42</bgGreen.underline></red>
+Update the value of <bgCyan>--obj.foo</bgCyan> (<yellow.underline>Command line arguments</yellow.underline>)"
+`;
+
+exports[`ChalkErrorFormatter Custom templates and theme Processing error without references 1`] = `"Oh no! <red>The value <bgGreen.underline>11</bgGreen.underline> must be grater than or equal to <bgGreen.underline>42</bgGreen.underline></red>"`;
+
+exports[`ChalkErrorFormatter Custom templates and theme Undefined value error 1`] = `
+"Oh no! <red>The value is required</red>
+You can provide the value using:
+  * <bgCyan>OBJ__FOO</bgCyan> (<yellow.underline>Environment variables</yellow.underline>)
+  * <bgCyan>--obj.foo</bgCyan> (<yellow.underline>Command line arguments</yellow.underline>)"
+`;
+
+exports[`ChalkErrorFormatter Custom templates and theme Undefined value error without references 1`] = `"Oh no! <red>The value is required</red>"`;
+
+exports[`ChalkErrorFormatter Default templates and theme Processing error 1`] = `
+"<red>Configuration error: <reset>The value <greenBright.italic>11</greenBright.italic> must be grater than or equal to <greenBright.italic>42</greenBright.italic></reset></red>
+The causing value is defined in <yellow.italic>Command line arguments</yellow.italic> as <cyan.italic>--obj.foo</cyan.italic>"
+`;
+
+exports[`ChalkErrorFormatter Default templates and theme Processing error without references 1`] = `"<red>Configuration error: <reset>The value <greenBright.italic>11</greenBright.italic> must be grater than or equal to <greenBright.italic>42</greenBright.italic></reset></red>"`;
+
+exports[`ChalkErrorFormatter Default templates and theme Undefined value error 1`] = `
+"<red>Configuration error: <reset>The value is required</reset></red>
+The value can be defined in:
+  - <yellow.italic>Environment variables</yellow.italic> as <cyan.italic>OBJ__FOO</cyan.italic>
+  - <yellow.italic>Command line arguments</yellow.italic> as <cyan.italic>--obj.foo</cyan.italic>"
+`;
+
+exports[`ChalkErrorFormatter Default templates and theme Undefined value error without references 1`] = `"<red>Configuration error: <reset>The value is required</reset></red>"`;
