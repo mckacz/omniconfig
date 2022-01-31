@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import type { Loader, Reference } from '../loaders/loader.js'
 import type { Processor } from '../processors/processor.js'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError.js'
 import { ResolverError } from './resolverError.js'
+import { ProcessorError, ProcessorErrorType } from '../processors/processorError.js'
 
 export class Resolver<T = unknown> {
   constructor(

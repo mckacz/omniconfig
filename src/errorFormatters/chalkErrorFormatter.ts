@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import type { ChalkInstance } from 'chalk'
+import type { Chalk } from 'chalk'
 import type { MembersOfType, RecordWithSuffix } from '../helpers.js'
 import {
   TextErrorFormatter,
@@ -10,12 +10,12 @@ import {
 /**
  * Type helper - array of chalk's method call chain.
  */
-type ChalkStylePath = Array<keyof MembersOfType<ChalkInstance, ChalkInstance>>
+type ChalkStylePath = Array<keyof MembersOfType<Chalk, Chalk>>
 
 /**
  * Type helper - chalk's method call chain or chalk instance.
  */
-type ChalkStylePathOrInstance = ChalkStylePath | ChalkInstance
+type ChalkStylePathOrInstance = ChalkStylePath | Chalk
 
 /**
  * Type helper - key of ChalkErrorFormatterTheme
@@ -44,7 +44,7 @@ export interface ChalkErrorFormatterOptions {
   /**
    * Chalk instance to use.
    */
-  chalk: ChalkInstance
+  chalk: Chalk
 
   /**
    * Theme for the instance.
@@ -75,7 +75,7 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
   /**
    * Chalk instance to use.
    */
-  private readonly chalk: ChalkInstance
+  private readonly chalk: Chalk
 
   /**
    * Styling theme.
@@ -137,7 +137,7 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
     const styleOrPath = this.theme[styleKey]
 
     if (styleOrPath) {
-      let style: ChalkInstance | unknown
+      let style: Chalk | unknown
 
       if (styleOrPath instanceof Array) {
         style = _.get(this.chalk, styleOrPath)
@@ -158,9 +158,9 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
    * Is needed to check because chalk is optional dependency of this library
    * and the user must pass the chalk instance to the constructor.
    *
-   * @param subject Thing to check if it is a ChalkInstance.
+   * @param subject Thing to check if it is a Chalk.
    */
-  private static isChalkInstance(subject: ChalkInstance | unknown): subject is ChalkInstance {
+  private static isChalkInstance(subject: Chalk | unknown): subject is Chalk {
     return typeof subject === 'function' && 'reset' in subject
   }
 }

@@ -17,3 +17,6 @@ extends:
 ignorePatterns:
   - 'dist'
   - 'node_modules'
+
+rules:
+  quotes: [error, single]

@@ -2,9 +2,18 @@ import { parse } from 'dotenv'
 import { readFileSync } from 'fs'
 import { DotEnvLoaderError } from './dotEnvLoaderError.js'
 import { EnvLoader } from './envLoader.js'
-import type { EnvKeyMapper } from './envKeyMapper.js'
+import type { EnvKeyMapper } from './keyMappers/envKeyMapper.js'
 
+/**
+ * Loads configuration from .env files.
+ */
 export class DotEnvLoader<T = unknown> extends EnvLoader<T> {
+  /**
+   * Create a new instance of this loader.
+   *
+   * @param mapper   Environment key mapper
+   * @param filename Path to .env file.
+   */
   constructor(
     mapper: EnvKeyMapper,
     private readonly filename: string,
@@ -12,18 +21,22 @@ export class DotEnvLoader<T = unknown> extends EnvLoader<T> {
     super(mapper)
   }
 
-  load(): T {
-    let source = ''
-
+  /**
+   * Loads and parses configured .env file.
+   */
+  protected loadEnv(): Record<string, unknown> {
     try {
-      source = readFileSync(this.filename, 'utf-8')
+      const source = readFileSync(this.filename, 'utf-8')
+
+      return parse(source)
     } catch (ex) {
       throw new DotEnvLoaderError(this.filename, ex)
     }
-
-    return this.loadEnv(parse(source))
   }
 
+  /**
+   * Returns configured filename as a container.
+   */
   protected getContainer(): string | undefined {
     return this.filename
   }
