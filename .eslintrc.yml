@@ -19,4 +19,12 @@ ignorePatterns:
   - 'node_modules'
 
 rules:
-  quotes: [error, single]
+  quotes: [ error, single ]
+  quote-props: [ error, as-needed ]
+
+overrides:
+  - files:
+      - '*.test.ts'
+    rules:
+      '@typescript-eslint/no-unsafe-assignment': off
+      '@typescript-eslint/unbound-method': off
