@@ -1,9 +1,9 @@
-import { JsonFileLoader } from './jsonFileLoader.js'
-import { JsonFileLoaderError } from './jsonFileLoaderError.js'
+import { JsonFileLoader } from './jsonFileLoader'
+import { JsonFileLoaderError } from './jsonFileLoaderError'
 
 describe('JSONFileLoader', () => {
-  const validJSONFile = 'mocks/data/valid.json'
-  const invalidJSONFile = 'mocks/data/invalid.json'
+  const validJSONFile = 'fixtures/data/valid.json'
+  const invalidJSONFile = 'fixtures/data/invalid.json'
 
   test('load a valid JSON file', () => {
     const loader = new JsonFileLoader(validJSONFile)

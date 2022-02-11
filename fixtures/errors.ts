@@ -1,5 +1,5 @@
-import { ResolverError } from '../src/resolver/resolverError.js'
-import { ProcessorError, ProcessorErrorType } from '../src/processors/processorError.js'
+import { ResolverError } from '../src/resolver/resolverError'
+import { ProcessorError, ProcessorErrorType } from '../src/processors/processorError'
 
 export const undefinedErrorMock = new ResolverError(
   new ProcessorError('The value is required', undefined, 'obj.foo', ProcessorErrorType.undefinedValue),

@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import type { Loader, Reference } from '../loader.js'
-import { EnvKeyMapper } from './keyMappers/envKeyMapper.js'
+import type { Loader, Reference } from '../loader'
+import { EnvKeyMapper } from './keyMappers/envKeyMapper'
 
 /**
  * Loads and maps environment variables to configuration object.

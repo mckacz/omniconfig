@@ -1,4 +1,4 @@
-import type { EnvKeyMapper } from './envKeyMapper.js'
+import type { EnvKeyMapper } from './envKeyMapper'
 
 /**
  * Options for SplittingKeyMapper.

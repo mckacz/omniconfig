@@ -1,4 +1,4 @@
-import { ResolverError } from '../resolver/resolverError.js'
+import { ResolverError } from '../resolver/resolverError'
 
 /**
  * Formats ResolverError as human-readable message.

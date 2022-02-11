@@ -1,4 +1,4 @@
-import { SplittingKeyMapper } from './splittingKeyMapper.js'
+import { SplittingKeyMapper } from './splittingKeyMapper'
 
 describe('SplittingKeyMapper', () => {
   class JustSplittingKeyMapper extends SplittingKeyMapper {

@@ -1,4 +1,4 @@
-import { SnakeCaseKeyMapper } from './snakeCaseKeyMapper.js'
+import { SnakeCaseKeyMapper } from './snakeCaseKeyMapper'
 
 describe('SnakeCaseKeyMapper', () => {
   const mapper = new SnakeCaseKeyMapper({

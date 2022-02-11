@@ -1,6 +1,6 @@
 import type { AnyObjectSchema, Asserts, ValidationError } from 'yup'
-import { ProcessorError, ProcessorErrorType } from './processorError.js'
-import { Processor } from './processor.js'
+import { ProcessorError, ProcessorErrorType } from './processorError'
+import { Processor } from './processor'
 
 /**
  * ValidateOptions type (no exported by yup).

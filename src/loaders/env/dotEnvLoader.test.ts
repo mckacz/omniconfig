@@ -1,9 +1,9 @@
-import { DotEnvLoader } from './dotEnvLoader.js'
-import { DotEnvLoaderError } from './dotEnvLoaderError.js'
-import { CamelCaseKeyMapper } from './keyMappers/camelCaseKeyMapper.js'
+import { DotEnvLoader } from './dotEnvLoader'
+import { DotEnvLoaderError } from './dotEnvLoaderError'
+import { CamelCaseKeyMapper } from './keyMappers/camelCaseKeyMapper'
 
-const validEnvFile = 'mocks/data/.env'
-const notExistingEnvFile = 'mocks/data/.env.foo'
+const validEnvFile = 'fixtures/data/.env'
+const notExistingEnvFile = 'fixtures/data/.env.foo'
 
 describe('DotEnvLoader', () => {
   const mapper = new CamelCaseKeyMapper({

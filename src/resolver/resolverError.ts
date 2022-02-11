@@ -1,7 +1,7 @@
-import { ConfresError } from '../confresError.js'
-import type { Loader, Reference } from '../loaders/loader.js'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError.js'
-import { Processor } from '../processors/processor.js'
+import { ConfresError } from '../confresError'
+import type { Loader, Reference } from '../loaders/loader'
+import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
+import { Processor } from '../processors/processor'
 
 /**
  * Resolver error.

@@ -1,11 +1,11 @@
-import { ResolverError } from '../resolver/resolverError.js'
-import { TextErrorFormatter, TextErrorFormatterTemplates } from './textErrorFormatter.js'
+import { ResolverError } from '../resolver/resolverError'
+import { TextErrorFormatter, TextErrorFormatterTemplates } from './textErrorFormatter'
 import {
   processingErrorMock,
   processingErrorWithoutReferencesMock,
   undefinedErrorMock,
   undefinedErrorWithoutReferencesMock,
-} from '../../mocks/errors.js'
+} from '../../fixtures/errors'
 
 describe('TextErrorFormatter', () => {
   describe('Default templates', () => {

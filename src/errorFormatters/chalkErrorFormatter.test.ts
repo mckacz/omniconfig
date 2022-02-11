@@ -1,16 +1,17 @@
-import { ResolverError } from '../resolver/resolverError.js'
-import { ChalkErrorFormatter, ChalkErrorFormatterTheme } from './chalkErrorFormatter.js'
-import { TextErrorFormatterTemplates } from './textErrorFormatter.js'
-import { createChalkMock } from '../../mocks/chalk.js'
+import chalk from 'chalk'
+import { ResolverError } from '../resolver/resolverError'
+import { ChalkErrorFormatter, ChalkErrorFormatterTheme } from './chalkErrorFormatter'
+import { TextErrorFormatterTemplates } from './textErrorFormatter'
+
 import {
   processingErrorMock,
   processingErrorWithoutReferencesMock,
   undefinedErrorMock,
   undefinedErrorWithoutReferencesMock,
-} from '../../mocks/errors.js'
+} from '../../fixtures/errors'
+
 
 describe('ChalkErrorFormatter', () => {
-  const chalkMock = createChalkMock()
 
   describe('Default templates and theme', () => {
     test.each([
@@ -19,7 +20,7 @@ describe('ChalkErrorFormatter', () => {
       ['Undefined value error', undefinedErrorMock],
       ['Undefined value error without references', undefinedErrorWithoutReferencesMock],
     ])('%s', (_: string, error: ResolverError) => {
-      const formatter = new ChalkErrorFormatter({ chalk: chalkMock })
+      const formatter = new ChalkErrorFormatter({ chalk })
       expect(formatter.format(error)).toMatchSnapshot()
     })
   })
@@ -49,7 +50,7 @@ describe('ChalkErrorFormatter', () => {
       ['Undefined value error without references', undefinedErrorWithoutReferencesMock],
     ])('%s', (_: string, error: ResolverError) => {
       const formatter = new ChalkErrorFormatter({
-        chalk:     chalkMock,
+        chalk,
         theme:     customTheme,
         templates: customTemplates,
       })

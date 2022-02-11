@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
-import type { Loader, Reference } from '../loader.js'
-import { JsonFileLoaderError } from './jsonFileLoaderError.js'
+import type { Loader, Reference } from '../loader'
+import { JsonFileLoaderError } from './jsonFileLoaderError'
 
 /**
  * Loads configuration from JSON file.

@@ -1,10 +1,4 @@
-import { ValueLoader } from './valueLoader.js'
-
-// WARNING: "callsites" mock has been mapped in `jest.config.js`.
-// Below not working right now:
-// jest.unstable_mockModule('callsites', () => ({
-//   default: () => []
-// }))
+import { ValueLoader } from './valueLoader'
 
 describe('ValueLoader', () => {
   test('load the value', () => {

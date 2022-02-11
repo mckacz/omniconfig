@@ -1,8 +1,8 @@
-import { EnvLoader } from './envLoader.js'
-import { EnvKeyMapper } from './keyMappers/envKeyMapper.js'
+import { EnvLoader } from './envLoader'
+import { EnvKeyMapper } from './keyMappers/envKeyMapper'
 
 /**
- * Loads configuration from Node.js `process.env`.
+ * Loads configuration from Node `process.env`.
  */
 export class ProcessEnvLoader<T = unknown> extends EnvLoader<T> {
   static readonly container = 'Environment variables'

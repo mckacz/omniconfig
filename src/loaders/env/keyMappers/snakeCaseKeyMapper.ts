@@ -1,4 +1,4 @@
-import { SplittingKeyMapper } from './splittingKeyMapper.js'
+import { SplittingKeyMapper } from './splittingKeyMapper'
 
 /**
  * Maps environment variable names to lower snakeCase object keys.

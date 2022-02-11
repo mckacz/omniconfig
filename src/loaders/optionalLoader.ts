@@ -1,4 +1,4 @@
-import type { Loader, Reference } from './loader.js'
+import type { Loader, Reference } from './loader'
 
 /**
  * Optional loader.

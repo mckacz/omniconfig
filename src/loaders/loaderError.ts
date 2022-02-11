@@ -1,4 +1,4 @@
-import { ConfresError } from '../confresError.js'
+import { ConfresError } from '../confresError'
 
 /**
  * Base class for loader errors.

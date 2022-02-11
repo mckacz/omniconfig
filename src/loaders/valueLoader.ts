@@ -1,5 +1,5 @@
 import callsites from 'callsites'
-import type { Loader, Reference } from './loader.js'
+import type { Loader, Reference } from './loader'
 
 /**
  * Loader that loads an arbitrary static value.

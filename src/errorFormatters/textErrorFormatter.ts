@@ -1,6 +1,6 @@
-import { Reference } from '../loaders/loader.js'
-import { ResolverError } from '../resolver/resolverError.js'
-import { ErrorFormatter } from './errorFormatter.js'
+import { Reference } from '../loaders/loader'
+import { ResolverError } from '../resolver/resolverError'
+import { ErrorFormatter } from './errorFormatter'
 
 /**
  * Message templates for TextErrorFormatter

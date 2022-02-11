@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { SplittingKeyMapper } from './splittingKeyMapper.js'
+import { SplittingKeyMapper } from './splittingKeyMapper'
 
 /**
  * Maps environment variable names to camelCase object keys.

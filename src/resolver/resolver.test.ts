@@ -1,9 +1,8 @@
-import { jest } from '@jest/globals'
-import { Resolver } from './resolver.js'
-import { ValueLoader } from '../loaders/valueLoader.js'
-import { LoaderError } from '../loaders/loaderError.js'
-import { ResolverError } from './resolverError.js'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError.js'
+import { Resolver } from './resolver'
+import { ValueLoader } from '../loaders/valueLoader'
+import { LoaderError } from '../loaders/loaderError'
+import { ResolverError } from './resolverError'
+import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
 
 describe('Resolver', () => {
   afterEach(() => jest.restoreAllMocks())

@@ -1,8 +1,8 @@
 import { parse } from 'dotenv'
 import { readFileSync } from 'fs'
-import { DotEnvLoaderError } from './dotEnvLoaderError.js'
-import { EnvLoader } from './envLoader.js'
-import type { EnvKeyMapper } from './keyMappers/envKeyMapper.js'
+import { DotEnvLoaderError } from './dotEnvLoaderError'
+import { EnvLoader } from './envLoader'
+import type { EnvKeyMapper } from './keyMappers/envKeyMapper'
 
 /**
  * Loads configuration from .env files.

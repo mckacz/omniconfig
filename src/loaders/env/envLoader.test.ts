@@ -1,6 +1,6 @@
-import { EnvLoader } from './envLoader.js'
-import { EnvKeyMapper } from './keyMappers/envKeyMapper.js'
-import { CamelCaseKeyMapper } from './keyMappers/camelCaseKeyMapper.js'
+import { EnvLoader } from './envLoader'
+import { EnvKeyMapper } from './keyMappers/envKeyMapper'
+import { CamelCaseKeyMapper } from './keyMappers/camelCaseKeyMapper'
 
 describe('EnvLoader', () => {
   class InlineEnvLoader extends EnvLoader {

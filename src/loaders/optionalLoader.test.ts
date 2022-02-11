@@ -1,6 +1,5 @@
-import { jest } from '@jest/globals'
-import { Loader } from './loader.js'
-import { OptionalLoader } from './optionalLoader.js'
+import { Loader } from './loader'
+import { OptionalLoader } from './optionalLoader'
 
 describe('OptionalLoader', () => {
   const fakeLoader = {
