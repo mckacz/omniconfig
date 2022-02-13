@@ -3,6 +3,8 @@ Confres
 
 Confres is a Framework-agnostic runtime configuration resolver with full TypeScript support.
 
+> :warning: **Work in progress**, the API still may change. :warning:
+
 Features
 --------
 
@@ -21,3 +23,17 @@ Supported data sources:
 
 Supported processors:
   * [Yup](https://www.npmjs.com/package/yup) validator 
+
+## Installation
+
+You can get latest release with type definitions from NPM:
+
+```
+npm install confres@beta --save
+
+# if you want to use Yub processor / validator
+npm install yup --save
+
+# if you want to have colorful error messages
+npm install chalk@^4.0.0 --save
+```
