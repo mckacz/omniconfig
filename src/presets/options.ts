@@ -1,5 +1,6 @@
 import { AnyObjectSchema } from 'yup'
 import { EnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
+import { ErrorFormatter } from '../errorFormatters/errorFormatter'
 import { SplittingKeyMapperOptions } from '../loaders/env/keyMappers/splittingKeyMapper'
 
 /**
@@ -45,3 +46,30 @@ export interface YupEnvPresetOptions<TSchema extends AnyObjectSchema> {
  * Combination of .env and Yup options.
  */
 export type YupDotEnvPresetOptions<TSchema extends AnyObjectSchema> = YupEnvPresetOptions<TSchema> & DotEnvPresetOptions
+
+/**
+ * Error logger.
+ */
+export type ErrorLogger = (errorMessage: string) => void
+
+/**
+ * Options for error handling preset.
+ */
+export interface HandleErrorsOptions {
+  /**
+   * Error formatter.
+   */
+  formatter?: ErrorFormatter
+
+  /**
+   * Error logger.
+   * Default: `console.error()`.
+   */
+  logger?: (errorMessage: string) => void
+
+  /**
+   * Exit code. If provided, will be passed to `process.exit()`.
+   * Otherwise, `process.exit()` will not be called.
+   */
+  exitCode?: number
+}

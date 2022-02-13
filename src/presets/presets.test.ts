@@ -7,6 +7,9 @@ import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper
 import { EnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
+import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
+import { processingErrorMock } from '../../fixtures/errors'
+import { ResolverError } from '../resolver/resolverError'
 
 jest.mock('../resolver/resolver')
 jest.mock('../processors/yupProcessor')
@@ -214,6 +217,48 @@ describe('Presets', () => {
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+    })
+  })
+
+  describe('resolve()', () => {
+    test('successful resolve does not call error logger', async () => {
+      const logger = jest.fn()
+      const formatter = new TextErrorFormatter()
+
+      const resolver = new Resolver([])
+      jest.spyOn(resolver, 'resolve').mockResolvedValue({ foo: 123 })
+
+      await expect(Presets.resolve(resolver, { logger, formatter })).resolves.toEqual({ foo: 123 })
+      expect(logger).not.toHaveBeenCalled()
+    })
+
+    test('unsuccessful resolve call error logger with formatter message', async () => {
+      const logger = jest.fn()
+      const exitSpy = jest.spyOn(process, 'exit').mockReturnValueOnce(null as unknown as never)
+
+      const formatter = new TextErrorFormatter()
+      const resolver = new Resolver([])
+
+      jest.spyOn(resolver, 'resolve').mockRejectedValue(processingErrorMock)
+
+      await expect(Presets.resolve(resolver, { logger, formatter })).rejects.toThrow(ResolverError)
+      expect(logger).toHaveBeenCalledWith(expect.any(String))
+      expect(exitSpy).not.toHaveBeenCalled()
+    })
+
+    test('unsuccessful resolve cals process.exit() if exit code has been passed', async () => {
+      const logger = jest.fn()
+      const exitSpy = jest.spyOn(process, 'exit').mockReturnValueOnce(null as unknown as never)
+
+      const formatter = new TextErrorFormatter()
+      const resolver = new Resolver([])
+
+      jest.spyOn(resolver, 'resolve').mockRejectedValue(processingErrorMock)
+
+      await expect(Presets.resolve(resolver, { logger, formatter, exitCode: 12 })).rejects.toThrow(ResolverError)
+
+      expect(logger).toHaveBeenCalledWith(expect.any(String))
+      expect(exitSpy).toHaveBeenCalledWith(12)
     })
   })
 })

@@ -8,18 +8,17 @@ import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
 import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper'
 import { SplittingKeyMapperOptions } from '../loaders/env/keyMappers/splittingKeyMapper'
-import { DotEnvPresetOptions, YupDotEnvPresetOptions, YupEnvPresetOptions } from './options'
-
-/**
- * Creates a environment key mapper form options.
- */
-function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<SplittingKeyMapperOptions>): EnvKeyMapper {
-  if (isEnvKeyMapper(keyMapper)) {
-    return keyMapper
-  }
-
-  return new CamelCaseKeyMapper(keyMapper)
-}
+import {
+  DotEnvPresetOptions,
+  ErrorLogger,
+  HandleErrorsOptions,
+  YupDotEnvPresetOptions,
+  YupEnvPresetOptions,
+} from './options'
+import { ErrorFormatter } from '../errorFormatters/errorFormatter'
+import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
+import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
+import { ResolverError } from '../resolver/resolverError'
 
 /**
  * Creates a list of .env files to load.
@@ -45,6 +44,46 @@ function getEnvFiles(options: DotEnvPresetOptions): string[] {
   }
 
   return envFiles
+}
+
+/**
+ * Creates a environment key mapper form options.
+ *
+ * @param keyMapper Key mapper instance of options for CamelCaseKeyMapper.
+ */
+function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<SplittingKeyMapperOptions>): EnvKeyMapper {
+  if (isEnvKeyMapper(keyMapper)) {
+    return keyMapper
+  }
+
+  return new CamelCaseKeyMapper(keyMapper)
+}
+
+/**
+ * Creates error formatter instance.
+ * @param formatter Error formatter instance.
+ */
+function formatterFrom(formatter?: ErrorFormatter): ErrorFormatter {
+  if (formatter) {
+    return formatter
+  }
+
+  try {
+    // eslint-disable-next-line
+    return new ChalkErrorFormatter({ chalk: require('chalk') })
+  } catch {
+    // Chalk is an optional dependency.
+  }
+
+  return new TextErrorFormatter()
+}
+
+/**
+ * Gets error logger function.
+ * @param logger Error logger function.
+ */
+function loggerFrom(logger?: ErrorLogger): ErrorLogger {
+  return logger ?? console.error
 }
 
 /**
@@ -92,6 +131,34 @@ const presets = {
         new YupProcessor(options.schema),
       ],
     )
+  },
+
+  /**
+   * Resolves configuration using given resolver.
+   * Prints an error message when the resolves throw an exception.
+   *
+   * @param resolver Resolver.
+   * @param options Error handling options.
+   */
+  async resolve<T>(resolver: Resolver<T>, options?: HandleErrorsOptions): Promise<T> {
+    try {
+      return await resolver.resolve()
+    } catch (ex) {
+      if (!(ex instanceof ResolverError)) {
+        throw ex
+      }
+
+      const formatter = formatterFrom(options?.formatter)
+      const logger = loggerFrom(options?.logger)
+
+      logger(formatter.format(ex))
+
+      if(options?.exitCode !== undefined) {
+        process.exit(options.exitCode)
+      }
+
+      throw ex
+    }
   },
 }
 
