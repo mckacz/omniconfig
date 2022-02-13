@@ -1,7 +1,9 @@
+
 export type { Reference, Loader } from './loaders/loader'
 export type { Processor } from './processors/processor'
-export type { EnvKeyMapper  } from './loaders/env/keyMappers/envKeyMapper'
+export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
 export type { ErrorFormatter } from './errorFormatters/errorFormatter'
+export type { YupEnvPresetOptions, DotEnvPresetOptions, YupDotEnvPresetOptions } from './presets/options'
 
 export * from './confresError'
 
@@ -27,3 +29,6 @@ export * from './processors/yupProcessor'
 
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'
+
+import Presets from './presets/presets'
+export default Presets

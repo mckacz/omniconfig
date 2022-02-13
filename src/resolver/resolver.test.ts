@@ -44,17 +44,17 @@ describe('Resolver', () => {
     process: jest.fn((data: object) => ({ ...data, processed: 2 })),
   }
 
-  test('empty object if no loaders nor processors have been provided', () => {
-    expect(new Resolver([], []).resolve()).toEqual({})
+  test('empty object if no loaders nor processors have been provided', async () => {
+    await expect(new Resolver([], []).resolve()).resolves.toEqual({})
   })
 
-  test('merge configuration objects from left to right', () => {
-    expect(
+  test('merge configuration objects from left to right', async () => {
+    await expect(
       new Resolver(
         [loader1, loader2, loader3],
         [],
       ).resolve(),
-    ).toEqual({
+    ).resolves.toEqual({
       a: true,
       b: {
         c: 123,
@@ -66,12 +66,12 @@ describe('Resolver', () => {
       },
     })
 
-    expect(
+    await expect(
       new Resolver(
         [loader2, loader3, loader1],
         [],
       ).resolve(),
-    ).toEqual({
+    ).resolves.toEqual({
       a: true,
       b: {
         c: 123,
@@ -84,13 +84,13 @@ describe('Resolver', () => {
     })
   })
 
-  test('process the configuration in order', () => {
-    expect(
+  test('process the configuration in order', async () => {
+    await expect(
       new Resolver(
         [loader1],
         [processor1, processor2],
       ).resolve(),
-    ).toEqual({
+    ).resolves.toEqual({
       a:         true,
       b:         {
         c: 123,
@@ -107,7 +107,7 @@ describe('Resolver', () => {
     )
   })
 
-  test('decorate loader error', () => {
+  test('decorate loader error', async () => {
     jest.spyOn(loader2, 'load').mockImplementationOnce(() => {
       throw new LoaderError('Could not load')
     })
@@ -115,7 +115,7 @@ describe('Resolver', () => {
     let err!: ResolverError
 
     try {
-      new Resolver(
+      await new Resolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -137,7 +137,7 @@ describe('Resolver', () => {
     })
   })
 
-  test('decorate generic processing error', () => {
+  test('decorate generic processing error', async () => {
     processor2.process.mockImplementationOnce(() => {
       throw new ProcessorError('Something is wrong')
     })
@@ -145,7 +145,7 @@ describe('Resolver', () => {
     let err!: ResolverError
 
     try {
-      new Resolver(
+      await new Resolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -167,7 +167,7 @@ describe('Resolver', () => {
     })
   })
 
-  test('decorate invalid value error', () => {
+  test('decorate invalid value error', async () => {
     processor2.process.mockImplementationOnce(() => {
       throw new ProcessorError('That is wrong', undefined, 'b.e.g', ProcessorErrorType.invalidValue)
     })
@@ -175,7 +175,7 @@ describe('Resolver', () => {
     let err!: ResolverError
 
     try {
-      new Resolver(
+      await new Resolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -202,7 +202,7 @@ describe('Resolver', () => {
     })
   })
 
-  test('decorate undefined value error', () => {
+  test('decorate undefined value error', async () => {
     processor2.process.mockImplementationOnce(() => {
       throw new ProcessorError('That is missing', undefined, 'b.e.h', ProcessorErrorType.undefinedValue)
     })
@@ -210,7 +210,7 @@ describe('Resolver', () => {
     let err!: ResolverError
 
     try {
-      new Resolver(
+      await new Resolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()

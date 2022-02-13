@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "author": "Maciej Kaczmarek <maciej@kaczmarek.io>",
   "license": "MIT",
-  "main": "./dist/exports.js",
-  "types": "./dist/exports.d.ts",
+  "description": "Painless configuration resolver.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mckacz/confres.git"
+  },
+  "main": "./lib/exports.js",
+  "types": "./lib/exports.d.ts",
   "scripts": {
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf lib",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "test": "jest"
@@ -28,6 +33,21 @@
       "optional": true
     }
   },
+  "files": [
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "config",
+    "resolver",
+    "env",
+    "environment",
+    "json",
+    "validation",
+    "yup",
+    "chalk"
+  ],
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",

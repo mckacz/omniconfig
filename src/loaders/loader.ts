@@ -27,7 +27,7 @@ export interface Loader<T> {
   /**
    * Load configuration.
    */
-  load(): T
+  load(): T | Promise<T>
 
   /**
    * Returns a reference for given configuration object path,

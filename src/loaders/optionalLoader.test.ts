@@ -15,18 +15,18 @@ describe('OptionalLoader', () => {
 
   const loader = new OptionalLoader(fakeLoader)
 
-  test('load configuration', () => {
-    expect(loader.load()).toEqual({
+  test('load configuration', async () => {
+    await expect(loader.load()).resolves.toEqual({
       some: 'config',
     })
   })
 
-  test('fail to load configuration', () => {
-    fakeLoader.load.mockImplementationOnce(() => {
+  test('fail to load configuration', async () => {
+    fakeLoader.load.mockImplementationOnce(async () => {
       throw new Error('some terrible error')
     })
 
-    expect(loader.load()).toBeUndefined()
+    await expect(loader.load()).resolves.toBeUndefined()
   })
 
   test('pass the reference', () => {

@@ -27,9 +27,9 @@ export class Resolver<T = unknown> {
    * Loads and processes the configuration.
    * Returns final configuration object.
    */
-  resolve(): T {
-    const sources = this.load()
-    const resolved = this.process(sources)
+  async resolve(): Promise<T> {
+    const sources = await this.load()
+    const resolved = await this.process(sources)
 
     return resolved
   }
@@ -37,12 +37,12 @@ export class Resolver<T = unknown> {
   /**
    * Loads configurations using loaders.
    */
-  private load() {
+  private async load(): Promise<unknown[]> {
     const sources: unknown[] = []
 
     for (const loader of this.loaders) {
       try {
-        sources.push(loader.load())
+        sources.push(await loader.load())
       } catch (ex) {
         throw new ResolverError(ex, loader)
       }
@@ -55,16 +55,17 @@ export class Resolver<T = unknown> {
    *
    * @param sources Source configuration objects.
    */
-  private process(sources: unknown[]) {
+  private async process(sources: unknown[]): Promise<T> {
     let merged = _.merge({}, ...sources) as T
 
     for (const processor of this.processors) {
       try {
-        merged = processor.process(merged)
+        merged = await processor.process(merged)
       } catch (ex) {
         throw this.decorateError(ex, sources, processor)
       }
     }
+
     return merged
   }
 
@@ -134,6 +135,6 @@ export class Resolver<T = unknown> {
    * @param references List of references.
    */
   private removeEmptyReferences(references: Array<Reference | undefined>): Reference[] {
-    return references.filter(ref => ref !== undefined) as Reference[]
+    return references.filter(ref => ref !== undefined)
   }
 }

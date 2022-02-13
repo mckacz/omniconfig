@@ -15,7 +15,7 @@ describe('YupProcessor', () => {
 
   const processor = new YupProcessor(schema)
 
-  test('process the configuration', () => {
+  test('process the configuration', async () => {
     const payload = {
       debug: '1',
       db:    {
@@ -26,7 +26,7 @@ describe('YupProcessor', () => {
       },
     }
 
-    expect(processor.process(payload)).toEqual({
+    await expect(processor.process(payload)).resolves.toEqual({
       debug: true,
 
       db: {
@@ -38,7 +38,7 @@ describe('YupProcessor', () => {
     })
   })
 
-  test('invalid value error', () => {
+  test('invalid value error', async () => {
     const payload = {
       debug: '1',
       db:    {
@@ -52,7 +52,7 @@ describe('YupProcessor', () => {
     let err: unknown
 
     try {
-      processor.process(payload)
+      await processor.process(payload)
     } catch (ex) {
       err = ex
     }
@@ -69,7 +69,7 @@ describe('YupProcessor', () => {
     })
   })
 
-  test('undefined value error', () => {
+  test('undefined value error', async () => {
     const payload = {
       debug: '1',
       db:    {
@@ -81,7 +81,7 @@ describe('YupProcessor', () => {
     let err: unknown
 
     try {
-      processor.process(payload)
+      await processor.process(payload)
     } catch (ex) {
       err = ex
     }

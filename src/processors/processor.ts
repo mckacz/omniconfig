@@ -7,5 +7,5 @@ export interface Processor<T, U> {
    *
    * @param data Data to process.
    */
-  process(data: T): U
+  process(data: T): U | Promise<U>
 }

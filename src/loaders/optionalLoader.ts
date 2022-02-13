@@ -14,9 +14,9 @@ export class OptionalLoader<T> implements Loader<T | undefined> {
    * Load the configuration and return it,
    * or return `undefined` if the inner loader fails.
    */
-  load(): T | undefined {
+  async load(): Promise<T | undefined> {
     try {
-      return this.loader.load()
+      return await this.loader.load()
     } catch {
       // ignore
     }

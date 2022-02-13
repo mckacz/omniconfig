@@ -3,7 +3,7 @@ import { ProcessorError, ProcessorErrorType } from './processorError'
 import { Processor } from './processor'
 
 /**
- * ValidateOptions type (no exported by yup).
+ * ValidateOptions type (not exported by yup).
  */
 type ValidateOptions = Parameters<AnyObjectSchema['validate']>[1]
 
@@ -33,12 +33,12 @@ export class YupProcessor<Schema extends AnyObjectSchema> implements Processor<u
    *
    * @param payload Data to process.
    */
-  process(payload: unknown): Asserts<Schema> {
+  async process(payload: unknown): Promise<Asserts<Schema>> {
     try {
 
       // Return type is determined from passed schema.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return this.schema.validateSync(payload, this.validateOptions)
+      return await this.schema.validate(payload, this.validateOptions)
 
     } catch (ex) {
       if (YupProcessor.isYupValidationError(ex)) {

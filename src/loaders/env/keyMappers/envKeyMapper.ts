@@ -17,3 +17,13 @@ export interface EnvKeyMapper {
    */
   pathToKey(path: string): string
 }
+
+/**
+ * Checks if given thing is an instance of EnvKeyMapper.
+ */
+export function isEnvKeyMapper(thing: EnvKeyMapper | unknown): thing is EnvKeyMapper {
+  return thing !== undefined
+    && typeof thing === 'object'
+    && 'keyToPath' in thing
+    && 'pathToKey' in thing
+}
