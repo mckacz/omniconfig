@@ -87,7 +87,7 @@ Expected output:
 
 You can also put the valid values to `.env` or `.env.local` files.
 
-5. Try to install `chalk` package and run the examples again.
+5. Try installing `chalk` package and run the examples again :rainbow:
 
 ```shell
 npm install chalk@^4.0.0 --save
