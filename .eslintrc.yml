@@ -15,7 +15,8 @@ extends:
   - 'plugin:@typescript-eslint/recommended-requiring-type-checking'
 
 ignorePatterns:
-  - 'dist'
+  - 'lib'
+  - 'examples'
   - 'node_modules'
 
 rules:

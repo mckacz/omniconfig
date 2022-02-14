@@ -22,9 +22,7 @@ describe('OptionalLoader', () => {
   })
 
   test('fail to load configuration', async () => {
-    fakeLoader.load.mockImplementationOnce(async () => {
-      throw new Error('some terrible error')
-    })
+    fakeLoader.load.mockImplementationOnce(() => Promise.reject(new Error('some terrible error')))
 
     await expect(loader.load()).resolves.toBeUndefined()
   })
