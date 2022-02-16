@@ -19,6 +19,7 @@ import { ErrorFormatter } from '../errorFormatters/errorFormatter'
 import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
 import { ResolverError } from '../resolver/resolverError'
+import { Loader } from '../loaders/loader'
 
 /**
  * Creates a list of .env files to load.
@@ -26,13 +27,6 @@ import { ResolverError } from '../resolver/resolverError'
  * @param options .env options.
  */
 function getEnvFiles(options: DotEnvPresetOptions): string[] {
-  options = {
-    directory:      process.cwd(),
-    localVariants:  true,
-    nodeEnvVariant: true,
-    ...options,
-  }
-
   const withLocal = (filename: string) => options.localVariants ? [filename, filename + '.local'] : [filename]
   const mainFile = path.resolve(options.directory, '.env')
 
@@ -119,18 +113,28 @@ const presets = {
    * @param options Resolver options.
    */
   yupDotEnv<TSchema extends AnyObjectSchema>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
+    options = {
+      directory:      process.cwd(),
+      localVariants:  true,
+      nodeEnvVariant: true,
+      processEnv:     true,
+      ...options,
+    }
+
     const envFiles = getEnvFiles(options)
     const keyMapper = keyMapperFrom(options.keyMapper)
 
-    return new Resolver(
-      [
-        ...envFiles.map(file => new OptionalLoader(new DotEnvLoader(keyMapper, file))),
-        new ProcessEnvLoader(keyMapper),
-      ],
-      [
-        new YupProcessor(options.schema),
-      ],
+    const loaders: Loader<unknown>[] = envFiles.map(
+      file => new OptionalLoader(new DotEnvLoader(keyMapper, file)),
     )
+
+    if (options.processEnv) {
+      loaders.push(new ProcessEnvLoader(keyMapper))
+    }
+
+    return new Resolver(loaders, [
+      new YupProcessor(options.schema),
+    ])
   },
 
   /**
@@ -153,7 +157,7 @@ const presets = {
 
       logger(formatter.format(ex))
 
-      if(options?.exitCode !== undefined) {
+      if (options?.exitCode !== undefined) {
         process.exit(options.exitCode)
       }
 

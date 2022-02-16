@@ -24,6 +24,12 @@ export interface DotEnvPresetOptions {
    * Default: `true`
    */
   localVariants?: boolean
+
+  /**
+   * Load configuration from `process.env`.
+   * Default: `true`
+   */
+  processEnv?: boolean
 }
 
 /**

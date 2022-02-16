@@ -127,7 +127,10 @@ describe('Presets', () => {
     })
 
     test('no local, but NODE_ENV-based variants', () => {
-      const resolver = Presets.yupDotEnv({ schema, localVariants: false })
+      const resolver = Presets.yupDotEnv({
+        schema,
+        localVariants: false,
+      })
 
       expect(resolver).toBeInstanceOf(Resolver)
 
@@ -159,7 +162,10 @@ describe('Presets', () => {
     })
 
     test('no NODE_ENV-based, but local variants', () => {
-      const resolver = Presets.yupDotEnv({ schema, nodeEnvVariant: false })
+      const resolver = Presets.yupDotEnv({
+        schema,
+        nodeEnvVariant: false,
+      })
 
       expect(resolver).toBeInstanceOf(Resolver)
 
@@ -190,8 +196,12 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('.env only', () => {
-      const resolver = Presets.yupDotEnv({ schema, nodeEnvVariant: false, localVariants: false })
+    test('.env end process.env', () => {
+      const resolver = Presets.yupDotEnv({
+        schema,
+        nodeEnvVariant: false,
+        localVariants:  false,
+      })
 
       expect(resolver).toBeInstanceOf(Resolver)
 
@@ -216,6 +226,38 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
+      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+    })
+
+    test('.env only', () => {
+      const resolver = Presets.yupDotEnv({
+        schema,
+        nodeEnvVariant: false,
+        localVariants:  false,
+        processEnv:     false,
+      })
+
+      expect(resolver).toBeInstanceOf(Resolver)
+
+      expect(Resolver).toHaveBeenLastCalledWith(
+        [
+          expect.any(OptionalLoader),
+        ],
+        [expect.any(YupProcessor)],
+      )
+
+      expect(Resolver).toHaveBeenLastCalledWith(
+        [
+          expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
+        ],
+        [expect.any(YupProcessor)],
+      )
+
+      expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
+        [expect.any(CamelCaseKeyMapper), '/tmp/.env'],
+      ])
+
+      expect(ProcessEnvLoader).not.toHaveBeenCalled()
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
   })

@@ -1,6 +1,6 @@
 {
   "name": "confres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Maciej Kaczmarek <maciej@kaczmarek.io>",
   "license": "MIT",
   "description": "Painless configuration resolver.",
@@ -67,6 +67,9 @@
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "src/**/*.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "examples"
     ],
     "globals": {
       "ts-jest": {
