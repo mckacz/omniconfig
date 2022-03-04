@@ -5,7 +5,7 @@ describe('ValueLoader', () => {
     const value = { foo: 123 }
     const loader = new ValueLoader(value)
 
-    expect(loader.load()).toBe(value)
+    expect(loader.loadSync()).toBe(value)
   })
 
   test('auto-detected reference', () => {

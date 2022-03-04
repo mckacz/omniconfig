@@ -33,7 +33,7 @@ describe('EnvLoader', () => {
   }, mapper)
 
   test('map environment variables to configuration object', () => {
-    expect(loader.load()).toEqual({
+    expect(loader.loadSync()).toEqual({
       foo: '123',
       ra:  {
         bar: 'bar',

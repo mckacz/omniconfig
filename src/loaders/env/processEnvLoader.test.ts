@@ -14,7 +14,7 @@ describe('ProcessEnvLoader', () => {
   })
 
   test('load configuration', () => {
-    expect(loader.load()).toEqual({
+    expect(loader.loadSync()).toEqual({
       foo: '123',
       bar: {
         baz: 'qux',

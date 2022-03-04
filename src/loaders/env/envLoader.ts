@@ -1,21 +1,22 @@
 import _ from 'lodash'
-import type { Loader, Reference } from '../loader'
+import type { Reference } from '../loader'
+import { SyncLoader } from '../syncLoader'
 import { EnvKeyMapper } from './keyMappers/envKeyMapper'
 
 /**
  * Loads and maps environment variables to configuration object.
  */
-export abstract class EnvLoader<T = unknown> implements Loader<T> {
-  constructor(
+export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
+  protected constructor(
     protected readonly mapper: EnvKeyMapper,
   ) {
-
+    super()
   }
 
   /**
-   * Loads configuration.
+   * Loads configuration synchronously.
    */
-  load(): T {
+  loadSync(): T {
     return this.mapEnvs(this.loadEnv())
   }
 

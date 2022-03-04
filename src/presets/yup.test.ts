@@ -1,17 +1,15 @@
 import * as yup from 'yup'
-import Presets from './presets'
-import { Resolver } from '../resolver/resolver'
 import { YupProcessor } from '../processors/yupProcessor'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper'
 import { EnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
-import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
-import { processingErrorMock } from '../../fixtures/errors'
-import { ResolverError } from '../resolver/resolverError'
+import { yupDotEnv, yupDotEnvSync, yupEnv, yupEnvSync } from './yup'
+import { testPresetFactories } from './testUtils'
 
-jest.mock('../resolver/resolver')
+jest.mock('../resolver/asyncResolver')
+jest.mock('../resolver/syncResolver')
 jest.mock('../processors/yupProcessor')
 jest.mock('../loaders/env/dotEnvLoader')
 jest.mock('../loaders/env/processEnvLoader')
@@ -25,12 +23,12 @@ describe('Presets', () => {
   describe('yupEnv()', () => {
     const schema = yup.object()
 
-    test('default options', () => {
-      const resolver = Presets.yupEnv({ schema })
+    testPresetFactories('default options', yupEnv, yupEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({ schema })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
         [expect.any(YupProcessor)],
       )
@@ -39,12 +37,12 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('key mapper options', () => {
-      const resolver = Presets.yupEnv({ schema, keyMapper: { prefix: 'FOO__' } })
+    testPresetFactories('key mapper options', yupEnv, yupEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({ schema, keyMapper: { prefix: 'FOO__' } })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
         [expect.any(YupProcessor)],
       )
@@ -55,17 +53,17 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('custom key mapper options', () => {
+    testPresetFactories('custom key mapper options', yupEnv, yupEnvSync, (factory, ResolverClass) => {
       const keyMapper: EnvKeyMapper = {
         keyToPath: jest.fn(),
         pathToKey: jest.fn(),
       }
 
-      const resolver = Presets.yupEnv({ schema, keyMapper })
+      const resolver = factory({ schema, keyMapper })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
         [expect.any(YupProcessor)],
       )
@@ -88,12 +86,12 @@ describe('Presets', () => {
       process.chdir(cwd)
     })
 
-    test('default options (local and NODE_ENV-based variants)', () => {
-      const resolver = Presets.yupDotEnv({ schema })
+    testPresetFactories('default options (local and NODE_ENV-based variants)', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({ schema })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.any(OptionalLoader),
           expect.any(OptionalLoader),
@@ -104,7 +102,7 @@ describe('Presets', () => {
         [expect.any(YupProcessor)],
       )
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
@@ -126,15 +124,15 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('no local, but NODE_ENV-based variants', () => {
-      const resolver = Presets.yupDotEnv({
+    testPresetFactories('no local, but NODE_ENV-based variants', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({
         schema,
         localVariants: false,
       })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.any(OptionalLoader),
           expect.any(OptionalLoader),
@@ -143,7 +141,7 @@ describe('Presets', () => {
         [expect.any(YupProcessor)],
       )
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
@@ -161,15 +159,15 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('no NODE_ENV-based, but local variants', () => {
-      const resolver = Presets.yupDotEnv({
+    testPresetFactories('no NODE_ENV-based, but local variants', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({
         schema,
         nodeEnvVariant: false,
       })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.any(OptionalLoader),
           expect.any(OptionalLoader),
@@ -178,7 +176,7 @@ describe('Presets', () => {
         [expect.any(YupProcessor)],
       )
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
@@ -196,16 +194,16 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('.env end process.env', () => {
-      const resolver = Presets.yupDotEnv({
+    testPresetFactories('.env end process.env', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({
         schema,
         nodeEnvVariant: false,
         localVariants:  false,
       })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
@@ -213,7 +211,7 @@ describe('Presets', () => {
         [expect.any(YupProcessor)],
       )
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
@@ -229,24 +227,24 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
-    test('.env only', () => {
-      const resolver = Presets.yupDotEnv({
+    testPresetFactories('.env only', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({
         schema,
         nodeEnvVariant: false,
         localVariants:  false,
         processEnv:     false,
       })
 
-      expect(resolver).toBeInstanceOf(Resolver)
+      expect(resolver).toBeInstanceOf(ResolverClass)
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.any(OptionalLoader),
         ],
         [expect.any(YupProcessor)],
       )
 
-      expect(Resolver).toHaveBeenLastCalledWith(
+      expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
         ],
@@ -259,48 +257,6 @@ describe('Presets', () => {
 
       expect(ProcessEnvLoader).not.toHaveBeenCalled()
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
-    })
-  })
-
-  describe('resolve()', () => {
-    test('successful resolve does not call error logger', async () => {
-      const logger = jest.fn()
-      const formatter = new TextErrorFormatter()
-
-      const resolver = new Resolver([])
-      jest.spyOn(resolver, 'resolve').mockResolvedValue({ foo: 123 })
-
-      await expect(Presets.resolve(resolver, { logger, formatter })).resolves.toEqual({ foo: 123 })
-      expect(logger).not.toHaveBeenCalled()
-    })
-
-    test('unsuccessful resolve call error logger with formatter message', async () => {
-      const logger = jest.fn()
-      const exitSpy = jest.spyOn(process, 'exit').mockReturnValueOnce(null as unknown as never)
-
-      const formatter = new TextErrorFormatter()
-      const resolver = new Resolver([])
-
-      jest.spyOn(resolver, 'resolve').mockRejectedValue(processingErrorMock)
-
-      await expect(Presets.resolve(resolver, { logger, formatter })).rejects.toThrow(ResolverError)
-      expect(logger).toHaveBeenCalledWith(expect.any(String))
-      expect(exitSpy).not.toHaveBeenCalled()
-    })
-
-    test('unsuccessful resolve cals process.exit() if exit code has been passed', async () => {
-      const logger = jest.fn()
-      const exitSpy = jest.spyOn(process, 'exit').mockReturnValueOnce(null as unknown as never)
-
-      const formatter = new TextErrorFormatter()
-      const resolver = new Resolver([])
-
-      jest.spyOn(resolver, 'resolve').mockRejectedValue(processingErrorMock)
-
-      await expect(Presets.resolve(resolver, { logger, formatter, exitCode: 12 })).rejects.toThrow(ResolverError)
-
-      expect(logger).toHaveBeenCalledWith(expect.any(String))
-      expect(exitSpy).toHaveBeenCalledWith(12)
     })
   })
 })

@@ -1,10 +1,11 @@
 import callsites from 'callsites'
-import type { Loader, Reference } from './loader'
+import type { Reference } from './loader'
+import { SyncLoader } from './syncLoader'
 
 /**
  * Loader that loads an arbitrary static value.
  */
-export class ValueLoader<T> implements Loader<T> {
+export class ValueLoader<T> extends SyncLoader<T> {
   /**
    * Creates a new instance of ValueLoader.
 
@@ -15,12 +16,13 @@ export class ValueLoader<T> implements Loader<T> {
     private readonly value: T,
     private readonly container = ValueLoader.getContainer(),
   ) {
+    super()
   }
 
   /**
-   * Loads the value.
+   * Loads the value synchronously.
    */
-  load(): T {
+  loadSync(): T {
     return this.value
   }
 

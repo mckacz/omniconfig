@@ -1,10 +1,12 @@
-import { Resolver } from './resolver'
+import { SyncResolver } from './syncResolver'
 import { ValueLoader } from '../loaders/valueLoader'
 import { LoaderError } from '../loaders/loaderError'
 import { ResolverError } from './resolverError'
 import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
+import { Processor } from '../processors/processor'
+import { Loader } from '../exports'
 
-describe('Resolver', () => {
+describe('SyncResolver', () => {
   afterEach(() => jest.restoreAllMocks())
 
   const loader1 = new ValueLoader({
@@ -36,25 +38,36 @@ describe('Resolver', () => {
     },
   }, 'loader3')
 
-  const processor1 = {
-    process: jest.fn((data: object) => ({ ...data, processed: 1 })),
+  const loader4: Loader<unknown> = {
+    load:         () => Promise.resolve({ key: 'value' }),
+    referenceFor: () => undefined,
   }
 
-  const processor2 = {
-    process: jest.fn((data: object) => ({ ...data, processed: 2 })),
+  const processor1: jest.Mocked<Required<Processor<any, any>>> = {
+    process:     jest.fn(async (data: object) => ({ ...data, processed: 1 })),
+    processSync: jest.fn((data: object) => ({ ...data, processedSync: 1 })),
+  }
+
+  const processor2: jest.Mocked<Required<Processor<any, any>>> = {
+    process:     jest.fn(async (data: object) => ({ ...data, processed: 2 })),
+    processSync: jest.fn((data: object) => ({ ...data, processedSync: 2 })),
+  }
+
+  const processor3: jest.Mocked<Processor<any, any>> = {
+    process: jest.fn(async (data: object) => ({ ...data, processed: 3 })),
   }
 
   test('empty object if no loaders nor processors have been provided', async () => {
-    await expect(new Resolver([], []).resolve()).resolves.toEqual({})
+    expect(new SyncResolver([], []).resolve()).toEqual({})
   })
 
   test('merge configuration objects from left to right', async () => {
-    await expect(
-      new Resolver(
+    expect(
+      new SyncResolver(
         [loader1, loader2, loader3],
         [],
       ).resolve(),
-    ).resolves.toEqual({
+    ).toEqual({
       a: true,
       b: {
         c: 123,
@@ -66,12 +79,12 @@ describe('Resolver', () => {
       },
     })
 
-    await expect(
-      new Resolver(
+    expect(
+      new SyncResolver(
         [loader2, loader3, loader1],
         [],
       ).resolve(),
-    ).resolves.toEqual({
+    ).toEqual({
       a: true,
       b: {
         c: 123,
@@ -85,37 +98,37 @@ describe('Resolver', () => {
   })
 
   test('process the configuration in order', async () => {
-    await expect(
-      new Resolver(
+    expect(
+      new SyncResolver(
         [loader1],
         [processor1, processor2],
       ).resolve(),
-    ).resolves.toEqual({
-      a:         true,
-      b:         {
+    ).toEqual({
+      a:             true,
+      b:             {
         c: 123,
         d: 234,
         e: {
           f: 'bazinga',
         },
       },
-      processed: 2,
+      processedSync: 2,
     })
 
-    expect(processor2.process).toHaveBeenCalledWith(
-      expect.objectContaining({ processed: 1 }),
+    expect(processor2.processSync).toHaveBeenCalledWith(
+      expect.objectContaining({ processedSync: 1 }),
     )
   })
 
   test('decorate loader error', async () => {
-    jest.spyOn(loader2, 'load').mockImplementationOnce(() => {
+    jest.spyOn(loader2, 'loadSync').mockImplementationOnce(() => {
       throw new LoaderError('Could not load')
     })
 
     let err!: ResolverError
 
     try {
-      await new Resolver(
+      new SyncResolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -138,14 +151,14 @@ describe('Resolver', () => {
   })
 
   test('decorate generic processing error', async () => {
-    processor2.process.mockImplementationOnce(() => {
+    processor2.processSync.mockImplementationOnce(() => {
       throw new ProcessorError('Something is wrong')
     })
 
     let err!: ResolverError
 
     try {
-      await new Resolver(
+      new SyncResolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -168,14 +181,14 @@ describe('Resolver', () => {
   })
 
   test('decorate invalid value error', async () => {
-    processor2.process.mockImplementationOnce(() => {
+    processor2.processSync.mockImplementationOnce(() => {
       throw new ProcessorError('That is wrong', undefined, 'b.e.g', ProcessorErrorType.invalidValue)
     })
 
     let err!: ResolverError
 
     try {
-      await new Resolver(
+      new SyncResolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -203,14 +216,14 @@ describe('Resolver', () => {
   })
 
   test('decorate undefined value error', async () => {
-    processor2.process.mockImplementationOnce(() => {
+    processor2.processSync.mockImplementationOnce(() => {
       throw new ProcessorError('That is missing', undefined, 'b.e.h', ProcessorErrorType.undefinedValue)
     })
 
     let err!: ResolverError
 
     try {
-      await new Resolver(
+      new SyncResolver(
         [loader1, loader2, loader3],
         [processor1, processor2],
       ).resolve()
@@ -243,5 +256,23 @@ describe('Resolver', () => {
         },
       ],
     })
+  })
+
+  test('throws error if loader does not support synchronous mode', async () => {
+    expect(
+      () => new SyncResolver(
+        [loader4],
+        [processor1, processor2],
+      ).resolve(),
+    ).toThrow()
+  })
+
+  test('throws error if processor does not support synchronous mode', async () => {
+    expect(
+      () => new SyncResolver(
+        [loader1],
+        [processor1, processor3],
+      ).resolve(),
+    ).toThrow()
   })
 })

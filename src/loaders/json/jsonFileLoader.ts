@@ -1,11 +1,12 @@
 import { readFileSync } from 'fs'
-import type { Loader, Reference } from '../loader'
+import type { Reference } from '../loader'
+import { SyncLoader } from '../syncLoader'
 import { JsonFileLoaderError } from './jsonFileLoaderError'
 
 /**
  * Loads configuration from JSON file.
  */
-export class JsonFileLoader<T = unknown> implements Loader<T> {
+export class JsonFileLoader<T = unknown> extends SyncLoader<T> {
   /**
    * Creates a new instance of JSON file loader.
    *
@@ -14,12 +15,13 @@ export class JsonFileLoader<T = unknown> implements Loader<T> {
   constructor(
     private readonly filename: string,
   ) {
+    super()
   }
 
   /**
-   * Loads configuration from configured JSON file.
+   * Loads configuration from configured JSON file synchronously.
    */
-  load(): T {
+  loadSync(): T {
     try {
       const json = readFileSync(this.filename, 'utf-8')
       const value = JSON.parse(json) as T

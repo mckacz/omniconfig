@@ -25,9 +25,14 @@ export interface Reference {
  */
 export interface Loader<T> {
   /**
-   * Load configuration.
+   * Load configuration asynchronously.
    */
-  load(): T | Promise<T>
+  load(): Promise<T>
+
+  /**
+   * Load configuration synchronously.
+   */
+  loadSync?(): T
 
   /**
    * Returns a reference for given configuration object path,

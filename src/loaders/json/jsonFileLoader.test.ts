@@ -8,7 +8,7 @@ describe('JSONFileLoader', () => {
   test('load a valid JSON file', () => {
     const loader = new JsonFileLoader(validJSONFile)
 
-    expect(loader.load()).toEqual({ foo: 'bar' })
+    expect(loader.loadSync()).toEqual({ foo: 'bar' })
   })
 
   test('get reference', () => {
@@ -23,6 +23,6 @@ describe('JSONFileLoader', () => {
   test('attempt to load an invalid JSON file', () => {
     const loader = new JsonFileLoader(invalidJSONFile)
 
-    expect(() => loader.load()).toThrow(JsonFileLoaderError)
+    expect(() => loader.loadSync()).toThrow(JsonFileLoaderError)
   })
 })

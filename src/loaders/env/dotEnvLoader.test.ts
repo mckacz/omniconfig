@@ -14,7 +14,7 @@ describe('DotEnvLoader', () => {
   const loader = new DotEnvLoader(mapper, validEnvFile)
 
   test('load configuration', () => {
-    expect(loader.load()).toEqual({
+    expect(loader.loadSync()).toEqual({
       debug: 'false',
       db:    {
         host:     'localhost',
@@ -35,6 +35,6 @@ describe('DotEnvLoader', () => {
   test('attempt to load not existing file', () => {
     const loader = new DotEnvLoader(mapper, notExistingEnvFile)
 
-    expect(() => loader.load()).toThrow(DotEnvLoaderError)
+    expect(() => loader.loadSync()).toThrow(DotEnvLoaderError)
   })
 })

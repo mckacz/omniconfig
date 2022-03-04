@@ -120,9 +120,9 @@ export class TextErrorFormatter implements ErrorFormatter {
    *
    * @param err ResolverError instance to describe.
    */
-  format(err: ResolverError | unknown): string | undefined {
+  format(err: ResolverError): string {
     if (!(err instanceof ResolverError)) {
-      return
+      throw new TypeError('Expected an instance of ResolverError')
     }
 
     const lines: (string | undefined)[] = [

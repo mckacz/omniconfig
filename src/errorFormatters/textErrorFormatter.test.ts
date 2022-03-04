@@ -42,9 +42,11 @@ describe('TextErrorFormatter', () => {
     })
   })
 
-  test('ignore non-ResolverError', () => {
+  test('expect a type error for non-ResolverError', () => {
     const formatter = new TextErrorFormatter()
 
-    expect(formatter.format(new Error('Oh no!'))).toBeUndefined()
+    expect(
+      () => formatter.format(new Error('Oh no!') as any)
+    ).toThrow(TypeError)
   })
 })

@@ -23,6 +23,7 @@ export interface EnvKeyMapper {
  */
 export function isEnvKeyMapper(thing: EnvKeyMapper | unknown): thing is EnvKeyMapper {
   return thing !== undefined
+    && thing !== null
     && typeof thing === 'object'
     && 'keyToPath' in thing
     && 'pathToKey' in thing

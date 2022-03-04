@@ -1,13 +1,20 @@
-
 export type { Reference, Loader } from './loaders/loader'
 export type { Processor } from './processors/processor'
 export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
 export type { ErrorFormatter } from './errorFormatters/errorFormatter'
-export type { YupEnvPresetOptions, DotEnvPresetOptions, YupDotEnvPresetOptions } from './presets/options'
+export type { Resolver } from './resolver/resolver'
+export type {
+  HandleErrorsOptions,
+  ErrorLogger,
+  DotEnvPresetOptions,
+  YupEnvPresetOptions,
+  YupDotEnvPresetOptions,
+} from './presets'
 
 export * from './confresError'
 
-export * from './resolver/resolver'
+export * from './resolver/syncResolver'
+export * from './resolver/asyncResolver'
 export * from './resolver/resolverError'
 
 export * from './loaders/loaderError'
@@ -30,5 +37,5 @@ export * from './processors/yupProcessor'
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'
 
-import Presets from './presets/presets'
+import Presets from './presets'
 export default Presets

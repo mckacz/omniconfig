@@ -1,6 +1,6 @@
 import type { AnyObjectSchema, Asserts, ValidationError } from 'yup'
 import { ProcessorError, ProcessorErrorType } from './processorError'
-import { Processor } from './processor'
+import { SyncProcessor } from './syncProcessor'
 
 /**
  * ValidateOptions type (not exported by yup).
@@ -15,7 +15,7 @@ const defaultValidateOptions: ValidateOptions = { stripUnknown: true }
 /**
  * Casts and validates the configuration object using yup schema.
  */
-export class YupProcessor<Schema extends AnyObjectSchema> implements Processor<unknown, Asserts<Schema>> {
+export class YupProcessor<Schema extends AnyObjectSchema> extends SyncProcessor<unknown, Asserts<Schema>>{
   /**
    * Creates a new instance of the processor.
    *
@@ -26,19 +26,20 @@ export class YupProcessor<Schema extends AnyObjectSchema> implements Processor<u
     private readonly schema: Schema,
     private readonly validateOptions = defaultValidateOptions,
   ) {
+    super()
   }
 
   /**
-   * Processes the configuration object.
+   * Processes the configuration object asynchronously.
    *
    * @param payload Data to process.
    */
-  async process(payload: unknown): Promise<Asserts<Schema>> {
+  processSync(payload: unknown): Asserts<Schema> {
     try {
 
       // Return type is determined from passed schema.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return await this.schema.validate(payload, this.validateOptions)
+      return this.schema.validateSync(payload, this.validateOptions)
 
     } catch (ex) {
       if (YupProcessor.isYupValidationError(ex)) {
