@@ -4,7 +4,8 @@
   "private": "true",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node index.async.ts",
+    "start:sync": "ts-node index.sync.ts"
   },
   "dependencies": {
     "confres": "file:../..",

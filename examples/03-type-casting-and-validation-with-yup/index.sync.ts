@@ -4,8 +4,7 @@ import {
   DotEnvLoader,
   OptionalLoader,
   ProcessEnvLoader,
-  Resolver,
-  TextErrorFormatter,
+  SyncResolver,
   YupProcessor,
 } from 'confres'
 
@@ -14,7 +13,7 @@ const schema = yup.object({
   port:  yup.number().required().min(1024).max(4096),
   db:    yup.object({
     host:     yup.string().required(),
-    port:     yup.number().min(1000).max(10000).required(),
+    port:     yup.number().required(),
     name:     yup.string().required(),
     username: yup.string().required(),
     password: yup.string().required(),
@@ -23,7 +22,7 @@ const schema = yup.object({
 
 const keyMapper = new CamelCaseKeyMapper({ prefix: 'APP__' })
 
-const resolver = new Resolver(
+const resolver = new SyncResolver(
   [
     new DotEnvLoader(keyMapper, '.env'),
     new OptionalLoader(new DotEnvLoader(keyMapper, '.env.local')),
@@ -34,11 +33,10 @@ const resolver = new Resolver(
   ],
 )
 
-resolver.resolve()
-  .then(config => console.log(JSON.stringify(config, null, 2)))
-  .catch(ex => {
-    const formatter = new TextErrorFormatter()
-
-    console.error(formatter.format(ex))
-    process.exit(1)
-  })
+try {
+  const config = resolver.resolve()
+  console.log(JSON.stringify(config, null, 2))
+} catch (ex) {
+  console.error(ex)
+  process.exit(1)
+}
