@@ -64,6 +64,9 @@
   "jest": {
     "preset": "ts-jest/presets/default",
     "testRegex": "\\.test\\.ts$",
+    "moduleNameMapper": {
+      "^~/(.+)$": "<rootDir>/src/$1"
+    },
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "src/**/*.ts"
@@ -73,7 +76,7 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsconfig": "tsconfig.jest.json"
+        "tsconfig": "tests/tsconfig.json"
       }
     }
   }

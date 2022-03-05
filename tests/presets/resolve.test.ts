@@ -1,12 +1,12 @@
-import { SyncResolver } from '../resolver/syncResolver'
-import { AsyncResolver } from '../resolver/asyncResolver'
-import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
 import { processingErrorMock } from '../../fixtures/errors'
-import { ResolverError } from '../resolver/resolverError'
-import { resolve } from './resolve'
+import { SyncResolver } from '~/resolver/syncResolver'
+import { AsyncResolver } from '~/resolver/asyncResolver'
+import { TextErrorFormatter } from '~/errorFormatters/textErrorFormatter'
+import { ResolverError } from '~/resolver/resolverError'
+import { resolve } from '~/presets/resolve'
 
-jest.mock('../resolver/asyncResolver')
-jest.mock('../resolver/syncResolver')
+jest.mock('~/resolver/asyncResolver')
+jest.mock('~/resolver/syncResolver')
 
 describe('Presets', () => {
   afterEach(() => {

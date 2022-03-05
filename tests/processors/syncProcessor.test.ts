@@ -1,4 +1,4 @@
-import { SyncProcessor } from './syncProcessor'
+import { SyncProcessor } from '~/processors/syncProcessor'
 
 describe('SyncProcessor', () => {
   class TestProcessor extends SyncProcessor<unknown, unknown> {

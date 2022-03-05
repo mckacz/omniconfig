@@ -1,5 +1,5 @@
-import { JsonFileLoader } from './jsonFileLoader'
-import { JsonFileLoaderError } from './jsonFileLoaderError'
+import { JsonFileLoader } from '~/loaders/json/jsonFileLoader'
+import { JsonFileLoaderError } from '~/loaders/json/jsonFileLoaderError'
 
 describe('JSONFileLoader', () => {
   const validJSONFile = 'fixtures/data/valid.json'

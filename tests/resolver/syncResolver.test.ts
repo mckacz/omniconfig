@@ -1,10 +1,10 @@
-import { SyncResolver } from './syncResolver'
-import { ValueLoader } from '../loaders/valueLoader'
-import { LoaderError } from '../loaders/loaderError'
-import { ResolverError } from './resolverError'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
-import { Processor } from '../processors/processor'
-import { Loader } from '../exports'
+import { SyncResolver } from '~/resolver/syncResolver'
+import { ValueLoader } from '~/loaders/valueLoader'
+import { LoaderError } from '~/loaders/loaderError'
+import { ResolverError } from '~/resolver/resolverError'
+import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
+import { Processor } from '~/processors/processor'
+import { Loader } from '~/exports'
 
 describe('SyncResolver', () => {
   afterEach(() => jest.restoreAllMocks())

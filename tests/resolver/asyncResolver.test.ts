@@ -1,8 +1,8 @@
-import { AsyncResolver } from './asyncResolver'
-import { ValueLoader } from '../loaders/valueLoader'
-import { LoaderError } from '../loaders/loaderError'
-import { ResolverError } from './resolverError'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
+import { AsyncResolver } from '~/resolver/asyncResolver'
+import { ValueLoader } from '~/loaders/valueLoader'
+import { LoaderError } from '~/loaders/loaderError'
+import { ResolverError } from '~/resolver/resolverError'
+import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
 
 describe('AsyncResolver', () => {
   afterEach(() => jest.restoreAllMocks())

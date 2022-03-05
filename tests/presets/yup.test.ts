@@ -1,19 +1,19 @@
 import * as yup from 'yup'
-import { YupProcessor } from '../processors/yupProcessor'
-import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
-import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper'
-import { EnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
-import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
-import { OptionalLoader } from '../loaders/optionalLoader'
-import { yupDotEnv, yupDotEnvSync, yupEnv, yupEnvSync } from './yup'
-import { testPresetFactories } from './testUtils'
+import { YupProcessor } from '~/processors/yupProcessor'
+import { ProcessEnvLoader } from '~/loaders/env/processEnvLoader'
+import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
+import { EnvKeyMapper } from '~/loaders/env/keyMappers/envKeyMapper'
+import { DotEnvLoader } from '~/loaders/env/dotEnvLoader'
+import { OptionalLoader } from '~/loaders/optionalLoader'
+import { yupDotEnv, yupDotEnvSync, yupEnv, yupEnvSync } from '~/presets/yup'
+import { testPresetFactories } from './utils'
 
-jest.mock('../resolver/asyncResolver')
-jest.mock('../resolver/syncResolver')
-jest.mock('../processors/yupProcessor')
-jest.mock('../loaders/env/dotEnvLoader')
-jest.mock('../loaders/env/processEnvLoader')
-jest.mock('../loaders/env/keyMappers/camelCaseKeyMapper')
+jest.mock('~/resolver/asyncResolver')
+jest.mock('~/resolver/syncResolver')
+jest.mock('~/processors/yupProcessor')
+jest.mock('~/loaders/env/dotEnvLoader')
+jest.mock('~/loaders/env/processEnvLoader')
+jest.mock('~/loaders/env/keyMappers/camelCaseKeyMapper')
 
 describe('Presets', () => {
   afterEach(() => {

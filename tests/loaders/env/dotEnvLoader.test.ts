@@ -1,6 +1,6 @@
-import { DotEnvLoader } from './dotEnvLoader'
-import { DotEnvLoaderError } from './dotEnvLoaderError'
-import { CamelCaseKeyMapper } from './keyMappers/camelCaseKeyMapper'
+import { DotEnvLoader } from '~/loaders/env/dotEnvLoader'
+import { DotEnvLoaderError } from '~/loaders/env/dotEnvLoaderError'
+import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
 
 const validEnvFile = 'fixtures/data/.env'
 const notExistingEnvFile = 'fixtures/data/.env.foo'

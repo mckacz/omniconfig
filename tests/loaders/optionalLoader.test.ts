@@ -1,5 +1,5 @@
-import { Loader } from './loader'
-import { OptionalLoader } from './optionalLoader'
+import { Loader } from '~/loaders/loader'
+import { OptionalLoader } from '~/loaders/optionalLoader'
 
 describe('OptionalLoader', () => {
   const fakeLoader = {

@@ -1,8 +1,6 @@
-import { Resolver } from '../resolver/resolver'
-import { SyncResolver } from '../resolver/syncResolver'
-import { AsyncResolver } from '../resolver/asyncResolver'
-
-// TODO: move tests outside the src
+import { Resolver } from '~/resolver/resolver'
+import { SyncResolver } from '~/resolver/syncResolver'
+import { AsyncResolver } from '~/resolver/asyncResolver'
 
 export function testPresetFactories<
   AF extends ((...args: any[]) => Resolver),

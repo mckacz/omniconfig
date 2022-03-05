@@ -1,7 +1,7 @@
 import chalk from 'chalk'
-import { ResolverError } from '../resolver/resolverError'
-import { ChalkErrorFormatter, ChalkErrorFormatterTheme } from './chalkErrorFormatter'
-import { TextErrorFormatterTemplates } from './textErrorFormatter'
+import { ResolverError } from '~/resolver/resolverError'
+import { ChalkErrorFormatter, ChalkErrorFormatterTheme } from '~/errorFormatters/chalkErrorFormatter'
+import { TextErrorFormatterTemplates } from '~/errorFormatters/textErrorFormatter'
 
 import {
   processingErrorMock,

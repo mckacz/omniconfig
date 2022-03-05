@@ -1,6 +1,6 @@
 import * as yup from 'yup'
-import { YupProcessor } from './yupProcessor'
-import { ProcessorError, ProcessorErrorType } from './processorError'
+import { YupProcessor } from '~/processors/yupProcessor'
+import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
 
 describe('YupProcessor', () => {
   const schema = yup.object({

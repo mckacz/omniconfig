@@ -1,4 +1,4 @@
-import { ValueLoader } from './valueLoader'
+import { ValueLoader } from '~/loaders/valueLoader'
 
 describe('ValueLoader', () => {
   test('load the value', () => {

@@ -1,5 +1,5 @@
-import { Reference } from './loader'
-import { SyncLoader } from './syncLoader'
+import { Reference } from '~/loaders/loader'
+import { SyncLoader } from '~/loaders/syncLoader'
 
 describe('SyncLoader', () => {
   class TestLoader extends SyncLoader<unknown> {
