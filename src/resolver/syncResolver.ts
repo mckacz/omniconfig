@@ -1,6 +1,7 @@
-import _ from 'lodash'
 import { ResolverError } from './resolverError'
 import { BaseResolver } from './baseResolver'
+import { MergedDataContainer } from '../common/mergedDataContainer'
+import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Synchronous resolver.
@@ -20,8 +21,8 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
   /**
    * Loads configurations using loaders.
    */
-  private load(): unknown[] {
-    const sources: unknown[] = []
+  private load(): DataContainer<unknown> {
+    const sources: DataContainer<unknown>[] = []
 
     for (const loader of this.loaders) {
       try {
@@ -32,16 +33,17 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
         throw new ResolverError(ex, loader)
       }
     }
-    return sources
+
+    return new MergedDataContainer(sources)
   }
 
   /**
    * Merges and processes the configurations using processors.
    *
-   * @param sources Source configuration objects.
+   * @param dataContainer Data container.
    */
-  private process(sources: unknown[]): T {
-    let merged = _.merge({}, ...sources) as T
+  private process(dataContainer: DataContainer<unknown>): T {
+    let merged = dataContainer.value as T
 
     for (const processor of this.processors) {
       try {
@@ -49,7 +51,7 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
           merged = processor.processSync(merged)
         }
       } catch (ex) {
-        throw this.decorateError(ex, sources, processor)
+        throw this.decorateError(ex, dataContainer, processor)
       }
     }
 

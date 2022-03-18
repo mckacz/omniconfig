@@ -4,7 +4,8 @@ import { LoaderError } from '~/loaders/loaderError'
 import { ResolverError } from '~/resolver/resolverError'
 import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
 import { Processor } from '~/interfaces/processor'
-import { Loader } from '~/exports'
+import { Loader } from '~/interfaces/loader'
+import { BasicDataContainer } from '~/common/basicDataContainer'
 
 describe('SyncResolver', () => {
   afterEach(() => jest.restoreAllMocks())
@@ -39,8 +40,8 @@ describe('SyncResolver', () => {
   }, 'loader3')
 
   const loader4: Loader<unknown> = {
-    load:         () => Promise.resolve({ key: 'value' }),
-    referenceFor: () => undefined,
+    load:          () => Promise.resolve(new BasicDataContainer(loader4, { key: 'value' })),
+    referencesFor: () => [],
   }
 
   const processor1: jest.Mocked<Required<Processor<any, any>>> = {
@@ -144,7 +145,6 @@ describe('SyncResolver', () => {
       message:          'Could not load',
       isUndefinedError: false,
       reporter:         loader2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -174,7 +174,6 @@ describe('SyncResolver', () => {
       message:          'Something is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -204,7 +203,6 @@ describe('SyncResolver', () => {
       message:          'That is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           loader2,
       path:             'b.e.g',
       references:       [
         {
@@ -239,7 +237,6 @@ describe('SyncResolver', () => {
       message:          'That is missing',
       isUndefinedError: true,
       reporter:         processor2,
-      source:           undefined,
       path:             'b.e.h',
       references:       [
         {

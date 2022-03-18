@@ -1,22 +1,25 @@
 import { SyncLoader } from '~/loaders/syncLoader'
-import { Reference } from '~/interfaces/reference'
 
 describe('SyncLoader', () => {
   class TestLoader extends SyncLoader<unknown> {
-    loadSync = jest.fn().mockReturnValue({ key: 'value' })
+    loadSync = jest.fn(() => ({ value: { key: 'value' }, referenceFor: () => undefined }))
 
-    referenceFor(path: string): Reference {
-      return {
+    referencesFor(path: string) {
+      return [{
         source:     'test',
         identifier: path,
-      }
+      }]
     }
   }
 
   const loader = new TestLoader()
 
   test('successful asynchronous load', async () => {
-    await expect(loader.load()).resolves.toEqual({ key: 'value' })
+    await expect(loader.load()).resolves.toMatchObject({
+      value: { key: 'value' },
+
+      referenceFor: expect.any(Function),
+    })
   })
 
   test('failed asynchronous load', async () => {

@@ -1,10 +1,10 @@
-import _ from 'lodash'
-import type { Loader} from '../interfaces/loader'
-import type { Processor } from '../interfaces/processor'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
 import { ResolverError } from './resolverError'
-import { Resolver } from '../interfaces/resolver'
+import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
+import type { Loader } from '../interfaces/loader'
+import type { Processor } from '../interfaces/processor'
+import type { Resolver } from '../interfaces/resolver'
 import type { Reference } from '../interfaces/reference'
+import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Common parts of AsyncResolver and SyncResolver.
@@ -34,10 +34,10 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    * Decorates processing error with references to the causing value if available.
    *
    * @param err Error object.
-   * @param sources Source configuration objects.
+   * @param dataContainer Source configuration objects.
    * @param processor Processor instance that reported the error.
    */
-  protected decorateError(err: ProcessorError | unknown, sources: unknown[], processor: Processor<unknown, unknown>) {
+  protected decorateError(err: ProcessorError | unknown, dataContainer: DataContainer<unknown>, processor: Processor<unknown, unknown>) {
     if (!(err instanceof ProcessorError) || !err.path) {
       return new ResolverError(err, processor)
     }
@@ -46,35 +46,19 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
       return new ResolverError(
         err,
         processor,
-        undefined,
         err.path,
         this.resolveReferencesForUndefinedValue(err.path),
       )
     }
 
-    const loader = this.findLoaderOfPath(err.path, sources)
+    const reference = dataContainer.referenceFor(err.path)
 
     return new ResolverError(
       err,
       processor,
-      loader,
       err.path,
-      this.removeEmptyReferences([loader?.referenceFor(err.path)]),
+      reference ? [reference] : [],
     )
-  }
-
-  /**
-   * Tries to find a loader that has loaded a value for given object path.
-   *
-   * @param path Object path.
-   * @param sources Source configuration objects.
-   */
-  private findLoaderOfPath(path: string, sources: unknown[]): Loader<unknown> | undefined {
-    const sourceIndex = _.findLastIndex(sources, sourceValue => _.get(sourceValue, path) !== undefined)
-
-    if (sourceIndex !== -1) {
-      return this.loaders[sourceIndex]
-    }
   }
 
   /**
@@ -83,19 +67,12 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    * @param path Object path.
    */
   private resolveReferencesForUndefinedValue(path: string): Reference[] {
-    return this.removeEmptyReferences(
-      this.loaders.map(
-        loader => loader.referenceFor(path),
-      ),
-    )
-  }
+    const references: Reference[] = []
 
-  /**
-   * Removes empty references from the list.
-   *
-   * @param references List of references.
-   */
-  private removeEmptyReferences(references: Array<Reference | undefined>): Reference[] {
-    return references.filter(ref => ref !== undefined) as Reference[]
+    for (const loader of this.loaders) {
+      references.push(...loader.referencesFor(path))
+    }
+
+    return references
   }
 }

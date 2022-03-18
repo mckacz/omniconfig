@@ -13,7 +13,6 @@ export class ResolverError extends ConfresError {
    *
    * @param err Original error.
    * @param reporter Reporter of the error - either a loader or processor instance.
-   * @param source Loader of value that caused the error (if available).
    * @param path Object path of value that caused the error (if available).
    * @param references Reference to value that caused the error (for invalid value error)
    *                   or list of references where value can be defined (for undefined value error).
@@ -21,7 +20,6 @@ export class ResolverError extends ConfresError {
   constructor(
     err: Error | unknown,
     readonly reporter?: Loader<unknown> | Processor<unknown, unknown>,
-    readonly source?: Loader<unknown>,
     readonly path?: string,
     readonly references: Reference[] = [],
   ) {

@@ -1,6 +1,8 @@
 import callsites from 'callsites'
 import { SyncLoader } from './syncLoader'
+import { BasicDataContainer } from '../common/basicDataContainer'
 import type { Reference } from '../interfaces/reference'
+import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Loader that loads an arbitrary static value.
@@ -22,23 +24,24 @@ export class ValueLoader<T> extends SyncLoader<T> {
   /**
    * Loads the value synchronously.
    */
-  loadSync(): T {
-    return this.value
+  loadSync(): DataContainer<T> {
+    return new BasicDataContainer(this, this.value)
   }
 
   /**
-   * Returns reference for given path if the source
-   * has been passed to the constructor (or has been automatically detected).
+   * Returns supported source references for given configuration object path.
    *
-   * @param path The path to return a reference for.
+   * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referenceFor(path: string): Reference | undefined {
+  referencesFor(path: string): Reference[] {
     if (this.source) {
-      return {
+      return [{
         identifier: path,
         source:     this.source,
-      }
+      }]
     }
+
+    return []
   }
 
   /**

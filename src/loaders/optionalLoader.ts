@@ -1,13 +1,15 @@
-import type { Loader} from '../interfaces/loader'
+import { BasicDataContainer } from '../common/basicDataContainer'
+import type { Loader } from '../interfaces/loader'
 import type { Reference } from '../interfaces/reference'
+import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Optional loader.
  * Decorates the given loader and ignores errors thrown by it.
  */
-export class OptionalLoader<T> implements Loader<T | undefined> {
+export class OptionalLoader<T> implements Loader<Partial<T>> {
   constructor(
-    private readonly loader: Loader<T>
+    private readonly loader: Loader<T>,
   ) {
   }
 
@@ -15,11 +17,11 @@ export class OptionalLoader<T> implements Loader<T | undefined> {
    * Load the configuration asynchronously and return it,
    * or return `undefined` if the inner loader fails.
    */
-  async load(): Promise<T | undefined> {
+  async load(): Promise<DataContainer<Partial<T>>> {
     try {
       return await this.loader.load()
     } catch {
-      // ignore
+      return new BasicDataContainer(this.loader, {})
     }
   }
 
@@ -27,7 +29,7 @@ export class OptionalLoader<T> implements Loader<T | undefined> {
    * Load the configuration synchronously and return it,
    * or return `undefined` if the inner loader fails.
    */
-  loadSync(): T | undefined {
+  loadSync(): DataContainer<Partial<T>> {
     if (!this.loader.loadSync) {
       throw new TypeError(`Loader '${this.loader.constructor.name}' does not support synchronous mode`)
     }
@@ -35,14 +37,16 @@ export class OptionalLoader<T> implements Loader<T | undefined> {
     try {
       return this.loader.loadSync()
     } catch {
-      // ignore
+      return new BasicDataContainer(this.loader, {})
     }
   }
 
   /**
-   * Return the reference for a given path using the inner loader.
+   * Returns supported source references for given configuration object path.
+   *
+   * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referenceFor(path: string): Reference | undefined {
-    return this.loader.referenceFor(path)
+  referencesFor(path: string): Reference[] {
+    return this.loader.referencesFor(path)
   }
 }

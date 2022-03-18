@@ -33,7 +33,9 @@ describe('EnvLoader', () => {
   }, mapper)
 
   test('map environment variables to configuration object', () => {
-    expect(loader.loadSync()).toEqual({
+    const dataContainer = loader.loadSync()
+
+    expect(dataContainer.value).toEqual({
       foo: '123',
       ra:  {
         bar: 'bar',
@@ -45,16 +47,21 @@ describe('EnvLoader', () => {
         },
       },
     })
-  })
 
-  test('get reference', () => {
-    expect(loader.referenceFor('ra.bar')).toEqual({
+    expect(dataContainer.referenceFor('ra.bar')).toEqual({
       source:     'test',
       identifier: 'RA__BAR',
     })
   })
 
+  test('get reference', () => {
+    expect(loader.referencesFor('ra.bar')).toEqual([{
+      source:     'test',
+      identifier: 'RA__BAR',
+    }])
+  })
+
   test('get empty reference if the loader does not return the container', () => {
-    expect(loader.referenceFor('foo')).toBeUndefined()
+    expect(loader.referencesFor('foo')).toEqual([])
   })
 })

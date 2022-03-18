@@ -1,3 +1,4 @@
+import type { DataContainer } from './dataContainer'
 import type { Reference } from './reference'
 
 /**
@@ -7,19 +8,18 @@ export interface Loader<T> {
   /**
    * Load configuration asynchronously.
    */
-  load(): Promise<T>
+  load(): Promise<DataContainer<T>>
 
   /**
    * Load configuration synchronously.
    */
-  loadSync?(): T
+  loadSync?(): DataContainer<T>
 
   /**
-   * Returns a reference for given configuration object path,
-   * or `undefined` if the path is not supported.
+   * Returns supported source references for given configuration object path.
    *
    * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referenceFor(path: string): Reference | undefined
+  referencesFor(path: string): Reference[]
 }
 

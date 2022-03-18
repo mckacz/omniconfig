@@ -7,17 +7,23 @@ describe('JSONFileLoader', () => {
 
   test('load a valid JSON file', () => {
     const loader = new JsonFileLoader(validJSONFile)
+    const dataContainer = loader.loadSync()
 
-    expect(loader.loadSync()).toEqual({ foo: 'bar' })
-  })
+    expect(dataContainer.value).toEqual({ foo: 'bar' })
 
-  test('get reference', () => {
-    const loader = new JsonFileLoader(validJSONFile)
-
-    expect(loader.referenceFor('foo')).toEqual({
+    expect(dataContainer.referenceFor('foo')).toEqual({
       source:     validJSONFile,
       identifier: 'foo',
     })
+  })
+
+  test('get references', () => {
+    const loader = new JsonFileLoader(validJSONFile)
+
+    expect(loader.referencesFor('foo')).toEqual([{
+      source:     validJSONFile,
+      identifier: 'foo',
+    }])
   })
 
   test('attempt to load an invalid JSON file', () => {

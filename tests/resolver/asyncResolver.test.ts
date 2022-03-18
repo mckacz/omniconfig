@@ -131,7 +131,6 @@ describe('AsyncResolver', () => {
       message:          'Could not load',
       isUndefinedError: false,
       reporter:         loader2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -161,7 +160,6 @@ describe('AsyncResolver', () => {
       message:          'Something is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -191,7 +189,6 @@ describe('AsyncResolver', () => {
       message:          'That is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           loader2,
       path:             'b.e.g',
       references:       [
         {
@@ -226,7 +223,6 @@ describe('AsyncResolver', () => {
       message:          'That is missing',
       isUndefinedError: true,
       reporter:         processor2,
-      source:           undefined,
       path:             'b.e.h',
       references:       [
         {
