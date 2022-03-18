@@ -7,8 +7,8 @@ export const undefinedErrorMock = new ResolverError(
   undefined,
   'obj.foo',
   [
-    { container: 'Environment variables', identifier: 'OBJ__FOO' },
-    { container: 'Command line arguments', identifier: '--obj.foo' },
+    { source: 'Environment variables', identifier: 'OBJ__FOO' },
+    { source: 'Command line arguments', identifier: '--obj.foo' },
   ],
 )
 
@@ -25,7 +25,7 @@ export const processingErrorMock = new ResolverError(
   undefined,
   'obj.foo',
   [
-    { container: 'Command line arguments', identifier: '--obj.foo' },
+    { source: 'Command line arguments', identifier: '--obj.foo' },
   ],
 )
 

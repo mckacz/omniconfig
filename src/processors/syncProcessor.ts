@@ -1,4 +1,4 @@
-import { Processor } from './processor'
+import { Processor } from '../interfaces/processor'
 
 /**
  * Base class for synchronous-only processors.

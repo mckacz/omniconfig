@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import type { Reference } from '../loader'
 import { SyncLoader } from '../syncLoader'
 import { EnvKeyMapper } from './keyMappers/envKeyMapper'
+import type { Reference } from '../../interfaces/reference'
 
 /**
  * Loads and maps environment variables to configuration object.
@@ -26,16 +26,16 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
    * @param path Object path.
    */
   referenceFor(path: string): Reference | undefined {
-    const container = this.getContainer(path)
+    const source = this.getSource(path)
 
-    if (!container) {
+    if (!source) {
       return
     }
 
     const identifier = this.mapper.pathToKey(path)
 
     return {
-      container,
+      source,
       identifier,
     }
   }
@@ -47,11 +47,11 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
   protected abstract loadEnv(): Record<string, unknown>
 
   /**
-   * Returns container for given object path.
+   * Returns source for given object path.
    *
    * @param path Object path.
    */
-  protected abstract getContainer(path: string): string | undefined
+  protected abstract getSource(path: string): string | undefined
 
   /**
    * Maps environment variable to configuration object using

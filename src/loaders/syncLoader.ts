@@ -1,4 +1,5 @@
-import { Loader, Reference } from './loader'
+import { Loader} from '../interfaces/loader'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Base class for synchronous-only loaders.

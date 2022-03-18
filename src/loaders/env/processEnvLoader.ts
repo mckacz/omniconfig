@@ -5,7 +5,7 @@ import { EnvKeyMapper } from './keyMappers/envKeyMapper'
  * Loads configuration from Node `process.env`.
  */
 export class ProcessEnvLoader<T = unknown> extends EnvLoader<T> {
-  static readonly container = 'Environment variables'
+  static readonly source = 'Environment variables'
 
   /**
    * Creates a new instance of this loader.
@@ -28,9 +28,9 @@ export class ProcessEnvLoader<T = unknown> extends EnvLoader<T> {
   }
 
   /**
-   * Returns static container name.
+   * Returns static source name.
    */
-  protected getContainer(): string | undefined {
-    return ProcessEnvLoader.container
+  protected getSource(): string | undefined {
+    return ProcessEnvLoader.source
   }
 }

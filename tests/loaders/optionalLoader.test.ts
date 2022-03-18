@@ -1,4 +1,4 @@
-import { Loader } from '~/loaders/loader'
+import { Loader } from '~/interfaces/loader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
 
 describe('OptionalLoader', () => {
@@ -12,7 +12,7 @@ describe('OptionalLoader', () => {
     }),
 
     referenceFor: jest.fn(path => ({
-      container:  'fake',
+      source:     'fake',
       identifier: path,
     })),
   } as jest.Mocked<Required<Loader<unknown>>>
@@ -21,7 +21,7 @@ describe('OptionalLoader', () => {
 
   test('pass the reference', () => {
     expect(loader.referenceFor('some.path')).toEqual({
-      container:  'fake',
+      source:     'fake',
       identifier: 'some.path',
     })
   })
@@ -62,7 +62,7 @@ describe('OptionalLoader', () => {
         }),
 
         referenceFor: jest.fn(path => ({
-          container:  'fake',
+          source:     'fake',
           identifier: path,
         })),
       } as Loader<unknown>)

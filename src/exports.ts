@@ -1,8 +1,9 @@
-export type { Reference, Loader } from './loaders/loader'
-export type { Processor } from './processors/processor'
+export type { Loader } from './interfaces/loader'
+export type { Reference } from './interfaces/reference'
+export type { Processor } from './interfaces/processor'
 export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
-export type { ErrorFormatter } from './errorFormatters/errorFormatter'
-export type { Resolver } from './resolver/resolver'
+export type { ErrorFormatter } from './interfaces/errorFormatter'
+export type { Resolver } from './interfaces/resolver'
 export type {
   HandleErrorsOptions,
   ErrorLogger,
@@ -11,7 +12,7 @@ export type {
   YupDotEnvPresetOptions,
 } from './presets'
 
-export * from './confresError'
+export * from './common/confresError'
 
 export * from './resolver/syncResolver'
 export * from './resolver/asyncResolver'

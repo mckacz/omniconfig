@@ -3,7 +3,7 @@ import { ValueLoader } from '~/loaders/valueLoader'
 import { LoaderError } from '~/loaders/loaderError'
 import { ResolverError } from '~/resolver/resolverError'
 import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
-import { Processor } from '~/processors/processor'
+import { Processor } from '~/interfaces/processor'
 import { Loader } from '~/exports'
 
 describe('SyncResolver', () => {
@@ -208,7 +208,7 @@ describe('SyncResolver', () => {
       path:             'b.e.g',
       references:       [
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.g',
         },
       ],
@@ -243,15 +243,15 @@ describe('SyncResolver', () => {
       path:             'b.e.h',
       references:       [
         {
-          container:  'loader1',
+          source:     'loader1',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader3',
+          source:     'loader3',
           identifier: 'b.e.h',
         },
       ],

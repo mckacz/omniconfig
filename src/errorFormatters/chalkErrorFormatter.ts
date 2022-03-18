@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import type { Chalk } from 'chalk'
-import type { MembersOfType, RecordWithSuffix } from '../helpers'
+import type { MembersOfType, RecordWithSuffix } from '../common/helpers'
 import { TextErrorFormatter, TextErrorFormatterPlaceholders, TextErrorFormatterTemplates } from './textErrorFormatter'
 
 /**
@@ -64,7 +64,7 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
     headerTemplate: ['red'],
     message:        ['reset'],
     identifier:     ['cyan', 'italic'],
-    container:      ['yellow', 'italic'],
+    source:         ['yellow', 'italic'],
     code:           ['greenBright', 'italic'],
   }
 

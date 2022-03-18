@@ -15,7 +15,7 @@ describe('EnvLoader', () => {
       return this.value
     }
 
-    protected getContainer(path: string) {
+    protected getSource(path: string) {
       return path === 'foo' ? undefined : 'test'
     }
   }
@@ -49,8 +49,8 @@ describe('EnvLoader', () => {
 
   test('get reference', () => {
     expect(loader.referenceFor('ra.bar')).toEqual({
-      container: 'test',
-      identifier: 'RA__BAR'
+      source:     'test',
+      identifier: 'RA__BAR',
     })
   })
 

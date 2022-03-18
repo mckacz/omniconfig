@@ -1,8 +1,8 @@
-import { ErrorFormatter } from '../errorFormatters/errorFormatter'
+import { ErrorFormatter } from '../interfaces/errorFormatter'
 import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
 import { ResolverError } from '../resolver/resolverError'
-import { Resolver } from '../resolver/resolver'
+import { Resolver } from '../interfaces/resolver'
 
 /**
  * Error logger.

@@ -13,7 +13,7 @@ describe('ValueLoader', () => {
     const loader = new ValueLoader(value)
 
     expect(loader.referenceFor('foo')).toEqual({
-      container:  'file3.js:3',
+      source:     'file3.js:3',
       identifier: 'foo',
     })
   })
@@ -23,7 +23,7 @@ describe('ValueLoader', () => {
     const loader = new ValueLoader(value, 'The value')
 
     expect(loader.referenceFor('foo')).toEqual({
-      container:  'The value',
+      source:     'The value',
       identifier: 'foo',
     })
   })

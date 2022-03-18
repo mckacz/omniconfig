@@ -17,15 +17,15 @@ describe('ProcessEnvLoader', () => {
     expect(loader.loadSync()).toEqual({
       foo: '123',
       bar: {
-        baz: 'qux',
+        baz:  'qux',
         raCa: 'false',
-      }
+      },
     })
   })
 
   test('get reference', () => {
     expect(loader.referenceFor('bar.raCa')).toEqual({
-      container: ProcessEnvLoader.container,
+      source:     ProcessEnvLoader.source,
       identifier: 'APP__BAR__RA_CA',
     })
   })

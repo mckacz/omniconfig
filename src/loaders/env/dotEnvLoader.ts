@@ -35,9 +35,9 @@ export class DotEnvLoader<T = unknown> extends EnvLoader<T> {
   }
 
   /**
-   * Returns configured filename as a container.
+   * Returns configured filename as a source.
    */
-  protected getContainer(): string | undefined {
+  protected getSource(): string | undefined {
     return this.filename
   }
 }

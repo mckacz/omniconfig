@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
-import type { Reference } from '../loader'
 import { SyncLoader } from '../syncLoader'
 import { JsonFileLoaderError } from './jsonFileLoaderError'
+import type { Reference } from '../../interfaces/reference'
 
 /**
  * Loads configuration from JSON file.
@@ -40,7 +40,7 @@ export class JsonFileLoader<T = unknown> extends SyncLoader<T> {
   referenceFor(path: string): Reference | undefined {
     return {
       identifier: path,
-      container:  this.filename,
+      source:     this.filename,
     }
   }
 }

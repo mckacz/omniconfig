@@ -195,7 +195,7 @@ describe('AsyncResolver', () => {
       path:             'b.e.g',
       references:       [
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.g',
         },
       ],
@@ -230,15 +230,15 @@ describe('AsyncResolver', () => {
       path:             'b.e.h',
       references:       [
         {
-          container:  'loader1',
+          source:     'loader1',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader3',
+          source:     'loader3',
           identifier: 'b.e.h',
         },
       ],

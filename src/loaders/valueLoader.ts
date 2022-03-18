@@ -1,6 +1,6 @@
 import callsites from 'callsites'
-import type { Reference } from './loader'
 import { SyncLoader } from './syncLoader'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Loader that loads an arbitrary static value.
@@ -10,11 +10,11 @@ export class ValueLoader<T> extends SyncLoader<T> {
    * Creates a new instance of ValueLoader.
 
    * @param value The value to return as a load result.
-   * @param container Value container name.
+   * @param source Value source name.
    */
   constructor(
     private readonly value: T,
-    private readonly container = ValueLoader.getContainer(),
+    private readonly source = ValueLoader.getSource(),
   ) {
     super()
   }
@@ -27,24 +27,24 @@ export class ValueLoader<T> extends SyncLoader<T> {
   }
 
   /**
-   * Returns reference for given path if the container
+   * Returns reference for given path if the source
    * has been passed to the constructor (or has been automatically detected).
    *
    * @param path The path to return a reference for.
    */
   referenceFor(path: string): Reference | undefined {
-    if (this.container) {
+    if (this.source) {
       return {
         identifier: path,
-        container:  this.container,
+        source:     this.source,
       }
     }
   }
 
   /**
-   * Attempts to determine the container name from the call stack.
+   * Attempts to determine the source name from the call stack.
    */
-  private static getContainer() {
+  private static getSource() {
     // 1st frame is this method
     // 2nd frame is the constructor of this class
     // 3rd frame is the target

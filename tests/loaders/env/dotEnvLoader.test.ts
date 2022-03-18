@@ -27,7 +27,7 @@ describe('DotEnvLoader', () => {
 
   test('get reference', () => {
     expect(loader.referenceFor('db.port')).toEqual({
-      container: validEnvFile,
+      source:     validEnvFile,
       identifier: 'APP__DB__PORT',
     })
   })

@@ -1,4 +1,5 @@
-import type { Loader, Reference } from './loader'
+import type { Loader} from '../interfaces/loader'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Optional loader.

@@ -1,5 +1,5 @@
-import { Reference } from '~/loaders/loader'
 import { SyncLoader } from '~/loaders/syncLoader'
+import { Reference } from '~/interfaces/reference'
 
 describe('SyncLoader', () => {
   class TestLoader extends SyncLoader<unknown> {
@@ -7,7 +7,7 @@ describe('SyncLoader', () => {
 
     referenceFor(path: string): Reference {
       return {
-        container:  'test',
+        source:     'test',
         identifier: path,
       }
     }

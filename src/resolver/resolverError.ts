@@ -1,7 +1,8 @@
-import { ConfresError } from '../confresError'
-import type { Loader, Reference } from '../loaders/loader'
+import type { Loader} from '../interfaces/loader'
+import type { Processor } from '../interfaces/processor'
+import type{ Reference } from '../interfaces/reference'
+import { ConfresError } from '../common/confresError'
 import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
-import { Processor } from '../processors/processor'
 
 /**
  * Resolver error.

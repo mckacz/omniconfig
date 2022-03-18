@@ -27,20 +27,20 @@ describe('ChalkErrorFormatter', () => {
 
   describe('Custom templates and theme', () => {
     const customTheme: ChalkErrorFormatterTheme = {
-      message:        ['red'],
-      identifier:     ['bgCyan'],
-      container:      ['yellow', 'underline'],
-      code:           ['bgGreen', 'underline'],
+      message:    ['red'],
+      identifier: ['bgCyan'],
+      source:     ['yellow', 'underline'],
+      code:       ['bgGreen', 'underline'],
     }
 
     const customTemplates: TextErrorFormatterTemplates = {
-      header:            'Oh no! [message]',
-      causeDescription:  'Update the value of [hint]',
-      hintListHeader:    'You can provide the value using:',
-      hintListItem:      '  * [hint]',
-      hintFull:          '[identifier] ([container])',
-      hintContainerOnly: '[container]',
-      lineSeparator:     '\n',
+      header:           'Oh no! [message]',
+      causeDescription: 'Update the value of [hint]',
+      hintListHeader:   'You can provide the value using:',
+      hintListItem:     '  * [hint]',
+      hintFull:         '[identifier] ([source])',
+      hintSourceOnly:   '[source]',
+      lineSeparator:    '\n',
     }
 
     test.each([

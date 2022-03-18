@@ -8,9 +8,9 @@ import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
 import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper'
 import { SplittingKeyMapperOptions } from '../loaders/env/keyMappers/splittingKeyMapper'
-import { Loader } from '../loaders/loader'
-import { Resolver } from '../resolver/resolver'
-import { Processor } from '../processors/processor'
+import { Loader } from '../interfaces/loader'
+import { Resolver } from '../interfaces/resolver'
+import { Processor } from '../interfaces/processor'
 import { SyncResolver } from '../resolver/syncResolver'
 
 /**

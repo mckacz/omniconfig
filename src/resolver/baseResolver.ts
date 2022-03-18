@@ -1,9 +1,10 @@
 import _ from 'lodash'
-import type { Loader, Reference } from '../loaders/loader'
-import type { Processor } from '../processors/processor'
+import type { Loader} from '../interfaces/loader'
+import type { Processor } from '../interfaces/processor'
 import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
 import { ResolverError } from './resolverError'
-import { Resolver } from './resolver'
+import { Resolver } from '../interfaces/resolver'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Common parts of AsyncResolver and SyncResolver.

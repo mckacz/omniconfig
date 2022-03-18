@@ -15,7 +15,7 @@ describe('JSONFileLoader', () => {
     const loader = new JsonFileLoader(validJSONFile)
 
     expect(loader.referenceFor('foo')).toEqual({
-      container:  validJSONFile,
+      source:     validJSONFile,
       identifier: 'foo',
     })
   })
