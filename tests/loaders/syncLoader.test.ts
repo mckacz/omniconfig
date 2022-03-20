@@ -4,10 +4,10 @@ describe('SyncLoader', () => {
   class TestLoader extends SyncLoader<unknown> {
     loadSync = jest.fn(() => ({ value: { key: 'value' }, getDefinition: () => undefined }))
 
-    getReferences(path: string) {
+    getReferences(path: string[]) {
       return [{
         source:     'test',
-        identifier: path,
+        identifier: path.join('.'),
       }]
     }
   }

@@ -14,7 +14,7 @@ export class MergedDataContainer<T> implements DataContainer<T> {
     this.value = _.merge({}, ...containers.map(c => c.value)) as T
   }
 
-  getDefinition(path: string): Reference | undefined {
+  getDefinition(path: string[]): Reference | undefined {
     for (let i = this.containers.length - 1; i >= 0; i--) {
       const container = this.containers[i]
 

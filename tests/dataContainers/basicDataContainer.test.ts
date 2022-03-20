@@ -15,7 +15,7 @@ describe('BasicDataContainer', () => {
   })
 
   test('return undefined if loader does not return any references', () => {
-    expect(dataContainer.getDefinition('foo')).toBeUndefined()
+    expect(dataContainer.getDefinition(['foo'])).toBeUndefined()
   })
 
   test('return a reference if loader returned exactly one reference', () => {
@@ -26,7 +26,7 @@ describe('BasicDataContainer', () => {
 
     loader.getReferences.mockReturnValueOnce([ref])
 
-    expect(dataContainer.getDefinition('foo')).toBe(ref)
+    expect(dataContainer.getDefinition(['foo'])).toBe(ref)
   })
 
   test('throw exception if loader returned more than one reference', () => {
@@ -37,6 +37,6 @@ describe('BasicDataContainer', () => {
 
     loader.getReferences.mockReturnValueOnce([ref, ref])
 
-    expect(() => dataContainer.getDefinition('foo')).toThrow(TypeError)
+    expect(() => dataContainer.getDefinition(['foo'])).toThrow(TypeError)
   })
 })

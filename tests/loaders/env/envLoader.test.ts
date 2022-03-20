@@ -15,8 +15,8 @@ describe('EnvLoader', () => {
       return this.value
     }
 
-    protected getSource(path: string) {
-      return path === 'foo' ? undefined : 'test'
+    protected getSource(path: string[]) {
+      return path[0] === 'foo' ? undefined : 'test'
     }
   }
 
@@ -48,20 +48,20 @@ describe('EnvLoader', () => {
       },
     })
 
-    expect(dataContainer.getDefinition('ra.bar')).toEqual({
+    expect(dataContainer.getDefinition(['ra', 'bar'])).toEqual({
       source:     'test',
       identifier: 'RA__BAR',
     })
   })
 
   test('get reference', () => {
-    expect(loader.getReferences('ra.bar')).toEqual([{
+    expect(loader.getReferences(['ra', 'bar'])).toEqual([{
       source:     'test',
       identifier: 'RA__BAR',
     }])
   })
 
   test('get empty reference if the loader does not return the container', () => {
-    expect(loader.getReferences('foo')).toEqual([])
+    expect(loader.getReferences(['foo'])).toEqual([])
   })
 })

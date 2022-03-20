@@ -12,7 +12,7 @@ export class BasicDataContainer<T> implements DataContainer<T> {
   ) {
   }
 
-  getDefinition(path: string): Reference | undefined {
+  getDefinition(path: string[]): Reference | undefined {
     const references = this.loader.getReferences(path)
 
     if (references.length > 1) {

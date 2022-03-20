@@ -44,9 +44,9 @@ export class OptionalLoader<T> implements Loader<Partial<T>> {
   /**
    * Returns supported source references for given configuration object path.
    *
-   * @param path Path in the same form that Lodash's `get` accepts.
+   * @param path Object path parts.
    */
-  getReferences(path: string): Reference[] {
+  getReferences(path: string[]): Reference[] {
     return this.loader.getReferences(path)
   }
 }

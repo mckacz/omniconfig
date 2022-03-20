@@ -25,9 +25,9 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
   /**
    * Returns a reference for given configuration object path.
    *
-   * @param path Object path.
+   * @param path Object path parts.
    */
-  getReferences(path: string): Reference[] {
+  getReferences(path: string[]): Reference[] {
     const source = this.getSource(path)
 
     if (!source) {
@@ -53,7 +53,7 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
    *
    * @param path Object path.
    */
-  protected abstract getSource(path: string): string | undefined
+  protected abstract getSource(path: string[]): string | undefined
 
   /**
    * Maps environment variable to configuration object using

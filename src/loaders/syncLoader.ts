@@ -15,9 +15,9 @@ export abstract class SyncLoader<T> implements Loader<T> {
   /**
    * Returns supported source references for given configuration object path.
    *
-   * @param path Path in the same form that Lodash's `get` accepts.
+   * @param path Object path parts.
    */
-  abstract getReferences(path: string): Reference[]
+  abstract getReferences(path: string[]): Reference[]
 
   /**
    * Load configuration asynchronously.

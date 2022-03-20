@@ -61,7 +61,7 @@ describe('YupProcessor', () => {
 
     expect(err).toMatchObject({
       type:  ProcessorErrorType.invalidValue,
-      path:  'db.port',
+      path:  ['db', 'port'],
 
       error: expect.objectContaining({
         message: 'db.port must be greater than or equal to 1',
@@ -90,7 +90,7 @@ describe('YupProcessor', () => {
 
     expect(err).toMatchObject({
       type:  ProcessorErrorType.undefinedValue,
-      path:  'db.username',
+      path:  ['db', 'username'],
 
       error: expect.objectContaining({
         message: 'db.username is a required field',

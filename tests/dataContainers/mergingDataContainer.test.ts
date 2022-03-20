@@ -14,7 +14,7 @@ describe('MergedDataContainer', () => {
       },
     },
 
-    getDefinition: identifier => ({ identifier, source: 'c1' }),
+    getDefinition: (path: string[]) => ({ identifier: path.join('.'), source: 'c1' }),
   }
 
   const c2: DataContainer<unknown> = {
@@ -26,7 +26,7 @@ describe('MergedDataContainer', () => {
       j: 2,
     },
 
-    getDefinition: identifier => ({ identifier, source: 'c2' }),
+    getDefinition: (path: string[]) => ({ identifier: path.join('.'), source: 'c2' }),
   }
 
   const c3: DataContainer<unknown> = {
@@ -35,7 +35,7 @@ describe('MergedDataContainer', () => {
       k: 3,
     },
 
-    getDefinition: identifier => ({ identifier, source: 'c3' }),
+    getDefinition: (path: string[]) => ({ identifier: path.join('.'), source: 'c3' }),
   }
 
   const merged = new MergedDataContainer([c1, c2, c3])
@@ -70,9 +70,9 @@ describe('MergedDataContainer', () => {
     ['a.b.c', undefined],
   ])('getDefinition() for path %s returns reference to %s', (identifier: string, source: string | undefined) => {
     if (source === undefined) {
-      expect(merged.getDefinition(identifier)).toBeUndefined()
+      expect(merged.getDefinition(identifier.split('.'))).toBeUndefined()
     } else {
-      expect(merged.getDefinition(identifier)).toEqual({ identifier, source })
+      expect(merged.getDefinition(identifier.split('.'))).toEqual({ identifier, source })
     }
   })
 })

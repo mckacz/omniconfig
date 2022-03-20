@@ -66,7 +66,7 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    *
    * @param path Object path.
    */
-  private resolveReferencesForUndefinedValue(path: string): Reference[] {
+  private resolveReferencesForUndefinedValue(path: string[]): Reference[] {
     const references: Reference[] = []
 
     for (const loader of this.loaders) {

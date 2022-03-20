@@ -20,7 +20,7 @@ export class ResolverError extends ConfresError {
   constructor(
     err: Error | unknown,
     readonly reporter?: Loader<unknown> | Processor<unknown, unknown>,
-    readonly path?: string,
+    readonly path?: string[],
     readonly references: Reference[] = [],
   ) {
     super(

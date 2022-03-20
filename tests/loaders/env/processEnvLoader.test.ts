@@ -24,14 +24,14 @@ describe('ProcessEnvLoader', () => {
       },
     })
 
-    expect(dataContainer.getDefinition('bar.raCa')).toEqual({
+    expect(dataContainer.getDefinition(['bar', 'raCa'])).toEqual({
       source:     ProcessEnvLoader.source,
       identifier: 'APP__BAR__RA_CA',
     })
   })
 
   test('get reference', () => {
-    expect(loader.getReferences('bar.raCa')).toEqual([{
+    expect(loader.getReferences(['bar', 'raCa'])).toEqual([{
       source:     ProcessEnvLoader.source,
       identifier: 'APP__BAR__RA_CA',
     }])

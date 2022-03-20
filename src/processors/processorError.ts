@@ -29,7 +29,7 @@ export class ProcessorError extends ConfresError {
   constructor(
     message: string,
     innerError?: Error | unknown,
-    readonly path?: string,
+    readonly path?: string[],
     readonly type = ProcessorErrorType.generic,
   ) {
     super(message, innerError)

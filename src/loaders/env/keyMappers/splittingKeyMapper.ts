@@ -53,7 +53,7 @@ export abstract class SplittingKeyMapper implements EnvKeyMapper {
    *
    * @param key Environment variable name.
    */
-  keyToPath(key: string): string | undefined {
+  keyToPath(key: string): string[] | undefined {
     if (!key.startsWith(this.prefix)) {
       return
     }
@@ -61,7 +61,6 @@ export abstract class SplittingKeyMapper implements EnvKeyMapper {
     return key.substring(this.prefix.length)
       .split(this.separator)
       .map(part => this.keyToPathPart(part))
-      .join('.')
   }
 
   /**
@@ -69,8 +68,8 @@ export abstract class SplittingKeyMapper implements EnvKeyMapper {
    *
    * @param path Object path to map.
    */
-  pathToKey(path: string): string {
-    const key = path.split('.')
+  pathToKey(path: string[]): string {
+    const key = path
       .map(part => this.pathToKeyPart(part))
       .join(this.separator)
 

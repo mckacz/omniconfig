@@ -8,14 +8,14 @@ export interface EnvKeyMapper {
    *
    * @param key Environment variable name.
    */
-  keyToPath(key: string): string | undefined
+  keyToPath(key: string): string[] | undefined
 
   /**
    * Maps object path to environment variable name.
    *
    * @param path Object path to map.
    */
-  pathToKey(path: string): string
+  pathToKey(path: string[]): string
 }
 
 /**

@@ -14,14 +14,14 @@ describe('OptionalLoader', () => {
 
     getReferences: jest.fn(path => [{
       source:     'fake',
-      identifier: path,
+      identifier: path.join('.'),
     }]),
   } as jest.Mocked<Required<Loader<unknown>>>
 
   const loader = new OptionalLoader(fakeLoader)
 
   test('pass the reference', () => {
-    expect(loader.getReferences('some.path')).toEqual([{
+    expect(loader.getReferences(['some', 'path'])).toEqual([{
       source:     'fake',
       identifier: 'some.path',
     }])
@@ -78,7 +78,7 @@ describe('OptionalLoader', () => {
 
         getReferences: jest.fn(path => [{
           source:     'fake',
-          identifier: path,
+          identifier: path.join('.'),
         }]),
       }) as OptionalLoader<unknown>
 

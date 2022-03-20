@@ -39,9 +39,9 @@ export class JsonFileLoader<T = unknown> extends SyncLoader<T> {
    *
    * @param path The path to return a reference for.
    */
-  getReferences(path: string): Reference[] {
+  getReferences(path: string[]): Reference[] {
     return [{
-      identifier: path,
+      identifier: path.join('.'),
       source:     this.filename,
     }]
   }
