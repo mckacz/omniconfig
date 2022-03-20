@@ -1,4 +1,4 @@
-import { BasicDataContainer } from '../common/basicDataContainer'
+import { BasicDataContainer } from '../dataContainers/basicDataContainer'
 import type { Loader } from '../interfaces/loader'
 import type { Reference } from '../interfaces/reference'
 import type { DataContainer } from '../interfaces/dataContainer'
@@ -46,7 +46,7 @@ export class OptionalLoader<T> implements Loader<Partial<T>> {
    *
    * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referencesFor(path: string): Reference[] {
-    return this.loader.referencesFor(path)
+  getReferences(path: string): Reference[] {
+    return this.loader.getReferences(path)
   }
 }

@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { SyncLoader } from '../syncLoader'
 import { JsonFileLoaderError } from './jsonFileLoaderError'
-import { BasicDataContainer } from '../../common/basicDataContainer'
+import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
 import type { Reference } from '../../interfaces/reference'
 import type{ DataContainer } from '../../interfaces/dataContainer'
 
@@ -39,7 +39,7 @@ export class JsonFileLoader<T = unknown> extends SyncLoader<T> {
    *
    * @param path The path to return a reference for.
    */
-  referencesFor(path: string): Reference[] {
+  getReferences(path: string): Reference[] {
     return [{
       identifier: path,
       source:     this.filename,

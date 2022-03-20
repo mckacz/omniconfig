@@ -17,7 +17,7 @@ export abstract class SyncLoader<T> implements Loader<T> {
    *
    * @param path Path in the same form that Lodash's `get` accepts.
    */
-  abstract referencesFor(path: string): Reference[]
+  abstract getReferences(path: string): Reference[]
 
   /**
    * Load configuration asynchronously.

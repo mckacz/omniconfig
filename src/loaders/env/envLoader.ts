@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { SyncLoader } from '../syncLoader'
 import { EnvKeyMapper } from './keyMappers/envKeyMapper'
-import { BasicDataContainer } from '../../common/basicDataContainer'
+import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
 import type { Reference } from '../../interfaces/reference'
 import type { DataContainer } from '../../interfaces/dataContainer'
 
@@ -27,7 +27,7 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
    *
    * @param path Object path.
    */
-  referencesFor(path: string): Reference[] {
+  getReferences(path: string): Reference[] {
     const source = this.getSource(path)
 
     if (!source) {

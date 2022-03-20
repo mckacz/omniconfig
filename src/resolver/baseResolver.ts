@@ -51,7 +51,7 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
       )
     }
 
-    const reference = dataContainer.referenceFor(err.path)
+    const reference = dataContainer.getDefinition(err.path)
 
     return new ResolverError(
       err,
@@ -70,7 +70,7 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
     const references: Reference[] = []
 
     for (const loader of this.loaders) {
-      references.push(...loader.referencesFor(path))
+      references.push(...loader.getReferences(path))
     }
 
     return references

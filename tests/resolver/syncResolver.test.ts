@@ -5,7 +5,7 @@ import { ResolverError } from '~/resolver/resolverError'
 import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
 import { Processor } from '~/interfaces/processor'
 import { Loader } from '~/interfaces/loader'
-import { BasicDataContainer } from '~/common/basicDataContainer'
+import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 
 describe('SyncResolver', () => {
   afterEach(() => jest.restoreAllMocks())
@@ -41,7 +41,7 @@ describe('SyncResolver', () => {
 
   const loader4: Loader<unknown> = {
     load:          () => Promise.resolve(new BasicDataContainer(loader4, { key: 'value' })),
-    referencesFor: () => [],
+    getReferences: () => [],
   }
 
   const processor1: jest.Mocked<Required<Processor<any, any>>> = {

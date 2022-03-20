@@ -11,7 +11,7 @@ describe('JSONFileLoader', () => {
 
     expect(dataContainer.value).toEqual({ foo: 'bar' })
 
-    expect(dataContainer.referenceFor('foo')).toEqual({
+    expect(dataContainer.getDefinition('foo')).toEqual({
       source:     validJSONFile,
       identifier: 'foo',
     })
@@ -20,7 +20,7 @@ describe('JSONFileLoader', () => {
   test('get references', () => {
     const loader = new JsonFileLoader(validJSONFile)
 
-    expect(loader.referencesFor('foo')).toEqual([{
+    expect(loader.getReferences('foo')).toEqual([{
       source:     validJSONFile,
       identifier: 'foo',
     }])

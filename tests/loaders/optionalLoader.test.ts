@@ -1,6 +1,6 @@
 import { Loader } from '~/interfaces/loader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
-import { BasicDataContainer } from '~/common/basicDataContainer'
+import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 
 describe('OptionalLoader', () => {
   const fakeLoader = {
@@ -12,7 +12,7 @@ describe('OptionalLoader', () => {
       some: 'config',
     })),
 
-    referencesFor: jest.fn(path => [{
+    getReferences: jest.fn(path => [{
       source:     'fake',
       identifier: path,
     }]),
@@ -21,7 +21,7 @@ describe('OptionalLoader', () => {
   const loader = new OptionalLoader(fakeLoader)
 
   test('pass the reference', () => {
-    expect(loader.referencesFor('some.path')).toEqual([{
+    expect(loader.getReferences('some.path')).toEqual([{
       source:     'fake',
       identifier: 'some.path',
     }])
@@ -34,7 +34,7 @@ describe('OptionalLoader', () => {
           some: 'config',
         },
 
-        referenceFor: expect.any(Function),
+        getDefinition: expect.any(Function),
       })
     })
 
@@ -43,7 +43,7 @@ describe('OptionalLoader', () => {
 
       await expect(loader.load()).resolves.toMatchObject({
         value: {},
-        referenceFor: expect.any(Function),
+        getDefinition: expect.any(Function),
       })
     })
   })
@@ -55,7 +55,7 @@ describe('OptionalLoader', () => {
           some: 'config',
         },
 
-        referenceFor: expect.any(Function),
+        getDefinition: expect.any(Function),
       })
     })
 
@@ -66,7 +66,7 @@ describe('OptionalLoader', () => {
 
       expect(loader.loadSync()).toMatchObject({
         value: {},
-        referenceFor: expect.any(Function),
+        getDefinition: expect.any(Function),
       })
     })
 
@@ -76,7 +76,7 @@ describe('OptionalLoader', () => {
           some: 'config',
         })),
 
-        referencesFor: jest.fn(path => [{
+        getReferences: jest.fn(path => [{
           source:     'fake',
           identifier: path,
         }]),

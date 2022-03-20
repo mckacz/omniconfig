@@ -1,5 +1,5 @@
 import { DataContainer } from '~/interfaces/dataContainer'
-import { MergedDataContainer } from '~/common/mergedDataContainer'
+import { MergedDataContainer } from '~/dataContainers/mergedDataContainer'
 
 describe('MergedDataContainer', () => {
   const c1: DataContainer<unknown> = {
@@ -14,7 +14,7 @@ describe('MergedDataContainer', () => {
       },
     },
 
-    referenceFor: identifier => ({ identifier, source: 'c1' }),
+    getDefinition: identifier => ({ identifier, source: 'c1' }),
   }
 
   const c2: DataContainer<unknown> = {
@@ -26,7 +26,7 @@ describe('MergedDataContainer', () => {
       j: 2,
     },
 
-    referenceFor: identifier => ({ identifier, source: 'c2' }),
+    getDefinition: identifier => ({ identifier, source: 'c2' }),
   }
 
   const c3: DataContainer<unknown> = {
@@ -35,7 +35,7 @@ describe('MergedDataContainer', () => {
       k: 3,
     },
 
-    referenceFor: identifier => ({ identifier, source: 'c3' }),
+    getDefinition: identifier => ({ identifier, source: 'c3' }),
   }
 
   const merged = new MergedDataContainer([c1, c2, c3])
@@ -68,11 +68,11 @@ describe('MergedDataContainer', () => {
     ['k', 'c3'],
     ['l', undefined],
     ['a.b.c', undefined],
-  ])('referenceFor() for path %s returns reference to %s', (identifier: string, source: string | undefined) => {
+  ])('getDefinition() for path %s returns reference to %s', (identifier: string, source: string | undefined) => {
     if (source === undefined) {
-      expect(merged.referenceFor(identifier)).toBeUndefined()
+      expect(merged.getDefinition(identifier)).toBeUndefined()
     } else {
-      expect(merged.referenceFor(identifier)).toEqual({ identifier, source })
+      expect(merged.getDefinition(identifier)).toEqual({ identifier, source })
     }
   })
 })

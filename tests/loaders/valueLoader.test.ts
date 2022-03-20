@@ -9,7 +9,7 @@ describe('ValueLoader', () => {
 
     expect(dataContainer.value).toBe(value)
 
-    expect(dataContainer.referenceFor('foo')).toEqual({
+    expect(dataContainer.getDefinition('foo')).toEqual({
       source:     'file3.js:3',
       identifier: 'foo',
     })
@@ -19,7 +19,7 @@ describe('ValueLoader', () => {
     const value = { foo: 123 }
     const loader = new ValueLoader(value)
 
-    expect(loader.referencesFor('foo')).toEqual([{
+    expect(loader.getReferences('foo')).toEqual([{
       source:     'file3.js:3',
       identifier: 'foo',
     }])
@@ -29,7 +29,7 @@ describe('ValueLoader', () => {
     const value = { foo: 123 }
     const loader = new ValueLoader(value, 'The value')
 
-    expect(loader.referencesFor('foo')).toEqual([{
+    expect(loader.getReferences('foo')).toEqual([{
       source:     'The value',
       identifier: 'foo',
     }])

@@ -1,6 +1,6 @@
 import { ResolverError } from './resolverError'
 import { BaseResolver } from './baseResolver'
-import { MergedDataContainer } from '../common/mergedDataContainer'
+import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
 import { DataContainer } from '../interfaces/dataContainer'
 
 /**

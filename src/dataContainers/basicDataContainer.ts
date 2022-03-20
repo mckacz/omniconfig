@@ -12,8 +12,8 @@ export class BasicDataContainer<T> implements DataContainer<T> {
   ) {
   }
 
-  referenceFor(path: string): Reference | undefined {
-    const references = this.loader.referencesFor(path)
+  getDefinition(path: string): Reference | undefined {
+    const references = this.loader.getReferences(path)
 
     if (references.length > 1) {
       throw new TypeError('BasicDataContainer does not support compound Loaders')

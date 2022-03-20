@@ -2,9 +2,9 @@ import { SyncLoader } from '~/loaders/syncLoader'
 
 describe('SyncLoader', () => {
   class TestLoader extends SyncLoader<unknown> {
-    loadSync = jest.fn(() => ({ value: { key: 'value' }, referenceFor: () => undefined }))
+    loadSync = jest.fn(() => ({ value: { key: 'value' }, getDefinition: () => undefined }))
 
-    referencesFor(path: string) {
+    getReferences(path: string) {
       return [{
         source:     'test',
         identifier: path,
@@ -18,7 +18,7 @@ describe('SyncLoader', () => {
     await expect(loader.load()).resolves.toMatchObject({
       value: { key: 'value' },
 
-      referenceFor: expect.any(Function),
+      getDefinition: expect.any(Function),
     })
   })
 

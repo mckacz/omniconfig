@@ -5,6 +5,7 @@ describe('Library exports', () => {
     expect(members).toMatchInlineSnapshot(`
 Object {
   "AsyncResolver": [Function],
+  "BasicDataContainer": [Function],
   "CamelCaseKeyMapper": [Function],
   "ChalkErrorFormatter": [Function],
   "ConfresError": [Function],
@@ -13,6 +14,7 @@ Object {
   "JsonFileLoader": [Function],
   "JsonFileLoaderError": [Function],
   "LoaderError": [Function],
+  "MergedDataContainer": [Function],
   "OptionalLoader": [Function],
   "ProcessEnvLoader": [Function],
   "ProcessorError": [Function],

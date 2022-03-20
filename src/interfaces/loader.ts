@@ -20,6 +20,6 @@ export interface Loader<T> {
    *
    * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referencesFor(path: string): Reference[]
+  getReferences(path: string): Reference[]
 }
 

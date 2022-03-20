@@ -14,6 +14,9 @@ export type {
 
 export * from './common/confresError'
 
+export * from './dataContainers/basicDataContainer'
+export * from './dataContainers/mergedDataContainer'
+
 export * from './resolver/syncResolver'
 export * from './resolver/asyncResolver'
 export * from './resolver/resolverError'

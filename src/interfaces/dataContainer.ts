@@ -10,10 +10,10 @@ export interface DataContainer<T> {
   readonly value: T
 
   /**
-   * Returns a reference for given configuration object path,
+   * Returns a definition reference for given configuration object path,
    * or `undefined` if the path is not supported.
    *
    * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referenceFor(path: string): Reference | undefined
+  getDefinition(path: string): Reference | undefined
 }

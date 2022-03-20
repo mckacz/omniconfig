@@ -1,6 +1,6 @@
 import callsites from 'callsites'
 import { SyncLoader } from './syncLoader'
-import { BasicDataContainer } from '../common/basicDataContainer'
+import { BasicDataContainer } from '../dataContainers/basicDataContainer'
 import type { Reference } from '../interfaces/reference'
 import type { DataContainer } from '../interfaces/dataContainer'
 
@@ -33,7 +33,7 @@ export class ValueLoader<T> extends SyncLoader<T> {
    *
    * @param path Path in the same form that Lodash's `get` accepts.
    */
-  referencesFor(path: string): Reference[] {
+  getReferences(path: string): Reference[] {
     if (this.source) {
       return [{
         identifier: path,

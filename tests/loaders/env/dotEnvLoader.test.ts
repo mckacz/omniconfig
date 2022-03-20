@@ -26,14 +26,14 @@ describe('DotEnvLoader', () => {
       },
     })
 
-    expect(dataContainer.referenceFor('db.port')).toEqual({
+    expect(dataContainer.getDefinition('db.port')).toEqual({
       source:     validEnvFile,
       identifier: 'APP__DB__PORT',
     })
   })
 
   test('get reference', () => {
-    expect(loader.referencesFor('db.port')).toEqual([{
+    expect(loader.getReferences('db.port')).toEqual([{
       source:     validEnvFile,
       identifier: 'APP__DB__PORT',
     }])

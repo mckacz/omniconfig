@@ -48,20 +48,20 @@ describe('EnvLoader', () => {
       },
     })
 
-    expect(dataContainer.referenceFor('ra.bar')).toEqual({
+    expect(dataContainer.getDefinition('ra.bar')).toEqual({
       source:     'test',
       identifier: 'RA__BAR',
     })
   })
 
   test('get reference', () => {
-    expect(loader.referencesFor('ra.bar')).toEqual([{
+    expect(loader.getReferences('ra.bar')).toEqual([{
       source:     'test',
       identifier: 'RA__BAR',
     }])
   })
 
   test('get empty reference if the loader does not return the container', () => {
-    expect(loader.referencesFor('foo')).toEqual([])
+    expect(loader.getReferences('foo')).toEqual([])
   })
 })
