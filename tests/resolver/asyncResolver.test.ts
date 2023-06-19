@@ -5,8 +5,6 @@ import { ResolverError } from '~/resolver/resolverError'
 import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
 
 describe('AsyncResolver', () => {
-  afterEach(() => jest.restoreAllMocks())
-
   const loader1 = new ValueLoader({
     a: true,
     b: {

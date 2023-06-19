@@ -31,7 +31,7 @@ Supported processors:
 You can get latest release with type definitions from NPM:
 
 ```
-npm install confres@beta --save
+npm install confres --save
 
 # if you want to use Yup processor / validator
 npm install yup --save

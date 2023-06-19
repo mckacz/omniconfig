@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as path from 'path'
-import type { AnyObjectSchema, Asserts } from 'yup'
+import type { Asserts, ObjectSchema } from 'yup'
 import { AsyncResolver } from '../resolver/asyncResolver'
 import { YupProcessor } from '../processors/yupProcessor'
 import { OptionalLoader } from '../loaders/optionalLoader'
@@ -45,7 +46,7 @@ export interface DotEnvPresetOptions {
 /**
  * Yup related options.
  */
-export interface YupEnvPresetOptions<TSchema extends AnyObjectSchema> {
+export interface YupEnvPresetOptions<TSchema extends ObjectSchema<any>> {
   /**
    * Schema to validate configuration against.
    */
@@ -61,7 +62,7 @@ export interface YupEnvPresetOptions<TSchema extends AnyObjectSchema> {
 /**
  * Combination of .env and Yup options.
  */
-export type YupDotEnvPresetOptions<TSchema extends AnyObjectSchema> = YupEnvPresetOptions<TSchema> & DotEnvPresetOptions
+export type YupDotEnvPresetOptions<TSchema extends ObjectSchema<any>> = YupEnvPresetOptions<TSchema> & DotEnvPresetOptions
 
 /**
  * Creates a list of .env files to load.
@@ -100,7 +101,7 @@ function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<SplittingKeyMapperOpti
  *
  * @param options Resolver options.
  */
-function yupEnvArgs<TSchema extends AnyObjectSchema>(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
+function yupEnvArgs<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
   return [
     [
       new ProcessEnvLoader(keyMapperFrom(options.keyMapper)),
@@ -116,7 +117,7 @@ function yupEnvArgs<TSchema extends AnyObjectSchema>(options: YupEnvPresetOption
  *
  * @param options Resolver options.
  */
-function yupDotEnvArgs<TSchema extends AnyObjectSchema>(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
+function yupDotEnvArgs<TSchema extends ObjectSchema<any>>(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
   options = {
     localVariants:  true,
     nodeEnvVariant: true,
@@ -148,7 +149,7 @@ function yupDotEnvArgs<TSchema extends AnyObjectSchema>(options: YupDotEnvPreset
  *
  * @param options Resolver options.
  */
-export function yupEnv<TSchema extends AnyObjectSchema>(options: YupEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
+export function yupEnv<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
   return new AsyncResolver(...yupEnvArgs(options))
 }
 
@@ -157,7 +158,7 @@ export function yupEnv<TSchema extends AnyObjectSchema>(options: YupEnvPresetOpt
  *
  * @param options Resolver options.
  */
-export function yupEnvSync<TSchema extends AnyObjectSchema>(options: YupEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
+export function yupEnvSync<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
   return new SyncResolver(...yupEnvArgs(options))
 }
 
@@ -173,7 +174,7 @@ export function yupEnvSync<TSchema extends AnyObjectSchema>(options: YupEnvPrese
  *
  * @param options Resolver options.
  */
-export function yupDotEnv<TSchema extends AnyObjectSchema>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
+export function yupDotEnv<TSchema extends ObjectSchema<any>>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
   return new AsyncResolver<Asserts<TSchema>>(...yupDotEnvArgs(options))
 }
 
@@ -189,6 +190,6 @@ export function yupDotEnv<TSchema extends AnyObjectSchema>(options: YupDotEnvPre
  *
  * @param options Resolver options.
  */
-export function yupDotEnvSync<TSchema extends AnyObjectSchema>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
+export function yupDotEnvSync<TSchema extends ObjectSchema<any>>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
   return new SyncResolver<Asserts<TSchema>>(...yupDotEnvArgs(options))
 }

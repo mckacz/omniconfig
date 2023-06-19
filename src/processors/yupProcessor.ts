@@ -1,4 +1,5 @@
-import type { AnyObjectSchema, Asserts, ValidationError } from 'yup'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { AnyObjectSchema, Asserts, ObjectSchema, ValidationError } from 'yup'
 import { ProcessorError, ProcessorErrorType } from './processorError'
 import { SyncProcessor } from './syncProcessor'
 
@@ -15,7 +16,7 @@ const defaultValidateOptions: ValidateOptions = { stripUnknown: true }
 /**
  * Casts and validates the configuration object using yup schema.
  */
-export class YupProcessor<Schema extends AnyObjectSchema> extends SyncProcessor<unknown, Asserts<Schema>>{
+export class YupProcessor<Schema extends ObjectSchema<any>> extends SyncProcessor<unknown, Asserts<Schema>>{
   /**
    * Creates a new instance of the processor.
    *
@@ -47,7 +48,7 @@ export class YupProcessor<Schema extends AnyObjectSchema> extends SyncProcessor<
           ex.message,
           ex,
           ex.path,
-          ex.type === 'required'
+          ex.type === 'optionality'
             ? ProcessorErrorType.undefinedValue
             : ProcessorErrorType.invalidValue,
         )

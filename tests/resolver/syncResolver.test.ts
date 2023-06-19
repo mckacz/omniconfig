@@ -7,8 +7,6 @@ import { Processor } from '~/processors/processor'
 import { Loader } from '~/exports'
 
 describe('SyncResolver', () => {
-  afterEach(() => jest.restoreAllMocks())
-
   const loader1 = new ValueLoader({
     a: true,
     b: {
