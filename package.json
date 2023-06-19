@@ -1,5 +1,6 @@
 {
   "name": "confres",
+  "version": "3.0.0",
   "author": "Maciej Kaczmarek <maciej@kaczmarek.io>",
   "license": "MIT",
   "description": "Painless configuration resolver.",
