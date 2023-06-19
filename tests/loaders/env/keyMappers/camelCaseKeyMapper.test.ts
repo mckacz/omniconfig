@@ -1,4 +1,4 @@
-import { CamelCaseKeyMapper } from './camelCaseKeyMapper'
+import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
 
 describe('CamelCaseKeyMapper', () => {
   const mapper = new CamelCaseKeyMapper({

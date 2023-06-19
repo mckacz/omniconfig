@@ -1,4 +1,4 @@
-import { SplittingKeyMapper } from './splittingKeyMapper'
+import { SplittingKeyMapper } from '~/loaders/env/keyMappers/splittingKeyMapper'
 
 describe('SplittingKeyMapper', () => {
   class JustSplittingKeyMapper extends SplittingKeyMapper {
