@@ -1,6 +1,6 @@
-import { Reference } from '../loaders/loader'
 import { ResolverError } from '../resolver/resolverError'
-import { ErrorFormatter } from './errorFormatter'
+import { ErrorFormatter } from '../interfaces/errorFormatter'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Message templates for TextErrorFormatter
@@ -36,21 +36,21 @@ export interface TextErrorFormatterTemplates {
   hintListItem: string
 
   /**
-   * Full location description. Used if both `container` and `identifier` are available.
+   * Full location description. Used if both `source` and `identifier` are available.
    *
    * Supported placeholders:
-   *  - `[container]` - container description (eg. `Environment variables`, `/some/file.json`)
-   *  - `[identifier]` - identifier in the container (eg. `SOME_ENV_VARIABLE`, `path.in.json.file`)
+   *  - `[source]` - source description (eg. `Environment variables`, `/some/file.json`)
+   *  - `[identifier]` - identifier in the source (eg. `SOME_ENV_VARIABLE`, `path.in.json.file`)
    */
   hintFull: string
 
   /**
-   * Container-only location description. Used if only the `container` is available.
+   * Source-only location description. Used if only the `source` is available.
    *
    * Supported placeholders:
-   *  - `[container]` - container description (eg. `Environment variables`, `/some/file.json`)
+   *  - `[source]` - source description (eg. `Environment variables`, `/some/file.json`)
    */
-  hintContainerOnly: string
+  hintSourceOnly: string
 
   /**
    * Line separator for the list.
@@ -73,12 +73,12 @@ export enum TextErrorFormatterPlaceholders {
   hint = 'hint',
 
   /**
-   * Container (in location hint).
+   * Source name (in location hint).
    */
-  container = 'container',
+  source = 'source',
 
   /**
-   * Identifier within container (in location hint).
+   * Identifier within source (in location hint).
    */
   identifier = 'identifier',
 }
@@ -91,13 +91,13 @@ export class TextErrorFormatter implements ErrorFormatter {
    * Default templates for TextErrorFormatter.
    */
   static readonly defaultTemplates: TextErrorFormatterTemplates = {
-    header:            'Configuration error: [message]',
-    causeDescription:  'The causing value is defined in [hint]',
-    hintListHeader:    'The value can be defined in:',
-    hintListItem:      '  - [hint]',
-    hintFull:          '[container] as [identifier]',
-    hintContainerOnly: '[container]',
-    lineSeparator:     '\n',
+    header:           'Configuration error: [message]',
+    causeDescription: 'The causing value is defined in [hint]',
+    hintListHeader:   'The value can be defined in:',
+    hintListItem:     '  - [hint]',
+    hintFull:         '[source] as [identifier]',
+    hintSourceOnly:   '[source]',
+    lineSeparator:    '\n',
   }
 
   /**
@@ -195,12 +195,12 @@ export class TextErrorFormatter implements ErrorFormatter {
   protected renderHint(ref: Reference): string {
     if (ref.identifier) {
       return this.renderTemplate('hintFull', {
-        [TextErrorFormatterPlaceholders.container]:  ref.container,
+        [TextErrorFormatterPlaceholders.source]:     ref.source,
         [TextErrorFormatterPlaceholders.identifier]: ref.identifier,
       })
     } else {
-      return this.renderTemplate('hintContainerOnly', {
-        [TextErrorFormatterPlaceholders.container]: ref.container,
+      return this.renderTemplate('hintSourceOnly', {
+        [TextErrorFormatterPlaceholders.source]: ref.source,
       })
     }
   }

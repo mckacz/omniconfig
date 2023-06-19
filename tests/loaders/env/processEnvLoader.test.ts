@@ -14,19 +14,26 @@ describe('ProcessEnvLoader', () => {
   })
 
   test('load configuration', () => {
-    expect(loader.loadSync()).toEqual({
+    const dataContainer = loader.loadSync()
+
+    expect(dataContainer.value).toEqual({
       foo: '123',
       bar: {
-        baz: 'qux',
+        baz:  'qux',
         raCa: 'false',
-      }
+      },
+    })
+
+    expect(dataContainer.getDefinition(['bar', 'raCa'])).toEqual({
+      source:     ProcessEnvLoader.source,
+      identifier: 'APP__BAR__RA_CA',
     })
   })
 
   test('get reference', () => {
-    expect(loader.referenceFor('bar.raCa')).toEqual({
-      container: ProcessEnvLoader.container,
+    expect(loader.getReferences(['bar', 'raCa'])).toEqual([{
+      source:     ProcessEnvLoader.source,
       identifier: 'APP__BAR__RA_CA',
-    })
+    }])
   })
 })

@@ -1,7 +1,8 @@
-import { ConfresError } from '../confresError'
-import type { Loader, Reference } from '../loaders/loader'
+import type { Loader} from '../interfaces/loader'
+import type { Processor } from '../interfaces/processor'
+import type{ Reference } from '../interfaces/reference'
+import { ConfresError } from '../common/confresError'
 import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
-import { Processor } from '../processors/processor'
 
 /**
  * Resolver error.
@@ -12,7 +13,6 @@ export class ResolverError extends ConfresError {
    *
    * @param err Original error.
    * @param reporter Reporter of the error - either a loader or processor instance.
-   * @param source Loader of value that caused the error (if available).
    * @param path Object path of value that caused the error (if available).
    * @param references Reference to value that caused the error (for invalid value error)
    *                   or list of references where value can be defined (for undefined value error).
@@ -20,8 +20,7 @@ export class ResolverError extends ConfresError {
   constructor(
     err: Error | unknown,
     readonly reporter?: Loader<unknown> | Processor<unknown, unknown>,
-    readonly source?: Loader<unknown>,
-    readonly path?: string,
+    readonly path?: string[],
     readonly references: Reference[] = [],
   ) {
     super(

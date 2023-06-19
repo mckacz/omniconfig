@@ -1,4 +1,4 @@
-import { Resolver } from '~/resolver/resolver'
+import { Resolver } from '~/interfaces/resolver'
 import { SyncResolver } from '~/resolver/syncResolver'
 import { AsyncResolver } from '~/resolver/asyncResolver'
 

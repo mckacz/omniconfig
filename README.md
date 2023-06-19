@@ -170,7 +170,7 @@ Arguments:
 ### Loaders
 
 Loaders handle configuration from various sources.  
-You can create your own loader by implementing [`Loader`](./src/loaders/loader.ts) interface.
+You can create your own loader by implementing [`Loader`](./src/interfaces/loader.ts) interface.
 
 #### Available loaders
 
@@ -185,7 +185,7 @@ You can create your own loader by implementing [`Loader`](./src/loaders/loader.t
 ### Processors
 
 Processors could transforms previously loaded configuration in any way.  
-You can create your own processor by implementing [`Processor`](./src/processors/processor.ts) interface.
+You can create your own processor by implementing [`Processor`](./src/interfaces/processor.ts) interface.
 
 #### Available processors
 

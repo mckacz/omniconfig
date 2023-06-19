@@ -47,7 +47,7 @@ export class YupProcessor<Schema extends ObjectSchema<any>> extends SyncProcesso
         throw new ProcessorError(
           ex.message,
           ex,
-          ex.path,
+          ex.path?.split('.') ?? [],
           ex.type === 'optionality'
             ? ProcessorErrorType.undefinedValue
             : ProcessorErrorType.invalidValue,

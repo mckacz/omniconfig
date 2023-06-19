@@ -129,7 +129,6 @@ describe('AsyncResolver', () => {
       message:          'Could not load',
       isUndefinedError: false,
       reporter:         loader2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -159,7 +158,6 @@ describe('AsyncResolver', () => {
       message:          'Something is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -167,7 +165,7 @@ describe('AsyncResolver', () => {
 
   test('decorate invalid value error', async () => {
     processor2.process.mockImplementationOnce(() => {
-      throw new ProcessorError('That is wrong', undefined, 'b.e.g', ProcessorErrorType.invalidValue)
+      throw new ProcessorError('That is wrong', undefined, ['b', 'e', 'g'], ProcessorErrorType.invalidValue)
     })
 
     let err!: ResolverError
@@ -189,11 +187,10 @@ describe('AsyncResolver', () => {
       message:          'That is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           loader2,
-      path:             'b.e.g',
+      path:             ['b', 'e', 'g'],
       references:       [
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.g',
         },
       ],
@@ -202,7 +199,7 @@ describe('AsyncResolver', () => {
 
   test('decorate undefined value error', async () => {
     processor2.process.mockImplementationOnce(() => {
-      throw new ProcessorError('That is missing', undefined, 'b.e.h', ProcessorErrorType.undefinedValue)
+      throw new ProcessorError('That is missing', undefined, ['b', 'e', 'h'], ProcessorErrorType.undefinedValue)
     })
 
     let err!: ResolverError
@@ -224,19 +221,18 @@ describe('AsyncResolver', () => {
       message:          'That is missing',
       isUndefinedError: true,
       reporter:         processor2,
-      source:           undefined,
-      path:             'b.e.h',
+      path:             ['b', 'e', 'h'],
       references:       [
         {
-          container:  'loader1',
+          source:     'loader1',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader3',
+          source:     'loader3',
           identifier: 'b.e.h',
         },
       ],

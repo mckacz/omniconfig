@@ -5,26 +5,33 @@ describe('ValueLoader', () => {
     const value = { foo: 123 }
     const loader = new ValueLoader(value)
 
-    expect(loader.loadSync()).toBe(value)
+    const dataContainer = loader.loadSync()
+
+    expect(dataContainer.value).toBe(value)
+
+    expect(dataContainer.getDefinition(['foo'])).toEqual({
+      source:     'file3.js:3',
+      identifier: 'foo',
+    })
   })
 
   test('auto-detected reference', () => {
     const value = { foo: 123 }
     const loader = new ValueLoader(value)
 
-    expect(loader.referenceFor('foo')).toEqual({
-      container:  'file3.js:3',
+    expect(loader.getReferences(['foo'])).toEqual([{
+      source:     'file3.js:3',
       identifier: 'foo',
-    })
+    }])
   })
 
   test('custom reference', () => {
     const value = { foo: 123 }
     const loader = new ValueLoader(value, 'The value')
 
-    expect(loader.referenceFor('foo')).toEqual({
-      container:  'The value',
+    expect(loader.getReferences(['foo'])).toEqual([{
+      source:     'The value',
       identifier: 'foo',
-    })
+    }])
   })
 })

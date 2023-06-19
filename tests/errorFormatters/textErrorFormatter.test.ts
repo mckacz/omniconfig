@@ -22,13 +22,13 @@ describe('TextErrorFormatter', () => {
 
   describe('Custom templates', () => {
     const customTemplates: TextErrorFormatterTemplates = {
-      header:            'Oh no! [message]',
-      causeDescription:  'Update the value of [hint]',
-      hintListHeader:    'You can provide the value using:',
-      hintListItem:      '  * [hint]',
-      hintFull:          '[identifier] ([container])',
-      hintContainerOnly: '[container]',
-      lineSeparator:     '\n',
+      header:           'Oh no! [message]',
+      causeDescription: 'Update the value of [hint]',
+      hintListHeader:   'You can provide the value using:',
+      hintListItem:     '  * [hint]',
+      hintFull:         '[identifier] ([source])',
+      hintSourceOnly:   '[source]',
+      lineSeparator:    '\n',
     }
 
     test.each([
@@ -46,7 +46,7 @@ describe('TextErrorFormatter', () => {
     const formatter = new TextErrorFormatter()
 
     expect(
-      () => formatter.format(new Error('Oh no!') as any)
+      () => formatter.format(new Error('Oh no!') as any),
     ).toThrow(TypeError)
   })
 })

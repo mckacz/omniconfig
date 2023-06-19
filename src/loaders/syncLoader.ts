@@ -1,4 +1,6 @@
-import { Loader, Reference } from './loader'
+import type { Loader} from '../interfaces/loader'
+import type { Reference } from '../interfaces/reference'
+import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Base class for synchronous-only loaders.
@@ -8,21 +10,20 @@ export abstract class SyncLoader<T> implements Loader<T> {
   /**
    * Load configuration synchronously.
    */
-  abstract loadSync(): T
+  abstract loadSync(): DataContainer<T>
 
   /**
-   * Returns a reference for given configuration object path,
-   * or `undefined` if the path is not supported.
+   * Returns supported source references for given configuration object path.
    *
-   * @param path Path in the same form that Lodash's `get` accepts.
+   * @param path Object path parts.
    */
-  abstract referenceFor(path: string): Reference | undefined
+  abstract getReferences(path: string[]): Reference[]
 
   /**
    * Load configuration asynchronously.
    */
-  load(): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
+  load(): Promise<DataContainer<T>> {
+    return new Promise<DataContainer<T>>((resolve, reject) => {
       try {
         resolve(this.loadSync())
       } catch (ex) {

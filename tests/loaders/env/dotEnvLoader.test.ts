@@ -14,7 +14,9 @@ describe('DotEnvLoader', () => {
   const loader = new DotEnvLoader(mapper, validEnvFile)
 
   test('load configuration', () => {
-    expect(loader.loadSync()).toEqual({
+    const dataContainer = loader.loadSync()
+
+    expect(dataContainer.value).toEqual({
       debug: 'false',
       db:    {
         host:     'localhost',
@@ -23,13 +25,18 @@ describe('DotEnvLoader', () => {
         password: '2c0mplex2Btrue',
       },
     })
+
+    expect(dataContainer.getDefinition(['db', 'port'])).toEqual({
+      source:     validEnvFile,
+      identifier: 'APP__DB__PORT',
+    })
   })
 
   test('get reference', () => {
-    expect(loader.referenceFor('db.port')).toEqual({
-      container: validEnvFile,
+    expect(loader.getReferences(['db', 'port'])).toEqual([{
+      source:     validEnvFile,
       identifier: 'APP__DB__PORT',
-    })
+    }])
   })
 
   test('attempt to load not existing file', () => {

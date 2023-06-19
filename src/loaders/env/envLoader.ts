@@ -1,7 +1,9 @@
 import _ from 'lodash'
-import type { Reference } from '../loader'
 import { SyncLoader } from '../syncLoader'
 import { EnvKeyMapper } from './keyMappers/envKeyMapper'
+import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
+import type { Reference } from '../../interfaces/reference'
+import type { DataContainer } from '../../interfaces/dataContainer'
 
 /**
  * Loads and maps environment variables to configuration object.
@@ -16,28 +18,28 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
   /**
    * Loads configuration synchronously.
    */
-  loadSync(): T {
-    return this.mapEnvs(this.loadEnv())
+  loadSync(): DataContainer<T> {
+    return new BasicDataContainer(this, this.mapEnvs(this.loadEnv()))
   }
 
   /**
    * Returns a reference for given configuration object path.
    *
-   * @param path Object path.
+   * @param path Object path parts.
    */
-  referenceFor(path: string): Reference | undefined {
-    const container = this.getContainer(path)
+  getReferences(path: string[]): Reference[] {
+    const source = this.getSource(path)
 
-    if (!container) {
-      return
+    if (!source) {
+      return []
     }
 
     const identifier = this.mapper.pathToKey(path)
 
-    return {
-      container,
+    return [{
+      source,
       identifier,
-    }
+    }]
   }
 
   /**
@@ -47,11 +49,11 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T>{
   protected abstract loadEnv(): Record<string, unknown>
 
   /**
-   * Returns container for given object path.
+   * Returns source for given object path.
    *
    * @param path Object path.
    */
-  protected abstract getContainer(path: string): string | undefined
+  protected abstract getSource(path: string[]): string | undefined
 
   /**
    * Maps environment variable to configuration object using

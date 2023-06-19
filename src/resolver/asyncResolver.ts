@@ -1,6 +1,7 @@
-import _ from 'lodash'
 import { ResolverError } from './resolverError'
 import { BaseResolver } from './baseResolver'
+import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
+import { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Asynchronous resolver.
@@ -20,8 +21,8 @@ export class AsyncResolver<T = unknown> extends BaseResolver<T, Promise<T>> {
   /**
    * Loads configurations using loaders.
    */
-  private async load(): Promise<unknown[]> {
-    const sources: unknown[] = []
+  private async load(): Promise<DataContainer<unknown>> {
+    const sources: DataContainer<unknown>[] = []
 
     for (const loader of this.loaders) {
       try {
@@ -30,22 +31,23 @@ export class AsyncResolver<T = unknown> extends BaseResolver<T, Promise<T>> {
         throw new ResolverError(ex, loader)
       }
     }
-    return sources
+
+    return new MergedDataContainer(sources)
   }
 
   /**
    * Merges and processes the configurations using processors.
    *
-   * @param sources Source configuration objects.
+   * @param dataContainer Data container.
    */
-  private async process(sources: unknown[]): Promise<T> {
-    let merged = _.merge({}, ...sources) as T
+  private async process(dataContainer: DataContainer<unknown>): Promise<T> {
+    let merged = dataContainer.value as T
 
     for (const processor of this.processors) {
       try {
         merged = await processor.process(merged)
       } catch (ex) {
-        throw this.decorateError(ex, sources, processor)
+        throw this.decorateError(ex, dataContainer, processor)
       }
     }
 

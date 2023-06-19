@@ -3,8 +3,9 @@ import { ValueLoader } from '~/loaders/valueLoader'
 import { LoaderError } from '~/loaders/loaderError'
 import { ResolverError } from '~/resolver/resolverError'
 import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
-import { Processor } from '~/processors/processor'
-import { Loader } from '~/exports'
+import { Processor } from '~/interfaces/processor'
+import { Loader } from '~/interfaces/loader'
+import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 
 describe('SyncResolver', () => {
   const loader1 = new ValueLoader({
@@ -37,8 +38,8 @@ describe('SyncResolver', () => {
   }, 'loader3')
 
   const loader4: Loader<unknown> = {
-    load:         () => Promise.resolve({ key: 'value' }),
-    referenceFor: () => undefined,
+    load:          () => Promise.resolve(new BasicDataContainer(loader4, { key: 'value' })),
+    getReferences: () => [],
   }
 
   const processor1: jest.Mocked<Required<Processor<any, any>>> = {
@@ -142,7 +143,6 @@ describe('SyncResolver', () => {
       message:          'Could not load',
       isUndefinedError: false,
       reporter:         loader2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -172,7 +172,6 @@ describe('SyncResolver', () => {
       message:          'Something is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           undefined,
       path:             undefined,
       references:       [],
     })
@@ -180,7 +179,7 @@ describe('SyncResolver', () => {
 
   test('decorate invalid value error', async () => {
     processor2.processSync.mockImplementationOnce(() => {
-      throw new ProcessorError('That is wrong', undefined, 'b.e.g', ProcessorErrorType.invalidValue)
+      throw new ProcessorError('That is wrong', undefined, ['b', 'e', 'g'], ProcessorErrorType.invalidValue)
     })
 
     let err!: ResolverError
@@ -202,11 +201,10 @@ describe('SyncResolver', () => {
       message:          'That is wrong',
       isUndefinedError: false,
       reporter:         processor2,
-      source:           loader2,
-      path:             'b.e.g',
+      path:             ['b', 'e', 'g'],
       references:       [
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.g',
         },
       ],
@@ -215,7 +213,7 @@ describe('SyncResolver', () => {
 
   test('decorate undefined value error', async () => {
     processor2.processSync.mockImplementationOnce(() => {
-      throw new ProcessorError('That is missing', undefined, 'b.e.h', ProcessorErrorType.undefinedValue)
+      throw new ProcessorError('That is missing', undefined, ['b', 'e', 'h'], ProcessorErrorType.undefinedValue)
     })
 
     let err!: ResolverError
@@ -237,19 +235,18 @@ describe('SyncResolver', () => {
       message:          'That is missing',
       isUndefinedError: true,
       reporter:         processor2,
-      source:           undefined,
-      path:             'b.e.h',
+      path:             ['b', 'e', 'h'],
       references:       [
         {
-          container:  'loader1',
+          source:     'loader1',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader2',
+          source:     'loader2',
           identifier: 'b.e.h',
         },
         {
-          container:  'loader3',
+          source:     'loader3',
           identifier: 'b.e.h',
         },
       ],
