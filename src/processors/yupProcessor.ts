@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { AnyObjectSchema, Asserts, ObjectSchema, ValidationError } from 'yup'
+import type { Asserts, ObjectSchema, ValidateOptions, ValidationError } from 'yup'
 import { ProcessorError, ProcessorErrorType } from './processorError'
 import { SyncProcessor } from './syncProcessor'
-
-/**
- * ValidateOptions type (not exported by yup).
- */
-type ValidateOptions = Parameters<AnyObjectSchema['validate']>[1]
 
 /**
  * Default validate options for yup.
