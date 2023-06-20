@@ -15,6 +15,7 @@ describe('Library exports', () => {
     "Number": "number",
     "String": "string",
   },
+  "DefinitionsBasedKeyMapper": [Function],
   "DotEnvLoader": [Function],
   "EnvLoader": [Function],
   "JsonFileLoader": [Function],

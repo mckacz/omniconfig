@@ -1,52 +1,9 @@
-import type { EnvKeyMapper } from './envKeyMapper'
-
-/**
- * Options for SplittingKeyMapper.
- */
-export interface SplittingKeyMapperOptions {
-  /**
-   * Environment variable name prefix.
-   */
-  prefix: string
-
-  /**
-   * Level separator to Environment variable name will be splitted using.
-   */
-  separator: string
-}
-
-/**
- * Default options for SplittingKeyMapper.
- */
-const defaultOptions: SplittingKeyMapperOptions = {
-  prefix:    '',
-  separator: '__',
-}
+import { BaseKeyMapper } from './baseKeyMapper'
 
 /**
  * Maps environment variable names by splitting them using provided separator.
  */
-export abstract class SplittingKeyMapper implements EnvKeyMapper {
-  /**
-   * Environment variable name prefix.
-   */
-  protected readonly prefix: string
-
-  /**
-   * Level separator to Environment variable name will be splitted using.
-   */
-  protected readonly separator: string
-
-  /**
-   * Create a new instance of SplittingKeyMapper.
-   *
-   * @param options Instance options.
-   */
-   constructor(options?: Partial<SplittingKeyMapperOptions>) {
-    this.prefix = options?.prefix ?? defaultOptions.prefix
-    this.separator = options?.separator ?? defaultOptions.separator
-  }
-
+export abstract class SplittingKeyMapper extends BaseKeyMapper {
   /**
    * Maps environment variable name to object path.
    * May return `undefined` if provided environment variable name does not start with configured prefix.

@@ -15,7 +15,7 @@ export interface EnvKeyMapper {
    *
    * @param path Object path to map.
    */
-  pathToKey(path: string[]): string
+  pathToKey(path: string[]): string  | undefined
 }
 
 /**

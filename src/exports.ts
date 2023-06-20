@@ -36,6 +36,7 @@ export * from './loaders/env/dotEnvLoader'
 export * from './loaders/env/keyMappers/splittingKeyMapper'
 export * from './loaders/env/keyMappers/camelCaseKeyMapper'
 export * from './loaders/env/keyMappers/snakeCaseKeyMapper'
+export * from './loaders/env/keyMappers/definitionsBasedKeyMapper'
 
 export * from './processors/processorError'
 export * from './processors/yupProcessor'

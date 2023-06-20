@@ -8,7 +8,7 @@ import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
 import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper'
-import { SplittingKeyMapperOptions } from '../loaders/env/keyMappers/splittingKeyMapper'
+import { CommonKeyMapperOptions } from '../loaders/env/keyMappers/baseKeyMapper'
 import { Loader } from '../interfaces/loader'
 import { Resolver } from '../interfaces/resolver'
 import { Processor } from '../interfaces/processor'
@@ -56,13 +56,15 @@ export interface YupEnvPresetOptions<TSchema extends ObjectSchema<any>> {
    * Key mapper instance OR options for `CamelCaseKeyMapper`.
    * Default: `CamelCaseKeyMapper` created using default options.
    */
-  keyMapper?: EnvKeyMapper | Partial<SplittingKeyMapperOptions>
+  keyMapper?: EnvKeyMapper | Partial<CommonKeyMapperOptions>
 }
 
 /**
  * Combination of .env and Yup options.
  */
-export type YupDotEnvPresetOptions<TSchema extends ObjectSchema<any>> = YupEnvPresetOptions<TSchema> & DotEnvPresetOptions
+export type YupDotEnvPresetOptions<TSchema extends ObjectSchema<any>> =
+  YupEnvPresetOptions<TSchema>
+  & DotEnvPresetOptions
 
 /**
  * Creates a list of .env files to load.
@@ -88,7 +90,7 @@ function getEnvFiles(options: DotEnvPresetOptions): string[] {
  *
  * @param keyMapper Key mapper instance of options for CamelCaseKeyMapper.
  */
-function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<SplittingKeyMapperOptions>): EnvKeyMapper {
+function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<CommonKeyMapperOptions>): EnvKeyMapper {
   if (isEnvKeyMapper(keyMapper)) {
     return keyMapper
   }
@@ -101,7 +103,9 @@ function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<SplittingKeyMapperOpti
  *
  * @param options Resolver options.
  */
-function yupEnvArgs<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
+function yupEnvArgs<
+  TSchema extends ObjectSchema<any>
+>(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
   return [
     [
       new ProcessEnvLoader(keyMapperFrom(options.keyMapper)),
@@ -117,7 +121,9 @@ function yupEnvArgs<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOpti
  *
  * @param options Resolver options.
  */
-function yupDotEnvArgs<TSchema extends ObjectSchema<any>>(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
+function yupDotEnvArgs<
+  TSchema extends ObjectSchema<any>
+>(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
   options = {
     localVariants:  true,
     nodeEnvVariant: true,
@@ -149,7 +155,9 @@ function yupDotEnvArgs<TSchema extends ObjectSchema<any>>(options: YupDotEnvPres
  *
  * @param options Resolver options.
  */
-export function yupEnv<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
+export function yupEnv<
+  TSchema extends ObjectSchema<any>
+>(options: YupEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
   return new AsyncResolver(...yupEnvArgs(options))
 }
 
@@ -158,7 +166,9 @@ export function yupEnv<TSchema extends ObjectSchema<any>>(options: YupEnvPresetO
  *
  * @param options Resolver options.
  */
-export function yupEnvSync<TSchema extends ObjectSchema<any>>(options: YupEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
+export function yupEnvSync<
+  TSchema extends ObjectSchema<any>
+>(options: YupEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
   return new SyncResolver(...yupEnvArgs(options))
 }
 
@@ -174,7 +184,9 @@ export function yupEnvSync<TSchema extends ObjectSchema<any>>(options: YupEnvPre
  *
  * @param options Resolver options.
  */
-export function yupDotEnv<TSchema extends ObjectSchema<any>>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
+export function yupDotEnv<
+  TSchema extends ObjectSchema<any>
+>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Promise<Asserts<TSchema>>> {
   return new AsyncResolver<Asserts<TSchema>>(...yupDotEnvArgs(options))
 }
 
@@ -190,6 +202,8 @@ export function yupDotEnv<TSchema extends ObjectSchema<any>>(options: YupDotEnvP
  *
  * @param options Resolver options.
  */
-export function yupDotEnvSync<TSchema extends ObjectSchema<any>>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
+export function yupDotEnvSync<
+  TSchema extends ObjectSchema<any>
+>(options: YupDotEnvPresetOptions<TSchema>): Resolver<Asserts<TSchema>> {
   return new SyncResolver<Asserts<TSchema>>(...yupDotEnvArgs(options))
 }
