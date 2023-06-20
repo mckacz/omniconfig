@@ -163,6 +163,7 @@ Arguments:
   * `directory` - directory where `.env` files are placed. Default value: `./`.
   * `nodeEnvVariant` - enable loading `NODE_ENV`-based files. Default value: `true`
   * `localVariants` - enable loading `.local` files. Default value: `true`
+  * `distVariants` - enable loading `.dist` files. Default value: `false`
   * `processEnv` - enable loading `process.env`. Default value: `true`
 
 ## Components

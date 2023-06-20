@@ -37,6 +37,12 @@ export interface DotEnvPresetOptions {
   localVariants?: boolean
 
   /**
+   * Load "dist" variants (eg. ".env.dist", ".env.development.dist").
+   * Default: `false`
+   */
+  distVariants?: boolean
+
+  /**
    * Load configuration from `process.env`.
    * Default: `true`
    */
@@ -72,14 +78,29 @@ export type YupDotEnvPresetOptions<TSchema extends ObjectSchema<any>> =
  * @param options .env options.
  */
 function getEnvFiles(options: DotEnvPresetOptions): string[] {
-  const withLocal = (filename: string) => options.localVariants ? [filename, filename + '.local'] : [filename]
+  const withVariants = (filename: string) =>{
+    const names: string[] = []
+
+    if (options.distVariants) {
+      names.push(filename + '.dist')
+    }
+
+    names.push(filename)
+
+    if (options.localVariants) {
+      names.push(filename + '.local')
+    }
+
+    return names
+  }
+
   const mainFile = path.resolve(options.directory ?? './', '.env')
 
-  const envFiles: string[] = withLocal(mainFile)
+  const envFiles: string[] = withVariants(mainFile)
 
   if (options.nodeEnvVariant) {
     const nodeEnv = process.env.NODE_ENV || 'development'
-    envFiles.push(...withLocal(mainFile + '.' + nodeEnv))
+    envFiles.push(...withVariants(mainFile + '.' + nodeEnv))
   }
 
   return envFiles
@@ -125,6 +146,7 @@ function yupDotEnvArgs<
   TSchema extends ObjectSchema<any>
 >(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
   options = {
+    distVariants:   false,
     localVariants:  true,
     nodeEnvVariant: true,
     processEnv:     true,
@@ -176,11 +198,13 @@ export function yupEnvSync<
  * Creates an asynchronous resolver with DotEnvLoader, ProcessEnvLoader and YupProcessor
  * that will load / merge configurations in the following order:
  *
- *   1. optional `.env` file
- *   2. optional `.env.local` file (if local variants enabled)
- *   3. optional `.env.development` file (if NODE_ENV-based variants enabled)
- *   4. optional `.env.development.local` file (if local and NODE_ENV-based variants enabled)
- *   5. environment variables of the process
+ *   1. optional `.env.dist` file (if dist variants enabled)
+ *   2. optional `.env` file
+ *   3. optional `.env.local` file (if local variants enabled)
+ *   4. optional `.env.development.dist` file (if dist and NODE_ENV-based variants enabled)
+ *   5. optional `.env.development` file (if NODE_ENV-based variants enabled)
+ *   6. optional `.env.development.local` file (if local and NODE_ENV-based variants enabled)
+ *   7. environment variables of the process
  *
  * @param options Resolver options.
  */
@@ -194,11 +218,13 @@ export function yupDotEnv<
  * Creates a synchronous resolver with DotEnvLoader, ProcessEnvLoader and YupProcessor
  * that will load / merge configurations in the following order:
  *
- *   1. optional `.env` file
- *   2. optional `.env.local` file (if local variants enabled)
- *   3. optional `.env.development` file (if NODE_ENV-based variants enabled)
- *   4. optional `.env.development.local` file (if local and NODE_ENV-based variants enabled)
- *   5. environment variables of the process
+ *   1. optional `.env.dist` file (if dist variants enabled)
+ *   2. optional `.env` file
+ *   3. optional `.env.local` file (if local variants enabled)
+ *   4. optional `.env.development.dist` file (if dist and NODE_ENV-based variants enabled)
+ *   5. optional `.env.development` file (if NODE_ENV-based variants enabled)
+ *   6. optional `.env.development.local` file (if local and NODE_ENV-based variants enabled)
+ *   7. environment variables of the process
  *
  * @param options Resolver options.
  */

@@ -194,6 +194,43 @@ describe('Presets', () => {
       expect(YupProcessor).toHaveBeenLastCalledWith(schema)
     })
 
+    testPresetFactories('dist variants only', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
+      const resolver = factory({
+        schema,
+        distVariants:   true,
+        nodeEnvVariant: false,
+        localVariants:  false,
+      })
+
+      expect(resolver).toBeInstanceOf(ResolverClass)
+
+      expect(ResolverClass).toHaveBeenLastCalledWith(
+        [
+          expect.any(OptionalLoader),
+          expect.any(OptionalLoader),
+          expect.any(ProcessEnvLoader),
+        ],
+        [expect.any(YupProcessor)],
+      )
+
+      expect(ResolverClass).toHaveBeenLastCalledWith(
+        [
+          expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
+          expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
+          expect.any(ProcessEnvLoader),
+        ],
+        [expect.any(YupProcessor)],
+      )
+
+      expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
+        [expect.any(CamelCaseKeyMapper), '/tmp/.env.dist'],
+        [expect.any(CamelCaseKeyMapper), '/tmp/.env'],
+      ])
+
+      expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
+      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+    })
+
     testPresetFactories('.env end process.env', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
       const resolver = factory({
         schema,
