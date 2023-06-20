@@ -42,29 +42,23 @@ describe('SyncResolver', () => {
     getReferences: () => [],
   }
 
-  const processor1: jest.Mocked<Required<Processor<any, any>>> = {
+  const processor: jest.Mocked<Required<Processor<any, any>>> = {
     process:     jest.fn(async (data: object) => ({ ...data, processed: 1 })),
     processSync: jest.fn((data: object) => ({ ...data, processedSync: 1 })),
   }
 
-  const processor2: jest.Mocked<Required<Processor<any, any>>> = {
-    process:     jest.fn(async (data: object) => ({ ...data, processed: 2 })),
-    processSync: jest.fn((data: object) => ({ ...data, processedSync: 2 })),
-  }
-
-  const processor3: jest.Mocked<Processor<any, any>> = {
+  const syncOnlyProcessor: jest.Mocked<Processor<any, any>> = {
     process: jest.fn(async (data: object) => ({ ...data, processed: 3 })),
   }
 
   test('empty object if no loaders nor processors have been provided', async () => {
-    expect(new SyncResolver([], []).resolve()).toEqual({})
+    expect(new SyncResolver([]).resolve()).toEqual({})
   })
 
   test('merge configuration objects from left to right', async () => {
     expect(
       new SyncResolver(
         [loader1, loader2, loader3],
-        [],
       ).resolve(),
     ).toEqual({
       a: true,
@@ -81,7 +75,6 @@ describe('SyncResolver', () => {
     expect(
       new SyncResolver(
         [loader2, loader3, loader1],
-        [],
       ).resolve(),
     ).toEqual({
       a: true,
@@ -96,29 +89,6 @@ describe('SyncResolver', () => {
     })
   })
 
-  test('process the configuration in order', async () => {
-    expect(
-      new SyncResolver(
-        [loader1],
-        [processor1, processor2],
-      ).resolve(),
-    ).toEqual({
-      a:             true,
-      b:             {
-        c: 123,
-        d: 234,
-        e: {
-          f: 'bazinga',
-        },
-      },
-      processedSync: 2,
-    })
-
-    expect(processor2.processSync).toHaveBeenCalledWith(
-      expect.objectContaining({ processedSync: 1 }),
-    )
-  })
-
   test('decorate loader error', async () => {
     jest.spyOn(loader2, 'loadSync').mockImplementationOnce(() => {
       throw new LoaderError('Could not load')
@@ -129,7 +99,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -149,7 +119,7 @@ describe('SyncResolver', () => {
   })
 
   test('decorate generic processing error', async () => {
-    processor2.processSync.mockImplementationOnce(() => {
+    processor.processSync.mockImplementationOnce(() => {
       throw new ProcessorError('Something is wrong')
     })
 
@@ -158,7 +128,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -171,14 +141,14 @@ describe('SyncResolver', () => {
       error:            expect.any(ProcessorError),
       message:          'Something is wrong',
       isUndefinedError: false,
-      reporter:         processor2,
+      reporter:         processor,
       path:             undefined,
       references:       [],
     })
   })
 
   test('decorate invalid value error', async () => {
-    processor2.processSync.mockImplementationOnce(() => {
+    processor.processSync.mockImplementationOnce(() => {
       throw new ProcessorError('That is wrong', undefined, ['b', 'e', 'g'], ProcessorErrorType.invalidValue)
     })
 
@@ -187,7 +157,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -200,7 +170,7 @@ describe('SyncResolver', () => {
       error:            expect.any(ProcessorError),
       message:          'That is wrong',
       isUndefinedError: false,
-      reporter:         processor2,
+      reporter:         processor,
       path:             ['b', 'e', 'g'],
       references:       [
         {
@@ -212,7 +182,7 @@ describe('SyncResolver', () => {
   })
 
   test('decorate undefined value error', async () => {
-    processor2.processSync.mockImplementationOnce(() => {
+    processor.processSync.mockImplementationOnce(() => {
       throw new ProcessorError('That is missing', undefined, ['b', 'e', 'h'], ProcessorErrorType.undefinedValue)
     })
 
@@ -221,7 +191,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -234,7 +204,7 @@ describe('SyncResolver', () => {
       error:            expect.any(ProcessorError),
       message:          'That is missing',
       isUndefinedError: true,
-      reporter:         processor2,
+      reporter:         processor,
       path:             ['b', 'e', 'h'],
       references:       [
         {
@@ -257,7 +227,7 @@ describe('SyncResolver', () => {
     expect(
       () => new SyncResolver(
         [loader4],
-        [processor1, processor2],
+        processor,
       ).resolve(),
     ).toThrow()
   })
@@ -266,7 +236,7 @@ describe('SyncResolver', () => {
     expect(
       () => new SyncResolver(
         [loader1],
-        [processor1, processor3],
+        syncOnlyProcessor,
       ).resolve(),
     ).toThrow()
   })

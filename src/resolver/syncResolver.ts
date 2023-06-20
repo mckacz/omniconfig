@@ -38,24 +38,24 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
   }
 
   /**
-   * Merges and processes the configurations using processors.
+   * Processes the configurations using processor.
    *
    * @param dataContainer Data container.
    */
   private process(dataContainer: DataContainer<unknown>): T {
-    let merged = dataContainer.value as T
+    let value = dataContainer.value as T
 
-    for (const processor of this.processors) {
+    if (this.processor) {
       try {
-        if (this.assertSync(processor, 'processSync')) {
-          merged = processor.processSync(merged)
+        if (this.assertSync(this.processor, 'processSync')) {
+          value = this.processor.processSync(value)
         }
       } catch (ex) {
-        throw this.decorateError(ex, dataContainer, processor)
+        throw this.decorateError(ex, dataContainer, this.processor)
       }
     }
 
-    return merged
+    return value
   }
 
   /**

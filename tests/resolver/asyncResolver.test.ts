@@ -34,23 +34,18 @@ describe('AsyncResolver', () => {
     },
   }, 'loader3')
 
-  const processor1 = {
+  const processor = {
     process: jest.fn(async (data: object) => ({ ...data, processed: 1 })),
   }
 
-  const processor2 = {
-    process: jest.fn(async (data: object) => ({ ...data, processed: 2 })),
-  }
-
   test('empty object if no loaders nor processors have been provided', async () => {
-    await expect(new AsyncResolver([], []).resolve()).resolves.toEqual({})
+    await expect(new AsyncResolver([]).resolve()).resolves.toEqual({})
   })
 
   test('merge configuration objects from left to right', async () => {
     await expect(
       new AsyncResolver(
         [loader1, loader2, loader3],
-        [],
       ).resolve(),
     ).resolves.toEqual({
       a: true,
@@ -67,7 +62,6 @@ describe('AsyncResolver', () => {
     await expect(
       new AsyncResolver(
         [loader2, loader3, loader1],
-        [],
       ).resolve(),
     ).resolves.toEqual({
       a: true,
@@ -82,29 +76,6 @@ describe('AsyncResolver', () => {
     })
   })
 
-  test('process the configuration in order', async () => {
-    await expect(
-      new AsyncResolver(
-        [loader1],
-        [processor1, processor2],
-      ).resolve(),
-    ).resolves.toEqual({
-      a:         true,
-      b:         {
-        c: 123,
-        d: 234,
-        e: {
-          f: 'bazinga',
-        },
-      },
-      processed: 2,
-    })
-
-    expect(processor2.process).toHaveBeenCalledWith(
-      expect.objectContaining({ processed: 1 }),
-    )
-  })
-
   test('decorate loader error', async () => {
     jest.spyOn(loader2, 'load').mockImplementationOnce(() => {
       throw new LoaderError('Could not load')
@@ -115,7 +86,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -135,7 +106,7 @@ describe('AsyncResolver', () => {
   })
 
   test('decorate generic processing error', async () => {
-    processor2.process.mockImplementationOnce(() => {
+    processor.process.mockImplementationOnce(() => {
       throw new ProcessorError('Something is wrong')
     })
 
@@ -144,7 +115,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -157,14 +128,14 @@ describe('AsyncResolver', () => {
       error:            expect.any(ProcessorError),
       message:          'Something is wrong',
       isUndefinedError: false,
-      reporter:         processor2,
+      reporter:         processor,
       path:             undefined,
       references:       [],
     })
   })
 
   test('decorate invalid value error', async () => {
-    processor2.process.mockImplementationOnce(() => {
+    processor.process.mockImplementationOnce(() => {
       throw new ProcessorError('That is wrong', undefined, ['b', 'e', 'g'], ProcessorErrorType.invalidValue)
     })
 
@@ -173,7 +144,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -186,7 +157,7 @@ describe('AsyncResolver', () => {
       error:            expect.any(ProcessorError),
       message:          'That is wrong',
       isUndefinedError: false,
-      reporter:         processor2,
+      reporter:         processor,
       path:             ['b', 'e', 'g'],
       references:       [
         {
@@ -198,7 +169,7 @@ describe('AsyncResolver', () => {
   })
 
   test('decorate undefined value error', async () => {
-    processor2.process.mockImplementationOnce(() => {
+    processor.process.mockImplementationOnce(() => {
       throw new ProcessorError('That is missing', undefined, ['b', 'e', 'h'], ProcessorErrorType.undefinedValue)
     })
 
@@ -207,7 +178,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        [processor1, processor2],
+        processor,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -220,7 +191,7 @@ describe('AsyncResolver', () => {
       error:            expect.any(ProcessorError),
       message:          'That is missing',
       isUndefinedError: true,
-      reporter:         processor2,
+      reporter:         processor,
       path:             ['b', 'e', 'h'],
       references:       [
         {

@@ -78,7 +78,7 @@ export type YupDotEnvPresetOptions<TSchema extends ObjectSchema<any>> =
  * @param options .env options.
  */
 function getEnvFiles(options: DotEnvPresetOptions): string[] {
-  const withVariants = (filename: string) =>{
+  const withVariants = (filename: string) => {
     const names: string[] = []
 
     if (options.distVariants) {
@@ -126,14 +126,12 @@ function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<CommonKeyMapperOptions
  */
 function yupEnvArgs<
   TSchema extends ObjectSchema<any>
->(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
+>(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>] {
   return [
     [
       new ProcessEnvLoader(keyMapperFrom(options.keyMapper)),
     ],
-    [
-      new YupProcessor(options.schema),
-    ],
+    new YupProcessor(options.schema),
   ]
 }
 
@@ -144,7 +142,7 @@ function yupEnvArgs<
  */
 function yupDotEnvArgs<
   TSchema extends ObjectSchema<any>
->(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>[]] {
+>(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>] {
   options = {
     distVariants:   false,
     localVariants:  true,
@@ -166,9 +164,7 @@ function yupDotEnvArgs<
 
   return [
     loaders,
-    [
-      new YupProcessor(options.schema),
-    ],
+    new YupProcessor(options.schema),
   ]
 }
 

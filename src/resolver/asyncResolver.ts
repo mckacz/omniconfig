@@ -36,21 +36,21 @@ export class AsyncResolver<T = unknown> extends BaseResolver<T, Promise<T>> {
   }
 
   /**
-   * Merges and processes the configurations using processors.
+   * Processes the configurations using processor.
    *
    * @param dataContainer Data container.
    */
   private async process(dataContainer: DataContainer<unknown>): Promise<T> {
-    let merged = dataContainer.value as T
+    let value = dataContainer.value as T
 
-    for (const processor of this.processors) {
+    if (this.processor) {
       try {
-        merged = await processor.process(merged)
+        value = await this.processor.process(value)
       } catch (ex) {
-        throw this.decorateError(ex, dataContainer, processor)
+        throw this.decorateError(ex, dataContainer, this.processor)
       }
     }
 
-    return merged
+    return value
   }
 }

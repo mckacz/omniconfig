@@ -30,7 +30,7 @@ describe('Presets', () => {
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
@@ -44,7 +44,7 @@ describe('Presets', () => {
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
@@ -65,7 +65,7 @@ describe('Presets', () => {
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(keyMapper)
@@ -99,7 +99,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -110,7 +110,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -138,7 +138,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -147,7 +147,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -173,7 +173,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -182,7 +182,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -210,7 +210,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -219,7 +219,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -245,7 +245,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -253,7 +253,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -278,14 +278,14 @@ describe('Presets', () => {
         [
           expect.any(OptionalLoader),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
         ],
-        [expect.any(YupProcessor)],
+        expect.any(YupProcessor),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([

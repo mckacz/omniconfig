@@ -16,11 +16,11 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    * @param loaders List of loaders to use. Configuration acquired from the loaders
    *                will be merged in order from left to right.
    *
-   * @param processors List of processors to be applied on loaded configuration object.
+   * @param processor Processor to be applied on loaded configuration object.
    */
   constructor(
     protected readonly loaders: Loader<unknown | undefined>[],
-    protected readonly processors: Processor<unknown, Type>[] = [],
+    protected readonly processor?: Processor<unknown, Type>,
   ) {
   }
 
