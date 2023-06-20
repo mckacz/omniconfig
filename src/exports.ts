@@ -1,6 +1,6 @@
 export type { Loader } from './interfaces/loader'
 export type { Reference } from './interfaces/reference'
-export type { Processor } from './interfaces/processor'
+export type { Validator } from './interfaces/validator'
 export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
 export type { ErrorFormatter } from './interfaces/errorFormatter'
 export type { Resolver } from './interfaces/resolver'
@@ -38,8 +38,8 @@ export * from './loaders/env/keyMappers/camelCaseKeyMapper'
 export * from './loaders/env/keyMappers/snakeCaseKeyMapper'
 export * from './loaders/env/keyMappers/definitionsBasedKeyMapper'
 
-export * from './processors/processorError'
-export * from './processors/yupProcessor'
+export * from './validators/validationError'
+export * from './validators/yupValidator'
 
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'

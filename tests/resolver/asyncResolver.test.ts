@@ -2,7 +2,7 @@ import { AsyncResolver } from '~/resolver/asyncResolver'
 import { ValueLoader } from '~/loaders/valueLoader'
 import { LoaderError } from '~/loaders/loaderError'
 import { ResolverError } from '~/resolver/resolverError'
-import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
+import { ValidationError, ValidationErrorType } from '~/validators/validationError'
 
 describe('AsyncResolver', () => {
   const loader1 = new ValueLoader({
@@ -34,8 +34,8 @@ describe('AsyncResolver', () => {
     },
   }, 'loader3')
 
-  const processor = {
-    process: jest.fn(async (data: object) => ({ ...data, processed: 1 })),
+  const validator = {
+    validate: jest.fn(async (data: object) => ({ ...data, processed: 1 })),
   }
 
   test('empty object if no loaders nor processors have been provided', async () => {
@@ -86,7 +86,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        processor,
+        validator,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -106,8 +106,8 @@ describe('AsyncResolver', () => {
   })
 
   test('decorate generic processing error', async () => {
-    processor.process.mockImplementationOnce(() => {
-      throw new ProcessorError('Something is wrong')
+    validator.validate.mockImplementationOnce(() => {
+      throw new ValidationError('Something is wrong')
     })
 
     let err!: ResolverError
@@ -115,7 +115,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        processor,
+        validator,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -125,18 +125,18 @@ describe('AsyncResolver', () => {
     expect(err).toBeInstanceOf(ResolverError)
 
     expect(err).toMatchObject({
-      error:            expect.any(ProcessorError),
+      error:            expect.any(ValidationError),
       message:          'Something is wrong',
       isUndefinedError: false,
-      reporter:         processor,
+      reporter:         validator,
       path:             undefined,
       references:       [],
     })
   })
 
   test('decorate invalid value error', async () => {
-    processor.process.mockImplementationOnce(() => {
-      throw new ProcessorError('That is wrong', undefined, ['b', 'e', 'g'], ProcessorErrorType.invalidValue)
+    validator.validate.mockImplementationOnce(() => {
+      throw new ValidationError('That is wrong', undefined, ['b', 'e', 'g'], ValidationErrorType.invalidValue)
     })
 
     let err!: ResolverError
@@ -144,7 +144,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        processor,
+        validator,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -154,10 +154,10 @@ describe('AsyncResolver', () => {
     expect(err).toBeInstanceOf(ResolverError)
 
     expect(err).toMatchObject({
-      error:            expect.any(ProcessorError),
+      error:            expect.any(ValidationError),
       message:          'That is wrong',
       isUndefinedError: false,
-      reporter:         processor,
+      reporter:         validator,
       path:             ['b', 'e', 'g'],
       references:       [
         {
@@ -169,8 +169,8 @@ describe('AsyncResolver', () => {
   })
 
   test('decorate undefined value error', async () => {
-    processor.process.mockImplementationOnce(() => {
-      throw new ProcessorError('That is missing', undefined, ['b', 'e', 'h'], ProcessorErrorType.undefinedValue)
+    validator.validate.mockImplementationOnce(() => {
+      throw new ValidationError('That is missing', undefined, ['b', 'e', 'h'], ValidationErrorType.undefinedValue)
     })
 
     let err!: ResolverError
@@ -178,7 +178,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        processor,
+        validator,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -188,10 +188,10 @@ describe('AsyncResolver', () => {
     expect(err).toBeInstanceOf(ResolverError)
 
     expect(err).toMatchObject({
-      error:            expect.any(ProcessorError),
+      error:            expect.any(ValidationError),
       message:          'That is missing',
       isUndefinedError: true,
-      reporter:         processor,
+      reporter:         validator,
       path:             ['b', 'e', 'h'],
       references:       [
         {

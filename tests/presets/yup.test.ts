@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { YupProcessor } from '~/processors/yupProcessor'
+import { YupValidator } from '~/validators/yupValidator'
 import { ProcessEnvLoader } from '~/loaders/env/processEnvLoader'
 import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
 import { EnvKeyMapper } from '~/loaders/env/keyMappers/envKeyMapper'
@@ -10,7 +10,7 @@ import { testPresetFactories } from './utils'
 
 jest.mock('~/resolver/asyncResolver')
 jest.mock('~/resolver/syncResolver')
-jest.mock('~/processors/yupProcessor')
+jest.mock('~/validators/yupValidator')
 jest.mock('~/loaders/env/dotEnvLoader')
 jest.mock('~/loaders/env/processEnvLoader')
 jest.mock('~/loaders/env/keyMappers/camelCaseKeyMapper')
@@ -30,11 +30,11 @@ describe('Presets', () => {
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('key mapper options', yupEnv, yupEnvSync, (factory, ResolverClass) => {
@@ -44,13 +44,13 @@ describe('Presets', () => {
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
       expect(CamelCaseKeyMapper).toHaveBeenLastCalledWith({ prefix: 'FOO__' })
 
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('custom key mapper options', yupEnv, yupEnvSync, (factory, ResolverClass) => {
@@ -65,11 +65,11 @@ describe('Presets', () => {
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [expect.any(ProcessEnvLoader)],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(keyMapper)
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
   })
 
@@ -99,7 +99,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -110,7 +110,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -121,7 +121,7 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('no local, but NODE_ENV-based variants', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
@@ -138,7 +138,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -147,7 +147,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -156,7 +156,7 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('no NODE_ENV-based, but local variants', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
@@ -173,7 +173,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -182,7 +182,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -191,7 +191,7 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('dist variants only', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
@@ -210,7 +210,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -219,7 +219,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -228,7 +228,7 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('.env end process.env', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
@@ -245,7 +245,7 @@ describe('Presets', () => {
           expect.any(OptionalLoader),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
@@ -253,7 +253,7 @@ describe('Presets', () => {
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
           expect.any(ProcessEnvLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -261,7 +261,7 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).toHaveBeenLastCalledWith(expect.any(CamelCaseKeyMapper))
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
 
     testPresetFactories('.env only', yupDotEnv, yupDotEnvSync, (factory, ResolverClass) => {
@@ -278,14 +278,14 @@ describe('Presets', () => {
         [
           expect.any(OptionalLoader),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect(ResolverClass).toHaveBeenLastCalledWith(
         [
           expect.objectContaining({ loader: expect.any(DotEnvLoader) }),
         ],
-        expect.any(YupProcessor),
+        expect.any(YupValidator),
       )
 
       expect((DotEnvLoader as jest.Mock<DotEnvLoader>).mock.calls).toEqual([
@@ -293,7 +293,7 @@ describe('Presets', () => {
       ])
 
       expect(ProcessEnvLoader).not.toHaveBeenCalled()
-      expect(YupProcessor).toHaveBeenLastCalledWith(schema)
+      expect(YupValidator).toHaveBeenLastCalledWith(schema)
     })
   })
 })

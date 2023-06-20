@@ -152,7 +152,7 @@ export class TextErrorFormatter implements ErrorFormatter {
   }
 
   /**
-   * Renders processing error cause description.
+   * Renders validation error cause description.
    *
    * @param err ResolverError instance to describe.
    */

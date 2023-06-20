@@ -8,12 +8,12 @@ import type { DataContainer } from '../interfaces/dataContainer'
  */
 export class SyncResolver<T = unknown> extends BaseResolver<T> {
   /**
-   * Loads and processes the configuration synchronously.
+   * Loads and validates the configuration synchronously.
    * Returns final configuration object.
    */
   resolve(): T {
     const sources = this.load()
-    const resolved = this.process(sources)
+    const resolved = this.validate(sources)
 
     return resolved
   }
@@ -38,20 +38,20 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
   }
 
   /**
-   * Processes the configurations using processor.
+   * Validates the configurations using configured validator.
    *
    * @param dataContainer Data container.
    */
-  private process(dataContainer: DataContainer<unknown>): T {
+  private validate(dataContainer: DataContainer<unknown>): T {
     let value = dataContainer.value as T
 
-    if (this.processor) {
+    if (this.validator) {
       try {
-        if (this.assertSync(this.processor, 'processSync')) {
-          value = this.processor.processSync(value)
+        if (this.assertSync(this.validator, 'validateSync')) {
+          value = this.validator.validateSync(value)
         }
       } catch (ex) {
-        throw this.decorateError(ex, dataContainer, this.processor)
+        throw this.decorateError(ex, dataContainer, this.validator)
       }
     }
 

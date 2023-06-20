@@ -8,11 +8,11 @@ Features
 
 * load configuration from various sources
 * merge loaded configuration objects
-* process / validate the final configuration
+* validate the final configuration
 * exceptions with extensive information (eg. where and how was defined value that caused the error or how can be defined
   a missing value)
 * configurable error message formatter
-* fully extensible - supports custom loaders and processors
+* fully extensible - supports custom loaders and validators
 * preconfigured resolvers
 * synchronous and asynchronous API
 
@@ -22,9 +22,9 @@ Supported data sources:
 * `.env` files (using [dotenv](https://www.npmjs.com/package/dotenv))
 * JSON files
 
-Supported processors:
+Supported validators:
 
-* [Yup](https://www.npmjs.com/package/yup) validator
+* [Yup](https://www.npmjs.com/package/yup)
 
 ## Installation
 
@@ -186,13 +186,13 @@ You can create your own loader by implementing [`Loader`](./src/interfaces/loade
 ### Processors
 
 Processors could transforms previously loaded configuration in any way.  
-You can create your own processor by implementing [`Processor`](./src/interfaces/processor.ts) interface.
+You can create your own processor by implementing [`Processor`](./src/interfaces/validator.ts) interface.
 
-#### Available processors
+#### Available validators
 
-| Class name                                         | Description                                                 |
-|----------------------------------------------------|-------------------------------------------------------------|
-| [`YupProcessor`](./src/processors/yupProcessor.ts) | Cast values and validates the configuration against schema. |
+| Class name                                       | Description                                                 |
+|--------------------------------------------------|-------------------------------------------------------------|
+| [`YupValidator`](src/validators/yupValidator.ts) | Cast values and validates the configuration against schema. |
 
 ### Resolver
 

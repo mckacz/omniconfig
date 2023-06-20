@@ -8,12 +8,12 @@ import { DataContainer } from '../interfaces/dataContainer'
  */
 export class AsyncResolver<T = unknown> extends BaseResolver<T, Promise<T>> {
   /**
-   * Loads and processes the configuration.
+   * Loads and validates the configuration.
    * Returns final configuration object.
    */
   async resolve(): Promise<T> {
     const sources = await this.load()
-    const resolved = await this.process(sources)
+    const resolved = await this.validate(sources)
 
     return resolved
   }
@@ -36,18 +36,18 @@ export class AsyncResolver<T = unknown> extends BaseResolver<T, Promise<T>> {
   }
 
   /**
-   * Processes the configurations using processor.
+   * Validates the configurations using configured validator.
    *
    * @param dataContainer Data container.
    */
-  private async process(dataContainer: DataContainer<unknown>): Promise<T> {
+  private async validate(dataContainer: DataContainer<unknown>): Promise<T> {
     let value = dataContainer.value as T
 
-    if (this.processor) {
+    if (this.validator) {
       try {
-        value = await this.processor.process(value)
+        value = await this.validator.validate(value)
       } catch (ex) {
-        throw this.decorateError(ex, dataContainer, this.processor)
+        throw this.decorateError(ex, dataContainer, this.validator)
       }
     }
 

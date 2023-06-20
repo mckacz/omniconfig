@@ -1,7 +1,7 @@
 import { ResolverError } from './resolverError'
-import { ProcessorError, ProcessorErrorType } from '../processors/processorError'
+import { ValidationError, ValidationErrorType } from '../validators/validationError'
 import type { Loader } from '../interfaces/loader'
-import type { Processor } from '../interfaces/processor'
+import type { Validator } from '../interfaces/validator'
 import type { Resolver } from '../interfaces/resolver'
 import type { Reference } from '../interfaces/reference'
 import type { DataContainer } from '../interfaces/dataContainer'
@@ -16,36 +16,40 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    * @param loaders List of loaders to use. Configuration acquired from the loaders
    *                will be merged in order from left to right.
    *
-   * @param processor Processor to be applied on loaded configuration object.
+   * @param validator Validator to be used to validate the configuration.
    */
   constructor(
     protected readonly loaders: Loader<unknown | undefined>[],
-    protected readonly processor?: Processor<unknown, Type>,
+    protected readonly validator?: Validator<unknown, Type>,
   ) {
   }
 
   /**
-   * Loads and processes the configuration.
+   * Loads and validates the configuration.
    * Returns final configuration object.
    */
   abstract resolve(): ReturnType
 
   /**
-   * Decorates processing error with references to the causing value if available.
+   * Decorates validation error with references to the causing value if available.
    *
    * @param err Error object.
    * @param dataContainer Source configuration objects.
-   * @param processor Processor instance that reported the error.
+   * @param validator Validator instance that reported the error.
    */
-  protected decorateError(err: ProcessorError | unknown, dataContainer: DataContainer<unknown>, processor: Processor<unknown, unknown>) {
-    if (!(err instanceof ProcessorError) || !err.path) {
-      return new ResolverError(err, processor)
+  protected decorateError(
+    err: ValidationError | unknown,
+    dataContainer: DataContainer<unknown>,
+    validator: Validator<unknown, unknown>
+  ) {
+    if (!(err instanceof ValidationError) || !err.path) {
+      return new ResolverError(err, validator)
     }
 
-    if (err.type === ProcessorErrorType.undefinedValue) {
+    if (err.type === ValidationErrorType.undefinedValue) {
       return new ResolverError(
         err,
-        processor,
+        validator,
         err.path,
         this.resolveReferencesForUndefinedValue(err.path),
       )
@@ -55,7 +59,7 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
 
     return new ResolverError(
       err,
-      processor,
+      validator,
       err.path,
       reference ? [reference] : [],
     )

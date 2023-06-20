@@ -1,8 +1,8 @@
 import { ResolverError } from '../src/resolver/resolverError'
-import { ProcessorError, ProcessorErrorType } from '../src/processors/processorError'
+import { ValidationError, ValidationErrorType } from '../src/validators/validationError'
 
 export const undefinedErrorMock = new ResolverError(
-  new ProcessorError('The value is required', undefined, ['obj', 'foo'], ProcessorErrorType.undefinedValue),
+  new ValidationError('The value is required', undefined, ['obj', 'foo'], ValidationErrorType.undefinedValue),
   undefined,
   ['obj', 'foo'],
   [
@@ -12,13 +12,13 @@ export const undefinedErrorMock = new ResolverError(
 )
 
 export const undefinedErrorWithoutReferencesMock = new ResolverError(
-  new ProcessorError('The value is required', undefined, ['obj', 'foo'], ProcessorErrorType.undefinedValue),
+  new ValidationError('The value is required', undefined, ['obj', 'foo'], ValidationErrorType.undefinedValue),
   undefined,
   ['obj', 'foo'],
 )
 
 export const processingErrorMock = new ResolverError(
-  new ProcessorError('The value `11` must be grater than or equal to `42`', undefined, ['obj', 'foo']),
+  new ValidationError('The value `11` must be grater than or equal to `42`', undefined, ['obj', 'foo']),
   undefined,
   ['obj', 'foo'],
   [
@@ -27,7 +27,7 @@ export const processingErrorMock = new ResolverError(
 )
 
 export const processingErrorWithoutReferencesMock = new ResolverError(
-  new ProcessorError('The value `11` must be grater than or equal to `42`', undefined, ['obj', 'foo']),
+  new ValidationError('The value `11` must be grater than or equal to `42`', undefined, ['obj', 'foo']),
   undefined,
   ['obj', 'foo'],
 )

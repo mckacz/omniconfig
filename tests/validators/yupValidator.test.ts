@@ -1,8 +1,8 @@
 import * as yup from 'yup'
-import { YupProcessor } from '~/processors/yupProcessor'
-import { ProcessorError, ProcessorErrorType } from '~/processors/processorError'
+import { YupValidator } from '~/validators/yupValidator'
+import { ValidationError, ValidationErrorType } from '~/validators/validationError'
 
-describe('YupProcessor', () => {
+describe('YupValidator', () => {
   const schema = yup.object({
     debug: yup.boolean(),
     db:    yup.object({
@@ -13,7 +13,7 @@ describe('YupProcessor', () => {
     }),
   })
 
-  const processor = new YupProcessor(schema)
+  const validator = new YupValidator(schema)
 
   test('process the configuration', async () => {
     const payload = {
@@ -26,7 +26,7 @@ describe('YupProcessor', () => {
       },
     }
 
-    await expect(processor.process(payload)).resolves.toEqual({
+    await expect(validator.validate(payload)).resolves.toEqual({
       debug: true,
 
       db: {
@@ -52,16 +52,16 @@ describe('YupProcessor', () => {
     let err: unknown
 
     try {
-      await processor.process(payload)
+      await validator.validate(payload)
     } catch (ex) {
       err = ex
     }
 
-    expect(err).toBeInstanceOf(ProcessorError)
+    expect(err).toBeInstanceOf(ValidationError)
 
     expect(err).toMatchObject({
-      type:  ProcessorErrorType.invalidValue,
-      path:  ['db', 'port'],
+      type: ValidationErrorType.invalidValue,
+      path: ['db', 'port'],
 
       error: expect.objectContaining({
         message: 'db.port must be greater than or equal to 1',
@@ -81,16 +81,16 @@ describe('YupProcessor', () => {
     let err: unknown
 
     try {
-      await processor.process(payload)
+      await validator.validate(payload)
     } catch (ex) {
       err = ex
     }
 
-    expect(err).toBeInstanceOf(ProcessorError)
+    expect(err).toBeInstanceOf(ValidationError)
 
     expect(err).toMatchObject({
-      type:  ProcessorErrorType.undefinedValue,
-      path:  ['db', 'username'],
+      type: ValidationErrorType.undefinedValue,
+      path: ['db', 'username'],
 
       error: expect.objectContaining({
         message: 'db.username is a required field',

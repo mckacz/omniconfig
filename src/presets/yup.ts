@@ -2,7 +2,7 @@
 import * as path from 'path'
 import type { Asserts, ObjectSchema } from 'yup'
 import { AsyncResolver } from '../resolver/asyncResolver'
-import { YupProcessor } from '../processors/yupProcessor'
+import { YupValidator } from '../validators/yupValidator'
 import { OptionalLoader } from '../loaders/optionalLoader'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
@@ -11,7 +11,7 @@ import { CamelCaseKeyMapper } from '../loaders/env/keyMappers/camelCaseKeyMapper
 import { CommonKeyMapperOptions } from '../loaders/env/keyMappers/baseKeyMapper'
 import { Loader } from '../interfaces/loader'
 import { Resolver } from '../interfaces/resolver'
-import { Processor } from '../interfaces/processor'
+import { Validator } from '../interfaces/validator'
 import { SyncResolver } from '../resolver/syncResolver'
 
 /**
@@ -120,29 +120,29 @@ function keyMapperFrom(keyMapper?: EnvKeyMapper | Partial<CommonKeyMapperOptions
 }
 
 /**
- * Returns arguments for resolver with ProcessEnvLoader and YupProcessor.
+ * Returns arguments for resolver with ProcessEnvLoader and YupValidator.
  *
  * @param options Resolver options.
  */
 function yupEnvArgs<
   TSchema extends ObjectSchema<any>
->(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>] {
+>(options: YupEnvPresetOptions<TSchema>): [Loader<unknown>[], Validator<unknown, unknown>] {
   return [
     [
       new ProcessEnvLoader(keyMapperFrom(options.keyMapper)),
     ],
-    new YupProcessor(options.schema),
+    new YupValidator(options.schema),
   ]
 }
 
 /**
- * Returns arguments for resolver with DotEnvLoader, ProcessEnvLoader and YupProcessor.
+ * Returns arguments for resolver with DotEnvLoader, ProcessEnvLoader and YupValidator.
  *
  * @param options Resolver options.
  */
 function yupDotEnvArgs<
   TSchema extends ObjectSchema<any>
->(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Processor<unknown, unknown>] {
+>(options: YupDotEnvPresetOptions<TSchema>): [Loader<unknown>[], Validator<unknown, unknown>] {
   options = {
     distVariants:   false,
     localVariants:  true,
@@ -164,12 +164,12 @@ function yupDotEnvArgs<
 
   return [
     loaders,
-    new YupProcessor(options.schema),
+    new YupValidator(options.schema),
   ]
 }
 
 /**
- * Creates an asynchronous resolver with ProcessEnvLoader and YupProcessor.
+ * Creates an asynchronous resolver with ProcessEnvLoader and YupValidator.
  *
  * @param options Resolver options.
  */
@@ -180,7 +180,7 @@ export function yupEnv<
 }
 
 /**
- * Creates a synchronous resolver with ProcessEnvLoader and YupProcessor.
+ * Creates a synchronous resolver with ProcessEnvLoader and YupValidator.
  *
  * @param options Resolver options.
  */
@@ -191,7 +191,7 @@ export function yupEnvSync<
 }
 
 /**
- * Creates an asynchronous resolver with DotEnvLoader, ProcessEnvLoader and YupProcessor
+ * Creates an asynchronous resolver with DotEnvLoader, ProcessEnvLoader and YupValidator
  * that will load / merge configurations in the following order:
  *
  *   1. optional `.env.dist` file (if dist variants enabled)
@@ -211,7 +211,7 @@ export function yupDotEnv<
 }
 
 /**
- * Creates a synchronous resolver with DotEnvLoader, ProcessEnvLoader and YupProcessor
+ * Creates a synchronous resolver with DotEnvLoader, ProcessEnvLoader and YupValidator
  * that will load / merge configurations in the following order:
  *
  *   1. optional `.env.dist` file (if dist variants enabled)
