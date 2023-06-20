@@ -4,6 +4,7 @@ export type { Processor } from './interfaces/processor'
 export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
 export type { ErrorFormatter } from './interfaces/errorFormatter'
 export type { Resolver } from './interfaces/resolver'
+export type { Definitions, DefinitionEntry } from './interfaces/definitions'
 export type {
   HandleErrorsOptions,
   ErrorLogger,
@@ -13,6 +14,7 @@ export type {
 } from './presets'
 
 export * from './common/confresError'
+export { DefinitionEntryType } from './interfaces/definitions'
 
 export * from './dataContainers/basicDataContainer'
 export * from './dataContainers/mergedDataContainer'
@@ -40,6 +42,8 @@ export * from './processors/yupProcessor'
 
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'
+
+export * from './definitions/yup'
 
 import Presets from './presets'
 export default Presets

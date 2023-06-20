@@ -9,6 +9,12 @@ describe('Library exports', () => {
   "CamelCaseKeyMapper": [Function],
   "ChalkErrorFormatter": [Function],
   "ConfresError": [Function],
+  "DefinitionEntryType": {
+    "Boolean": "boolean",
+    "Mixed": "mixed",
+    "Number": "number",
+    "String": "string",
+  },
   "DotEnvLoader": [Function],
   "EnvLoader": [Function],
   "JsonFileLoader": [Function],
@@ -46,6 +52,7 @@ describe('Library exports', () => {
     "yupEnv": [Function],
     "yupEnvSync": [Function],
   },
+  "definitionsFromYupSchema": [Function],
 }
 `)
   })

@@ -76,6 +76,9 @@
     "testPathIgnorePatterns": [
       "examples"
     ],
+    "modulePathIgnorePatterns": [
+      "examples"
+    ],
     "transform": {
       "\\.ts$": [
         "ts-jest",
