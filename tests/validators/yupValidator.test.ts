@@ -1,6 +1,7 @@
 import * as yup from 'yup'
 import { YupValidator } from '~/validators/yupValidator'
 import { ValidationError, ValidationErrorType } from '~/validators/validationError'
+import { catchRejection } from '../utils'
 
 describe('YupValidator', () => {
   const schema = yup.object({
@@ -15,7 +16,7 @@ describe('YupValidator', () => {
 
   const validator = new YupValidator(schema)
 
-  test('process the configuration', async () => {
+  test('validate the configuration', async () => {
     const payload = {
       debug: '1',
       db:    {
@@ -49,13 +50,7 @@ describe('YupValidator', () => {
       },
     }
 
-    let err: unknown
-
-    try {
-      await validator.validate(payload)
-    } catch (ex) {
-      err = ex
-    }
+   const err = await catchRejection(validator.validate(payload))
 
     expect(err).toBeInstanceOf(ValidationError)
 
@@ -78,13 +73,7 @@ describe('YupValidator', () => {
       },
     }
 
-    let err: unknown
-
-    try {
-      await validator.validate(payload)
-    } catch (ex) {
-      err = ex
-    }
+    const err = await catchRejection(validator.validate(payload))
 
     expect(err).toBeInstanceOf(ValidationError)
 
