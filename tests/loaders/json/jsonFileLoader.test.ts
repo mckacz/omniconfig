@@ -1,7 +1,7 @@
 import { JsonFileLoader } from '~/loaders/json/jsonFileLoader'
 import { JsonFileLoaderError } from '~/loaders/json/jsonFileLoaderError'
 
-describe('JSONFileLoader', () => {
+describe('JsonFileLoader', () => {
   const validJSONFile = 'fixtures/data/valid.json'
   const invalidJSONFile = 'fixtures/data/invalid.json'
 

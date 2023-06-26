@@ -45,6 +45,8 @@ describe('Library exports', () => {
     "undefinedValue": 2,
   },
   "ValueLoader": [Function],
+  "YamlFileLoader": [Function],
+  "YamlFileLoaderError": [Function],
   "YupValidator": [Function],
   "default": {
     "resolve": [Function],

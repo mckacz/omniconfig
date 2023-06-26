@@ -2,7 +2,7 @@ import type { AnySchemaObject, AnyValidateFunction, DataValidationCxt } from 'aj
 import type { ErrorObject, ValidationError as AjvValidationError } from 'ajv'
 import { Validator } from '../interfaces/validator'
 import { ValidationError, ValidationErrorType } from './validationError'
-import { ConfresError } from '../common/confresError'
+import { loadDependency } from '../common/dependencies'
 
 /**
  * Validates loaded configuration against JSON Schema / JDT Schema.
@@ -114,14 +114,7 @@ export class AjvValidator<T> implements Validator<unknown, T> {
    * @param schema JSON schema to compile.
    */
   private compile(schema: AnySchemaObject): AnyValidateFunction {
-    let Ajv: typeof import('ajv').default
-
-    try {
-      // eslint-disable-next-line
-      Ajv = require('ajv').default
-    } catch {
-      throw new ConfresError('Cannot require "ajv". Please install it.')
-    }
+    const Ajv = loadDependency<typeof import('ajv')>('ajv').default
 
     const ajv = new Ajv({
       coerceTypes:      true,

@@ -30,6 +30,9 @@ export * from './loaders/optionalLoader'
 export * from './loaders/json/jsonFileLoader'
 export * from './loaders/json/jsonFileLoaderError'
 
+export * from './loaders/yaml/yamlFileLoader'
+export * from './loaders/yaml/yamlFileLoaderError'
+
 export * from './loaders/env/envLoader'
 export * from './loaders/env/processEnvLoader'
 export * from './loaders/env/dotEnvLoader'

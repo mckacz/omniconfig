@@ -3,6 +3,7 @@ import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
 import { ResolverError } from '../resolver/resolverError'
 import { Resolver } from '../interfaces/resolver'
+import { loadDependency } from '../common/dependencies'
 
 /**
  * Error logger.
@@ -40,14 +41,11 @@ function formatterFrom(formatter?: ErrorFormatter): ErrorFormatter {
     return formatter
   }
 
-  try {
-    // eslint-disable-next-line
-    return new ChalkErrorFormatter({ chalk: require('chalk') })
-  } catch {
-    // Chalk is an optional dependency.
-  }
+  const chalk = loadDependency<typeof import('chalk')>('chalk', false)
 
-  return new TextErrorFormatter()
+  return chalk
+    ? new ChalkErrorFormatter({ chalk })
+    : new TextErrorFormatter()
 }
 
 /**

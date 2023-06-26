@@ -25,6 +25,7 @@
   "peerDependencies": {
     "ajv": "^8.12.0",
     "chalk": "^4.1.2",
+    "js-yaml": "^4.1.0",
     "yup": "^0.32.11"
   },
   "peerDependenciesMeta": {
@@ -32,6 +33,9 @@
       "optional": true
     },
     "chalk": {
+      "optional": true
+    },
+    "js-yaml": {
       "optional": true
     },
     "yup": {
@@ -55,6 +59,7 @@
   ],
   "devDependencies": {
     "@types/jest": "^29.5.2",
+    "@types/js-yaml": "^4.0.5",
     "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.1",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
@@ -63,6 +68,7 @@
     "chalk": "^4.1.2",
     "eslint": "^8.43.0",
     "jest": "^29.5.0",
+    "js-yaml": "^4.1.0",
     "rimraf": "^5.0.1",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4",
