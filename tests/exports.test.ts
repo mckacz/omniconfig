@@ -4,24 +4,19 @@ describe('Library exports', () => {
   test('exported members', () => {
     expect(members).toMatchInlineSnapshot(`
 {
+  "AjvModel": [Function],
   "AsyncResolver": [Function],
   "BasicDataContainer": [Function],
   "CamelCaseKeyMapper": [Function],
   "ChalkErrorFormatter": [Function],
   "ConfresError": [Function],
-  "DefinitionEntryType": {
-    "Boolean": "boolean",
-    "Mixed": "mixed",
-    "Number": "number",
-    "String": "string",
-  },
-  "DefinitionsBasedKeyMapper": [Function],
   "DotEnvLoader": [Function],
   "EnvLoader": [Function],
   "JsonFileLoader": [Function],
   "JsonFileLoaderError": [Function],
   "LoaderError": [Function],
   "MergedDataContainer": [Function],
+  "MetadataBasedKeyMapper": [Function],
   "OptionalLoader": [Function],
   "ProcessEnvLoader": [Function],
   "ResolverError": [Function],
@@ -47,15 +42,7 @@ describe('Library exports', () => {
   "ValueLoader": [Function],
   "YamlFileLoader": [Function],
   "YamlFileLoaderError": [Function],
-  "YupValidator": [Function],
-  "default": {
-    "resolve": [Function],
-    "yupDotEnv": [Function],
-    "yupDotEnvSync": [Function],
-    "yupEnv": [Function],
-    "yupEnvSync": [Function],
-  },
-  "definitionsFromYupSchema": [Function],
+  "YupModel": [Function],
 }
 `)
   })

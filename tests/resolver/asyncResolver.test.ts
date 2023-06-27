@@ -1,8 +1,9 @@
 import { AsyncResolver } from '~/resolver/asyncResolver'
 import { ValueLoader } from '~/loaders/valueLoader'
-import { LoaderError } from '~/loaders/loaderError'
-import { ResolverError } from '~/resolver/resolverError'
-import { ValidationError, ValidationErrorType } from '~/validators/validationError'
+import { LoaderError } from '~/errors/loaderError'
+import { ResolverError } from '~/errors/resolverError'
+import { ValidationError, ValidationErrorType } from '~/errors/validationError'
+import { Model } from '~/interfaces/model'
 
 describe('AsyncResolver', () => {
   const loader1 = new ValueLoader({
@@ -34,8 +35,8 @@ describe('AsyncResolver', () => {
     },
   }, 'loader3')
 
-  const validator = {
-    validate: jest.fn(async (data: object) => ({ ...data, processed: 1 })),
+  const model: jest.Mocked<Model<any>> = {
+    validate: jest.fn(async (data: any) => ({ ...data, processed: 1 })),
   }
 
   test('empty object if no loaders nor processors have been provided', async () => {
@@ -86,7 +87,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -106,7 +107,7 @@ describe('AsyncResolver', () => {
   })
 
   test('decorate generic processing error', async () => {
-    validator.validate.mockImplementationOnce(() => {
+    model.validate.mockImplementationOnce(() => {
       throw new ValidationError('Something is wrong')
     })
 
@@ -115,7 +116,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -128,14 +129,14 @@ describe('AsyncResolver', () => {
       error:            expect.any(ValidationError),
       message:          'Something is wrong',
       isUndefinedError: false,
-      reporter:         validator,
+      reporter:         model,
       path:             undefined,
       references:       [],
     })
   })
 
   test('decorate invalid value error', async () => {
-    validator.validate.mockImplementationOnce(() => {
+    model.validate.mockImplementationOnce(() => {
       throw new ValidationError('That is wrong', undefined, ['b', 'e', 'g'], ValidationErrorType.invalidValue)
     })
 
@@ -144,7 +145,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -157,7 +158,7 @@ describe('AsyncResolver', () => {
       error:            expect.any(ValidationError),
       message:          'That is wrong',
       isUndefinedError: false,
-      reporter:         validator,
+      reporter:         model,
       path:             ['b', 'e', 'g'],
       references:       [
         {
@@ -169,7 +170,7 @@ describe('AsyncResolver', () => {
   })
 
   test('decorate undefined value error', async () => {
-    validator.validate.mockImplementationOnce(() => {
+    model.validate.mockImplementationOnce(() => {
       throw new ValidationError('That is missing', undefined, ['b', 'e', 'h'], ValidationErrorType.undefinedValue)
     })
 
@@ -178,7 +179,7 @@ describe('AsyncResolver', () => {
     try {
       await new AsyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -191,7 +192,7 @@ describe('AsyncResolver', () => {
       error:            expect.any(ValidationError),
       message:          'That is missing',
       isUndefinedError: true,
-      reporter:         validator,
+      reporter:         model,
       path:             ['b', 'e', 'h'],
       references:       [
         {

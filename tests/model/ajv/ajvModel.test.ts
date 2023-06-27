@@ -1,11 +1,11 @@
 import Ajv, { AnySchemaObject, AsyncSchema } from 'ajv'
-import { AjvValidator } from '~/validators/ajvValidator'
-import { ValidationError, ValidationErrorType } from '~/validators/validationError'
+import { ValidationError, ValidationErrorType } from '~/errors/validationError'
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema'
-import { catchError, catchRejection } from '../utils'
+import { catchError, catchRejection } from '../../utils'
 import { AnyValidateFunction } from 'ajv/dist/types'
+import { AjvModel } from '~/model/ajv/ajvModel'
 
-describe('AjvValidator', () => {
+describe('AjvModel', () => {
   const schema: SomeJSONSchema = {
     type:     'object',
     required: ['debug', 'db'],
@@ -111,7 +111,7 @@ describe('AjvValidator', () => {
     ['synchronous validation function', fn],
     ['synchronous schema', schema],
   ])('synchronous validation of %s', (_: string, fnOrSchema: AnyValidateFunction | AnySchemaObject) => {
-    const validator = new AjvValidator(fnOrSchema)
+    const validator = new AjvModel(fnOrSchema)
 
     test('validate the configuration', () => {
       expect(validator.validateSync(validPayload)).toEqual(resultOfValidPayload)
@@ -138,7 +138,7 @@ describe('AjvValidator', () => {
     ['synchronous schema', schema],
     ['asynchronous schema', asyncSchema],
   ])('asynchronous validation using %s', (_: string, fnOrSchema: AnyValidateFunction | AnySchemaObject) => {
-    const validator = new AjvValidator(fnOrSchema)
+    const validator = new AjvModel(fnOrSchema)
 
     test('validate the configuration', async () => {
       await expect(validator.validate(validPayload)).resolves.toEqual(resultOfValidPayload)
@@ -160,13 +160,13 @@ describe('AjvValidator', () => {
   })
 
   test('attempt to synchronously validate using asynchronous validation function', () => {
-    const validator = new AjvValidator(asyncFn)
+    const validator = new AjvModel(asyncFn)
 
     expect(() => validator.validateSync(validPayload)).toThrow('Validation function is asynchronous')
   })
 
   test('attempt to synchronously validate using asynchronous schema', () => {
-    const validator = new AjvValidator(asyncSchema)
+    const validator = new AjvModel(asyncSchema)
 
     expect(() => validator.validateSync(validPayload)).toThrow('Validation function is asynchronous')
   })

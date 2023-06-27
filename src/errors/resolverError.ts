@@ -1,8 +1,8 @@
 import type { Loader} from '../interfaces/loader'
-import type { Validator } from '../interfaces/validator'
 import type{ Reference } from '../interfaces/reference'
-import { ConfresError } from '../common/confresError'
-import { ValidationError, ValidationErrorType } from '../validators/validationError'
+import type { Model } from '../interfaces/model'
+import { ConfresError } from './confresError'
+import { ValidationError, ValidationErrorType } from './validationError'
 
 /**
  * Resolver error.
@@ -19,7 +19,7 @@ export class ResolverError extends ConfresError {
    */
   constructor(
     err: Error | unknown,
-    readonly reporter?: Loader<unknown> | Validator<unknown, unknown>,
+    readonly reporter?: Loader<unknown> | Model<unknown>,
     readonly path?: string[],
     readonly references: Reference[] = [],
   ) {

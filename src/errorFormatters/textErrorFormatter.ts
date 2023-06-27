@@ -1,4 +1,4 @@
-import { ResolverError } from '../resolver/resolverError'
+import { ResolverError } from '../errors/resolverError'
 import { ErrorFormatter } from '../interfaces/errorFormatter'
 import type { Reference } from '../interfaces/reference'
 

@@ -1,9 +1,9 @@
 import { ErrorFormatter } from '../interfaces/errorFormatter'
 import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
-import { ResolverError } from '../resolver/resolverError'
+import { ResolverError } from '../errors/resolverError'
 import { Resolver } from '../interfaces/resolver'
-import { loadDependency } from '../common/dependencies'
+import { loadDependency } from '../utils/dependencies'
 
 /**
  * Error logger.

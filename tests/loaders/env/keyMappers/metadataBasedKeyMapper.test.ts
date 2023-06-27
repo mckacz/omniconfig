@@ -1,8 +1,8 @@
-import { Definitions } from '~/interfaces/definitions'
-import { DefinitionsBasedKeyMapper } from '~/loaders/env/keyMappers/definitionsBasedKeyMapper'
+import { Metadata } from '~/interfaces/metadata'
+import { MetadataBasedKeyMapper } from '~/loaders/env/keyMappers/metadataBasedKeyMapper'
 
-describe('DefinitionsBasedKeyMapper', () => {
-  const definitions: Definitions = [
+describe('MetadataBasedKeyMapper', () => {
+  const metadata: Metadata[] = [
     {path: ['debug']},
     {path: ['some', 'nested']},
     {path: ['someService', 'enabled']},
@@ -18,7 +18,7 @@ describe('DefinitionsBasedKeyMapper', () => {
       [['notExistingKey'], undefined],
     ])('pathToKey() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
-        new DefinitionsBasedKeyMapper({definitions}).pathToKey(path)
+        new MetadataBasedKeyMapper({metadata: metadata}).pathToKey(path)
       ).toEqual(expectedKey)
     })
 
@@ -31,7 +31,7 @@ describe('DefinitionsBasedKeyMapper', () => {
       ['NOT_EXISTING_KEY',             undefined],
     ])('keyToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
       expect(
-        new DefinitionsBasedKeyMapper({definitions}).keyToPath(key)
+        new MetadataBasedKeyMapper({metadata: metadata}).keyToPath(key)
       ).toEqual(expectedPath)
     })
   })
@@ -45,8 +45,8 @@ describe('DefinitionsBasedKeyMapper', () => {
       [['notExistingKey'], undefined],
     ])('pathToKey() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
-        new DefinitionsBasedKeyMapper({
-          definitions,
+        new MetadataBasedKeyMapper({
+          metadata:      metadata,
           prefix:        'APP_',
           separator:     '_',
           wordSeparator: '_'
@@ -64,8 +64,8 @@ describe('DefinitionsBasedKeyMapper', () => {
       ['APP_NOT_EXISTING_KEY',             undefined],
     ])('keyToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
       expect(
-        new DefinitionsBasedKeyMapper({
-          definitions,
+        new MetadataBasedKeyMapper({
+          metadata:      metadata,
           prefix:        'APP_',
           separator:     '_',
           wordSeparator: '_'

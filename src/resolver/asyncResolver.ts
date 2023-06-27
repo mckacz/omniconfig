@@ -1,4 +1,4 @@
-import { ResolverError } from './resolverError'
+import { ResolverError } from '../errors/resolverError'
 import { BaseResolver } from './baseResolver'
 import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
 import { DataContainer } from '../interfaces/dataContainer'
@@ -43,11 +43,11 @@ export class AsyncResolver<T = unknown> extends BaseResolver<T, Promise<T>> {
   private async validate(dataContainer: DataContainer<unknown>): Promise<T> {
     let value = dataContainer.value as T
 
-    if (this.validator) {
+    if (this.model) {
       try {
-        value = await this.validator.validate(value)
+        value = await this.model.validate(value)
       } catch (ex) {
-        throw this.decorateError(ex, dataContainer, this.validator)
+        throw this.decorateError(ex, dataContainer)
       }
     }
 

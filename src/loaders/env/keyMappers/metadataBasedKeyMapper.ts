@@ -1,15 +1,15 @@
 import _ from 'lodash'
 import { BaseKeyMapper, CommonKeyMapperOptions } from './baseKeyMapper'
-import { Definitions } from '../../../interfaces/definitions'
+import { Metadata } from '../../../interfaces/metadata'
 
 /**
- * Options for DefinitionKeyMapperOptions.
+ * Options for MetadataBasedKeyMapper.
  */
-export interface DefinitionsBasedKeyMapperOptions extends CommonKeyMapperOptions {
+export interface MetadataBasedKeyMapperOptions extends CommonKeyMapperOptions {
   /**
    * Definitions use by the the mapper.
    */
-  definitions: Definitions
+  metadata: Metadata[]
 
   /**
    * Word separator to be used in env keys.
@@ -18,9 +18,9 @@ export interface DefinitionsBasedKeyMapperOptions extends CommonKeyMapperOptions
 }
 
 /**
- * Key mapper that uses definitions of supported configuration paths.
+ * Key mapper that uses metadata of supported configuration paths.
  */
-export class DefinitionsBasedKeyMapper extends BaseKeyMapper {
+export class MetadataBasedKeyMapper extends BaseKeyMapper {
   /**
    * Mapping of env key to configuration path.
    */
@@ -32,20 +32,19 @@ export class DefinitionsBasedKeyMapper extends BaseKeyMapper {
   private pathKeyToKeyDictionary: Record<string, string> = {}
 
   /**
-   *
-   * @private
+   * Word separator to be used in env keys.
    */
   private wordSeparator: string
 
   /**
-   * Creates a new instance of DefinitionsBasedKeyMapper.
+   * Creates a new instance of MetadataBasedKeyMapper.
    */
-  constructor(options: Partial<DefinitionsBasedKeyMapperOptions> & Pick<DefinitionsBasedKeyMapperOptions, 'definitions'>) {
+  constructor(options: Partial<MetadataBasedKeyMapperOptions> & Pick<MetadataBasedKeyMapperOptions, 'metadata'>) {
     super(options)
 
     this.wordSeparator = options.wordSeparator ?? '_'
 
-    this.buildDictionaries(options.definitions)
+    this.buildDictionaries(options.metadata)
   }
 
   /**
@@ -70,8 +69,8 @@ export class DefinitionsBasedKeyMapper extends BaseKeyMapper {
   /**
    * Builds dictionaries used by this mapper.
    */
-  private buildDictionaries(definition: Definitions) {
-    for (const entry of definition) {
+  private buildDictionaries(metadata: Metadata[]) {
+    for (const entry of metadata) {
       const key = this.getPathKey(entry.path)
       const dictKey = this.getPathDictionaryKey(entry.path)
 

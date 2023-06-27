@@ -1,10 +1,10 @@
-import { ResolverError } from './resolverError'
-import { ValidationError, ValidationErrorType } from '../validators/validationError'
+import { ResolverError } from '../errors/resolverError'
+import { ValidationError, ValidationErrorType } from '../errors/validationError'
 import type { Loader } from '../interfaces/loader'
-import type { Validator } from '../interfaces/validator'
 import type { Resolver } from '../interfaces/resolver'
 import type { Reference } from '../interfaces/reference'
 import type { DataContainer } from '../interfaces/dataContainer'
+import type { Model } from '../interfaces/model'
 
 /**
  * Common parts of AsyncResolver and SyncResolver.
@@ -16,11 +16,11 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    * @param loaders List of loaders to use. Configuration acquired from the loaders
    *                will be merged in order from left to right.
    *
-   * @param validator Validator to be used to validate the configuration.
+   * @param model Model to be used to validate the configuration.
    */
   constructor(
     protected readonly loaders: Loader<unknown | undefined>[],
-    protected readonly validator?: Validator<unknown, Type>,
+    protected readonly model?: Model<ReturnType>,
   ) {
   }
 
@@ -35,21 +35,19 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
    *
    * @param err Error object.
    * @param dataContainer Source configuration objects.
-   * @param validator Validator instance that reported the error.
    */
   protected decorateError(
     err: ValidationError | unknown,
-    dataContainer: DataContainer<unknown>,
-    validator: Validator<unknown, unknown>
+    dataContainer: DataContainer<unknown>
   ) {
     if (!(err instanceof ValidationError) || !err.path) {
-      return new ResolverError(err, validator)
+      return new ResolverError(err, this.model)
     }
 
     if (err.type === ValidationErrorType.undefinedValue) {
       return new ResolverError(
         err,
-        validator,
+        this.model,
         err.path,
         this.resolveReferencesForUndefinedValue(err.path),
       )
@@ -59,7 +57,7 @@ export abstract class BaseResolver<Type, ReturnType = Type> implements Resolver<
 
     return new ResolverError(
       err,
-      validator,
+      this.model,
       err.path,
       reference ? [reference] : [],
     )

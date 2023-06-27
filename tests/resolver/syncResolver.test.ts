@@ -1,9 +1,9 @@
 import { SyncResolver } from '~/resolver/syncResolver'
 import { ValueLoader } from '~/loaders/valueLoader'
-import { LoaderError } from '~/loaders/loaderError'
-import { ResolverError } from '~/resolver/resolverError'
-import { ValidationError, ValidationErrorType } from '~/validators/validationError'
-import { Validator } from '~/interfaces/validator'
+import { LoaderError } from '~/errors/loaderError'
+import { ResolverError } from '~/errors/resolverError'
+import { ValidationError, ValidationErrorType } from '~/errors/validationError'
+import { Model } from '~/interfaces/model'
 import { Loader } from '~/interfaces/loader'
 import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 
@@ -38,17 +38,19 @@ describe('SyncResolver', () => {
   }, 'loader3')
 
   const loader4: Loader<unknown> = {
-    load:          () => Promise.resolve(new BasicDataContainer(loader4, { key: 'value' })),
+    load:          () => Promise.resolve(new BasicDataContainer(loader4, {key: 'value'})),
     getReferences: () => [],
   }
 
-  const validator: jest.Mocked<Required<Validator<any, any>>> = {
-    validate:     jest.fn(async (data: object) => ({ ...data, processed: 1 })),
-    validateSync: jest.fn((data: object) => ({ ...data, processedSync: 1 })),
+  const model: jest.Mocked<Required<Model<any>>> = {
+    getMetadata:  jest.fn().mockReturnValue([]),
+    validate:     jest.fn(async (data: any) => ({...data, processed: 1})),
+    validateSync: jest.fn((data: any) => ({...data, processedSync: 1})),
   }
 
-  const syncOnlyValidator: jest.Mocked<Validator<any, any>> = {
-    validate: jest.fn(async (data: object) => ({ ...data, processed: 3 })),
+  const syncOnlyModel: jest.Mocked<Model<any>> = {
+    getMetadata: jest.fn().mockReturnValue([]),
+    validate:    jest.fn(async (data: any) => ({...data, processed: 3})),
   }
 
   test('empty object if no loaders nor processors have been provided', async () => {
@@ -99,7 +101,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -119,7 +121,7 @@ describe('SyncResolver', () => {
   })
 
   test('decorate generic processing error', async () => {
-    validator.validateSync.mockImplementationOnce(() => {
+    model.validateSync.mockImplementationOnce(() => {
       throw new ValidationError('Something is wrong')
     })
 
@@ -128,7 +130,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -141,14 +143,14 @@ describe('SyncResolver', () => {
       error:            expect.any(ValidationError),
       message:          'Something is wrong',
       isUndefinedError: false,
-      reporter:         validator,
+      reporter:         model,
       path:             undefined,
       references:       [],
     })
   })
 
   test('decorate invalid value error', async () => {
-    validator.validateSync.mockImplementationOnce(() => {
+    model.validateSync.mockImplementationOnce(() => {
       throw new ValidationError('That is wrong', undefined, ['b', 'e', 'g'], ValidationErrorType.invalidValue)
     })
 
@@ -157,7 +159,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -170,7 +172,7 @@ describe('SyncResolver', () => {
       error:            expect.any(ValidationError),
       message:          'That is wrong',
       isUndefinedError: false,
-      reporter:         validator,
+      reporter:         model,
       path:             ['b', 'e', 'g'],
       references:       [
         {
@@ -182,7 +184,7 @@ describe('SyncResolver', () => {
   })
 
   test('decorate undefined value error', async () => {
-    validator.validateSync.mockImplementationOnce(() => {
+    model.validateSync.mockImplementationOnce(() => {
       throw new ValidationError('That is missing', undefined, ['b', 'e', 'h'], ValidationErrorType.undefinedValue)
     })
 
@@ -191,7 +193,7 @@ describe('SyncResolver', () => {
     try {
       new SyncResolver(
         [loader1, loader2, loader3],
-        validator,
+        model,
       ).resolve()
     } catch (ex) {
       err = ex as ResolverError
@@ -204,7 +206,7 @@ describe('SyncResolver', () => {
       error:            expect.any(ValidationError),
       message:          'That is missing',
       isUndefinedError: true,
-      reporter:         validator,
+      reporter:         model,
       path:             ['b', 'e', 'h'],
       references:       [
         {
@@ -227,7 +229,7 @@ describe('SyncResolver', () => {
     expect(
       () => new SyncResolver(
         [loader4],
-        validator,
+        model,
       ).resolve(),
     ).toThrow()
   })
@@ -236,7 +238,7 @@ describe('SyncResolver', () => {
     expect(
       () => new SyncResolver(
         [loader1],
-        syncOnlyValidator,
+        syncOnlyModel,
       ).resolve(),
     ).toThrow()
   })

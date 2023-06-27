@@ -6,9 +6,9 @@ import type {
   SchemaObjectDescription
 } from 'yup'
 
-import { Definitions, DefinitionEntry, DefinitionEntryType } from '../interfaces/definitions'
+import { Metadata, ValueType } from '../../interfaces/metadata'
 
-const OverridableEntryProps: Array<keyof DefinitionEntry> = [
+const OverridableEntryProps: Array<keyof Metadata> = [
   'required',
   'array',
   'type',
@@ -43,20 +43,20 @@ function isSimpleSchemaDescription(
 }
 
 /**
- * Recursively builds configuration options definitions from Yup schema.
+ * Recursively builds configuration options metadata from Yup schema.
  */
-function buildDefinition(path: string[], {fields}: SchemaObjectDescription): Definitions {
-  const schema: Definitions = []
+function metadataFromObjectSchemaDescription(path: string[], {fields}: SchemaObjectDescription): Metadata[] {
+  const metadata: Metadata[] = []
 
   for (const [key, field] of Object.entries(fields)) {
     if (isObjectSchemaDescription(field)) {
-      schema.push(...buildDefinition([...path, key], field))
+      metadata.push(...metadataFromObjectSchemaDescription([...path, key], field))
       continue
     }
 
-    const entry: DefinitionEntry = {
+    const entry: Metadata = {
       path:     [...path, key],
-      type:     DefinitionEntryType.Mixed,
+      type:     ValueType.Mixed,
       required: !('optional' in field && field.optional)
     }
 
@@ -67,10 +67,10 @@ function buildDefinition(path: string[], {fields}: SchemaObjectDescription): Def
       && isSimpleSchemaDescription(innerType)
     ) {
       entry.array = true
-      entry.type = innerType.type as DefinitionEntryType
+      entry.type = innerType.type as ValueType
       entry.defaultValue = field.default
     } else if (isSimpleSchemaDescription(field)) {
-      entry.type = field.type as DefinitionEntryType
+      entry.type = field.type as ValueType
       entry.defaultValue = field.default
     }
 
@@ -84,16 +84,16 @@ function buildDefinition(path: string[], {fields}: SchemaObjectDescription): Def
       }
     }
 
-    schema.push(entry)
+    metadata.push(entry)
   }
 
-  return schema
+  return metadata
 }
 
 /**
- * Get definitions of configuration options from Yup schema.
+ * Build metadata from Yup schema
+ * @param schema Yup schema to build metadata from.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function definitionsFromYupSchema(schema: ObjectSchema<any>) {
-  return buildDefinition([], schema.describe())
+export function buildMetadata(schema: ObjectSchema<any>): Metadata[] {
+  return metadataFromObjectSchemaDescription([], schema.describe())
 }

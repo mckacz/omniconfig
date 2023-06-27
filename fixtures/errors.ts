@@ -1,5 +1,5 @@
-import { ResolverError } from '../src/resolver/resolverError'
-import { ValidationError, ValidationErrorType } from '../src/validators/validationError'
+import { ResolverError } from '../src/errors/resolverError'
+import { ValidationError, ValidationErrorType } from '../src/errors/validationError'
 
 export const undefinedErrorMock = new ResolverError(
   new ValidationError('The value is required', undefined, ['obj', 'foo'], ValidationErrorType.undefinedValue),

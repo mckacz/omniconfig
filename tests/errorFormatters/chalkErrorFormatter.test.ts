@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { ResolverError } from '~/resolver/resolverError'
+import { ResolverError } from '~/errors/resolverError'
 import { ChalkErrorFormatter, ChalkErrorFormatterTheme } from '~/errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatterTemplates } from '~/errorFormatters/textErrorFormatter'
 

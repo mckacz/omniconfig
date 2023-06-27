@@ -1,29 +1,22 @@
 export type { Loader } from './interfaces/loader'
 export type { Reference } from './interfaces/reference'
-export type { Validator } from './interfaces/validator'
+export type { Model } from './interfaces/model'
 export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
 export type { ErrorFormatter } from './interfaces/errorFormatter'
 export type { Resolver } from './interfaces/resolver'
-export type { Definitions, DefinitionEntry } from './interfaces/definitions'
-export type {
-  HandleErrorsOptions,
-  ErrorLogger,
-  DotEnvPresetOptions,
-  YupEnvPresetOptions,
-  YupDotEnvPresetOptions,
-} from './presets'
+export type { ValueType, Metadata } from './interfaces/metadata'
 
-export * from './common/confresError'
-export { DefinitionEntryType } from './interfaces/definitions'
+export * from './errors/confresError'
+export * from './errors/loaderError'
+export * from './errors/resolverError'
+export * from './errors/validationError'
 
 export * from './dataContainers/basicDataContainer'
 export * from './dataContainers/mergedDataContainer'
 
 export * from './resolver/syncResolver'
 export * from './resolver/asyncResolver'
-export * from './resolver/resolverError'
 
-export * from './loaders/loaderError'
 export * from './loaders/valueLoader'
 export * from './loaders/optionalLoader'
 
@@ -39,15 +32,13 @@ export * from './loaders/env/dotEnvLoader'
 export * from './loaders/env/keyMappers/splittingKeyMapper'
 export * from './loaders/env/keyMappers/camelCaseKeyMapper'
 export * from './loaders/env/keyMappers/snakeCaseKeyMapper'
-export * from './loaders/env/keyMappers/definitionsBasedKeyMapper'
+export * from './loaders/env/keyMappers/metadataBasedKeyMapper'
 
-export * from './validators/validationError'
-export * from './validators/yupValidator'
+export * from './model/yup/yupModel'
+export * from './model/ajv/ajvModel'
 
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'
 
-export * from './definitions/yup'
-
-import Presets from './presets'
-export default Presets
+// import Presets from './presets'
+// export default Presets

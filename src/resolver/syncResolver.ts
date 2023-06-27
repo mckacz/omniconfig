@@ -1,4 +1,4 @@
-import { ResolverError } from './resolverError'
+import { ResolverError } from '../errors/resolverError'
 import { BaseResolver } from './baseResolver'
 import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
 import type { DataContainer } from '../interfaces/dataContainer'
@@ -45,13 +45,13 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
   private validate(dataContainer: DataContainer<unknown>): T {
     let value = dataContainer.value as T
 
-    if (this.validator) {
+    if (this.model) {
       try {
-        if (this.assertSync(this.validator, 'validateSync')) {
-          value = this.validator.validateSync(value)
+        if (this.assertSync(this.model, 'validateSync')) {
+          value = this.model.validateSync(value)
         }
       } catch (ex) {
-        throw this.decorateError(ex, dataContainer, this.validator)
+        throw this.decorateError(ex, dataContainer)
       }
     }
 

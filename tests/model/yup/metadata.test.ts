@@ -1,16 +1,16 @@
 import * as yup from 'yup'
-import { definitionsFromYupSchema } from '~/definitions/yup'
+import { buildMetadata } from '~/model/yup/metadata'
 
-describe('definitionsFromYupSchema()', () => {
+describe('Yup metadata building helpers', () => {
   test('empty schema', () => {
     expect(
-      definitionsFromYupSchema(yup.object())
+      buildMetadata(yup.object())
     ).toEqual([])
   })
 
   test('simple object', () => {
     expect(
-      definitionsFromYupSchema(
+      buildMetadata(
         yup.object({
           host:     yup.string().default('localhost'),
           port:     yup.number().min(1).max(65535).default(5432),
@@ -46,7 +46,7 @@ describe('definitionsFromYupSchema()', () => {
 
   test('nested object', () => {
     expect(
-      definitionsFromYupSchema(
+      buildMetadata(
         yup.object({
           debug: yup.boolean(),
           db:    yup.object({
@@ -90,7 +90,7 @@ describe('definitionsFromYupSchema()', () => {
 
   test('object with metadata', () => {
     expect(
-      definitionsFromYupSchema(
+      buildMetadata(
         yup.object({
           host:     yup.string().default('localhost').meta({description: 'Database host'}),
           port:     yup.number().min(1).max(65535).default(5432).meta({description: 'Database port'}),

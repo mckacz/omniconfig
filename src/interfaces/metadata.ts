@@ -1,7 +1,7 @@
 /**
  * Type of value the configuration entry supports.
  */
-export enum DefinitionEntryType {
+export enum ValueType {
   Mixed = 'mixed',
   String = 'string',
   Number = 'number',
@@ -9,9 +9,9 @@ export enum DefinitionEntryType {
 }
 
 /**
- * Definition of a single configuration entry.
+ * Metadata of a single configuration entry.
  */
-export interface DefinitionEntry {
+export interface Metadata {
   /**
    * Configuration entry path.
    */
@@ -20,7 +20,7 @@ export interface DefinitionEntry {
   /**
    * Value type.
    */
-  type?: DefinitionEntryType
+  type?: ValueType
 
   /**
    * Flag is the value is required.
@@ -42,8 +42,3 @@ export interface DefinitionEntry {
    */
   defaultValue?: unknown
 }
-
-/**
- * List of definitions of configuration options.
- */
-export type Definitions = DefinitionEntry[]

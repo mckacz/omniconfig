@@ -1,28 +1,29 @@
 import type { AnySchemaObject, AnyValidateFunction, DataValidationCxt } from 'ajv/dist/types'
 import type { ErrorObject, ValidationError as AjvValidationError } from 'ajv'
-import { Validator } from '../interfaces/validator'
-import { ValidationError, ValidationErrorType } from './validationError'
-import { loadDependency } from '../common/dependencies'
+import { Model } from '../../interfaces/model'
+import { ValidationError, ValidationErrorType } from '../../errors/validationError'
+import { loadDependency } from '../../utils/dependencies'
 
 /**
- * Validates loaded configuration against JSON Schema / JDT Schema.
+ * Model that uses JSON/JDT schema.
  */
-export class AjvValidator<T> implements Validator<unknown, T> {
+export class AjvModel<TData> implements Model<TData> {
   /**
    * Ajv validation function.
    */
-  private readonly fn: AnyValidateFunction<T>
+  private readonly fn: AnyValidateFunction<TData>
 
   /**
-   * Creates a new instance of the validator.
+   * Creates a new instance of AjvModel.
    *
    * @param fnOrSchema Compiled Ajv validation function or JSON schema.
-   * @param context Context for validation function.
+   * @param context Ajv validation context.
    */
   constructor(
-    fnOrSchema: AnyValidateFunction<T> | AnySchemaObject,
-    private readonly context?: DataValidationCxt,
+    fnOrSchema: AnyValidateFunction<TData> | AnySchemaObject,
+    private readonly context?: DataValidationCxt
   ) {
+
     if (typeof fnOrSchema === 'function') {
       this.fn = fnOrSchema
     } else {
@@ -31,50 +32,58 @@ export class AjvValidator<T> implements Validator<unknown, T> {
   }
 
   /**
-   * Validates the data asynchronously.
-   *
-   * @param data Data to validate.
+   * Asynchronously validate input against the model.
+   * @param input Input to validate.
    */
-  async validate(data: unknown): Promise<T> {
+  validate(input: unknown): Promise<TData> {
     if (!('$async' in this.fn)) {
-      return this.validateSync(data)
-    }
-
-    try {
-      return await this.fn(data, this.context)
-    } catch (ex) {
-      if (this.isAjvValidationError(ex)) {
-        throw this.createValidationError(ex.errors, ex)
+      try {
+        return Promise.resolve(this.validateSync(input))
+      } catch (ex) {
+        return Promise.reject(ex)
       }
-
-      throw new ValidationError(`Validation error: ${String(ex)}`, ex)
     }
+
+    return this.fn(input, this.context)
+      .catch(ex => Promise.reject(
+        this.createValidationError(ex)
+      ))
   }
 
   /**
-   * Validates the data synchronously.
-   *
-   * @param data Data to validate.
+   * Synchronously validate input against the model.
+   * @param input Input to validate.
    */
-  validateSync(data: unknown): T {
+  validateSync(input: unknown): TData {
     if ('$async' in this.fn) {
       throw new ValidationError('Validation function is asynchronous')
     }
 
-    if (!this.fn(data, this.context)) {
+    if (!this.fn(input, this.context)) {
       throw this.createValidationError(this.fn.errors)
     }
 
-    return data
+    return input
   }
 
   /**
-   * Wraps Ajv errors into ValidationError.
-   *
-   * @param errors Ajv error objects.
-   * @param ex Original error
+   * Creates validation error from Ajv results.
+   * @param errorObjectsOrValidationError Ajv
+   * @private
    */
-  private createValidationError(errors?: Partial<ErrorObject>[] | null, ex?: Error) {
+  private createValidationError(errorObjectsOrValidationError?: Partial<ErrorObject>[] | unknown): ValidationError {
+    let ex: Error | undefined
+    let errors: Partial<ErrorObject>[] | undefined
+
+    if (errorObjectsOrValidationError instanceof Array) {
+      errors = errorObjectsOrValidationError
+    } else if (this.isAjvValidationError(errorObjectsOrValidationError)) {
+      ex = errorObjectsOrValidationError
+      errors = errorObjectsOrValidationError.errors ?? []
+    } else if (ex) {
+      return new ValidationError(`Validation error: ${String(ex)}`, ex)
+    }
+
     if (!errors?.length) {
       return new ValidationError('Invalid data', ex, [], ValidationErrorType.invalidValue)
     }
