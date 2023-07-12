@@ -120,7 +120,7 @@ export class TextErrorFormatter implements ErrorFormatter {
    *
    * @param err ResolverError instance to describe.
    */
-  format(err: ResolverError): string {
+  format(err: ResolverError | unknown): string {
     if (!(err instanceof ResolverError)) {
       throw new TypeError('Expected an instance of ResolverError')
     }

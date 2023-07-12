@@ -17,6 +17,7 @@ describe('Library exports', () => {
   "LoaderError": [Function],
   "MergedDataContainer": [Function],
   "MetadataBasedKeyMapper": [Function],
+  "OmniConfig": [Function],
   "OptionalLoader": [Function],
   "ProcessEnvLoader": [Function],
   "ResolverError": [Function],
@@ -43,6 +44,7 @@ describe('Library exports', () => {
   "YamlFileLoader": [Function],
   "YamlFileLoaderError": [Function],
   "YupModel": [Function],
+  "default": OmniConfigYup {},
 }
 `)
   })

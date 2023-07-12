@@ -9,5 +9,5 @@ export interface ErrorFormatter {
    *
    * @param err ResolverError instance to describe.
    */
-  format(err: ResolverError): string
+  format(err: ResolverError | unknown): string
 }

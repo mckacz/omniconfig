@@ -1,3 +1,5 @@
+import { OmniConfig as OmniConfigClass } from './omniConfig'
+
 export type { Loader } from './interfaces/loader'
 export type { Reference } from './interfaces/reference'
 export type { Model } from './interfaces/model'
@@ -40,5 +42,7 @@ export * from './model/ajv/ajvModel'
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'
 
-// import Presets from './presets'
-// export default Presets
+export * from './omniConfig'
+
+const OmniConfig = new OmniConfigClass()
+export default OmniConfig
