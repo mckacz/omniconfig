@@ -8,6 +8,8 @@ parserOptions:
 
 plugins:
   - '@typescript-eslint'
+  - 'import'
+  - 'jest'
 
 extends:
   - 'eslint:recommended'
@@ -17,11 +19,61 @@ extends:
 ignorePatterns:
   - 'lib'
   - 'examples'
+  - 'fixtures'
   - 'node_modules'
 
 rules:
   quotes: [ error, single ]
   quote-props: [ error, as-needed ]
+  max-len: [ error, 120 ]
+  prefer-const: [ error, { destructuring: 'all' } ]
+
+  '@typescript-eslint/indent':
+    - error
+    - 2
+    - SwitchCase: 1
+      ignoredNodes:
+        - 'PropertyDefinition[decorators]'
+        - 'TSUnionType'
+        - 'Decorator'
+
+  '@typescript-eslint/brace-style': [ error ]
+  '@typescript-eslint/comma-dangle': [ error, always-multiline ]
+  '@typescript-eslint/comma-spacing': [ error ]
+  '@typescript-eslint/default-param-last': [ error ]
+  '@typescript-eslint/func-call-spacing': [ error ]
+  '@typescript-eslint/keyword-spacing': [ error ]
+  '@typescript-eslint/no-dupe-class-members': [ error ]
+  '@typescript-eslint/no-duplicate-imports': [ error ]
+  '@typescript-eslint/no-extra-parens': [ error ]
+  '@typescript-eslint/no-invalid-this': [ error ]
+  '@typescript-eslint/no-loop-func': [ error ]
+  '@typescript-eslint/no-shadow': [ error ]
+  '@typescript-eslint/no-unused-expressions': [ error ]
+  '@typescript-eslint/no-use-before-define': [ error ]
+  '@typescript-eslint/object-curly-spacing': [ error, always ]
+  '@typescript-eslint/quotes': [ error, single ]
+  '@typescript-eslint/return-await': [ error ]
+  '@typescript-eslint/semi': [ error, never ]
+  '@typescript-eslint/space-before-blocks': [ error ]
+  '@typescript-eslint/space-infix-ops': [ error ]
+
+  '@typescript-eslint/space-before-function-paren':
+    - error
+    - asyncArrow: always
+      anonymous: never
+      named: never
+
+  'import/order':
+    - error
+    - groups: [ 'builtin', 'external', 'internal', 'parent', 'sibling', 'type', 'unknown' ]
+      alphabetize:
+        order: 'asc'
+        caseInsensitive: false
+      pathGroups:
+        - pattern: '~/**'
+          group: 'parent'
+          position: 'before'
 
 overrides:
   - files:

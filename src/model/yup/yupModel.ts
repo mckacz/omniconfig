@@ -1,8 +1,8 @@
-import type { Asserts, ObjectSchema, ValidateOptions, ValidationError as YupValidationError } from 'yup'
-import { Model } from '../../interfaces/model'
 import { ValidationError, ValidationErrorType } from '../../errors/validationError'
 import { Metadata } from '../../interfaces/metadata'
+import { Model } from '../../interfaces/model'
 import { buildMetadata } from './metadata'
+import type { Asserts, ObjectSchema, ValidateOptions, ValidationError as YupValidationError } from 'yup'
 
 /**
  * Yup schema-based configuration model.

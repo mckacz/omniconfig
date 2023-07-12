@@ -1,8 +1,8 @@
 import callsites from 'callsites'
-import { SyncLoader } from './syncLoader'
 import { BasicDataContainer } from '../dataContainers/basicDataContainer'
-import type { Reference } from '../interfaces/reference'
+import { SyncLoader } from './syncLoader'
 import type { DataContainer } from '../interfaces/dataContainer'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Loader that loads an arbitrary static value.

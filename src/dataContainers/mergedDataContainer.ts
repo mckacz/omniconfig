@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import type { Reference } from '../interfaces/reference'
 import type { DataContainer } from '../interfaces/dataContainer'
+import type { Reference } from '../interfaces/reference'
 
 /**
  * Data container that merged data from other containers.

@@ -13,7 +13,7 @@ const createChalkMock = (callChain: string[] = []) => new Proxy<typeof chalk>(je
     const tag = callChain.join('.')
 
     return `<${tag}>${argArray[0]}</${tag}>`
-  }
+  },
 })
 
 export default createChalkMock()

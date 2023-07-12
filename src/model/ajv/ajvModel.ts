@@ -1,8 +1,8 @@
-import type { AnySchemaObject, AnyValidateFunction, DataValidationCxt } from 'ajv/dist/types'
-import type { ErrorObject, ValidationError as AjvValidationError } from 'ajv'
-import { Model } from '../../interfaces/model'
 import { ValidationError, ValidationErrorType } from '../../errors/validationError'
+import { Model } from '../../interfaces/model'
 import { loadDependency } from '../../utils/dependencies'
+import type { ErrorObject, ValidationError as AjvValidationError } from 'ajv'
+import type { AnySchemaObject, AnyValidateFunction, DataValidationCxt } from 'ajv/dist/types'
 
 /**
  * Model that uses JSON/JDT schema.
@@ -128,7 +128,7 @@ export class AjvModel<TData> implements Model<TData> {
     const ajv = new Ajv({
       coerceTypes:      true,
       useDefaults:      true,
-      removeAdditional: true
+      removeAdditional: true,
     })
 
     return ajv.compile(schema)

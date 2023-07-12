@@ -1,8 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-explicit-any */
-import { OmniConfigCore } from './omniConfig.core'
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { OmniConfig } from './omniConfig'
-import { OmniConfigResolve } from './omniConfig.resolve'
+import { OmniConfigCore } from './omniConfig.core'
 import { OmniConfigEnv } from './omniConfig.env'
+import { OmniConfigResolve } from './omniConfig.resolve'
 import { OmniConfigYup } from './omniConfig.yup'
 
 function applyMixins(derivedCtor: any, constructors: any[]) {
@@ -24,7 +27,7 @@ applyMixins(
     OmniConfigCore,
     OmniConfigResolve,
     OmniConfigEnv,
-    OmniConfigYup
+    OmniConfigYup,
   ]
 )
 

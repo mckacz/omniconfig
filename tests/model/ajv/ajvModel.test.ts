@@ -1,9 +1,9 @@
 import Ajv, { AnySchemaObject, AsyncSchema } from 'ajv'
-import { ValidationError, ValidationErrorType } from '~/errors/validationError'
-import { SomeJSONSchema } from 'ajv/dist/types/json-schema'
-import { catchError, catchRejection } from '../../utils'
 import { AnyValidateFunction } from 'ajv/dist/types'
+import { SomeJSONSchema } from 'ajv/dist/types/json-schema'
+import { ValidationError, ValidationErrorType } from '~/errors/validationError'
 import { AjvModel } from '~/model/ajv/ajvModel'
+import { catchError, catchRejection } from '../../utils'
 
 describe('AjvModel', () => {
   const schema: SomeJSONSchema = {
@@ -14,7 +14,7 @@ describe('AjvModel', () => {
 
     properties: {
       debug: {
-        type: 'boolean'
+        type: 'boolean',
       },
 
       db: {
@@ -40,12 +40,12 @@ describe('AjvModel', () => {
           password: {
             type: 'string',
           },
-        }
-      }
-    }
+        },
+      },
+    },
   }
 
-  const asyncSchema: AsyncSchema = {$async: true, ...schema}
+  const asyncSchema: AsyncSchema = { $async: true, ...schema }
 
   const validPayload = {
     debug: 'true',
@@ -89,19 +89,19 @@ describe('AjvModel', () => {
   const invalidValueErrorData = {
     type:    ValidationErrorType.invalidValue,
     path:    ['db', 'port'],
-    message: 'must be >= 1'
+    message: 'must be >= 1',
   }
 
   const undefinedValueErrorData = {
     type:    ValidationErrorType.undefinedValue,
     path:    ['db', 'username'],
-    message: 'is required'
+    message: 'is required',
   }
 
   const ajv = new Ajv({
     coerceTypes:      true,
     useDefaults:      true,
-    removeAdditional: true
+    removeAdditional: true,
   })
 
   const fn = ajv.compile(schema)

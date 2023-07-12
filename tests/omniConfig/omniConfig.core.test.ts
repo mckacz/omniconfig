@@ -1,5 +1,5 @@
-import { OmniConfig } from '~/omniConfig'
 import { OptionalLoader } from '~/loaders/optionalLoader'
+import { OmniConfig } from '~/omniConfig'
 
 jest.mock('~/loaders/optionalLoader')
 
@@ -45,7 +45,7 @@ describe('OmniConfig - Core', () => {
     expect(om).toHaveProperty('loaders', [
       loader1,
       expect.any(OptionalLoader),
-      loader3
+      loader3,
     ])
 
     expect(OptionalLoader).toHaveBeenCalledWith(loader2)

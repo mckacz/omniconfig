@@ -1,5 +1,5 @@
-import { ProcessEnvLoader } from '~/loaders/env/processEnvLoader'
 import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
+import { ProcessEnvLoader } from '~/loaders/env/processEnvLoader'
 
 describe('ProcessEnvLoader', () => {
   const mapper = new CamelCaseKeyMapper({

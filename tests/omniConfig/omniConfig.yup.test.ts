@@ -1,6 +1,6 @@
 import * as yup from 'yup'
-import { OmniConfig } from '~/omniConfig'
 import { YupModel } from '~/model/yup/yupModel'
+import { OmniConfig } from '~/omniConfig'
 
 jest.mock('~/model/yup/yupModel')
 
@@ -10,7 +10,7 @@ describe('OmniConfig - Yup integration', () => {
 
     expect(om).not.toHaveProperty('model')
 
-    const schema = yup.object({foo: yup.string()})
+    const schema = yup.object({ foo: yup.string() })
     const options = Symbol() as never
 
     om.withYup(schema, options)

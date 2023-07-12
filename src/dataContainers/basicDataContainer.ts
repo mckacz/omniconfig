@@ -1,6 +1,6 @@
+import type { DataContainer } from '../interfaces/dataContainer'
 import type { Loader } from '../interfaces/loader'
 import type { Reference } from '../interfaces/reference'
-import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
  * Data container that resolves path reference from a loader.

@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs'
+import { loadDependency } from '../../utils/dependencies'
 import { DotEnvLoaderError } from './dotEnvLoaderError'
 import { EnvLoader } from './envLoader'
 import type { EnvKeyMapper } from './keyMappers/envKeyMapper'
-import { loadDependency } from '../../utils/dependencies'
 
 /**
  * Loads configuration from .env files.

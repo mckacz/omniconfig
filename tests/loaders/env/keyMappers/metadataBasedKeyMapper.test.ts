@@ -3,10 +3,10 @@ import { MetadataBasedKeyMapper } from '~/loaders/env/keyMappers/metadataBasedKe
 
 describe('MetadataBasedKeyMapper', () => {
   const metadata: Metadata[] = [
-    {path: ['debug']},
-    {path: ['some', 'nested']},
-    {path: ['someService', 'enabled']},
-    {path: ['someService', 'nested', 'option']},
+    { path: ['debug'] },
+    { path: ['some', 'nested'] },
+    { path: ['someService', 'enabled'] },
+    { path: ['someService', 'nested', 'option'] },
   ]
 
   describe('default options', () => {
@@ -18,7 +18,7 @@ describe('MetadataBasedKeyMapper', () => {
       [['notExistingKey'], undefined],
     ])('pathToKey() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
-        new MetadataBasedKeyMapper({metadata: metadata}).pathToKey(path)
+        new MetadataBasedKeyMapper({ metadata: metadata }).pathToKey(path)
       ).toEqual(expectedKey)
     })
 
@@ -31,7 +31,7 @@ describe('MetadataBasedKeyMapper', () => {
       ['NOT_EXISTING_KEY',             undefined],
     ])('keyToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
       expect(
-        new MetadataBasedKeyMapper({metadata: metadata}).keyToPath(key)
+        new MetadataBasedKeyMapper({ metadata: metadata }).keyToPath(key)
       ).toEqual(expectedPath)
     })
   })
@@ -49,7 +49,7 @@ describe('MetadataBasedKeyMapper', () => {
           metadata:      metadata,
           prefix:        'APP_',
           separator:     '_',
-          wordSeparator: '_'
+          wordSeparator: '_',
         }).pathToKey(path)
       ).toEqual(expectedKey)
     })
@@ -68,7 +68,7 @@ describe('MetadataBasedKeyMapper', () => {
           metadata:      metadata,
           prefix:        'APP_',
           separator:     '_',
-          wordSeparator: '_'
+          wordSeparator: '_',
         }).keyToPath(key)
       ).toEqual(expectedPath)
     })

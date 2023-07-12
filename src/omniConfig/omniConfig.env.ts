@@ -1,12 +1,12 @@
-import { MetadataBasedKeyMapper, MetadataBasedKeyMapperOptions } from '../loaders/env/keyMappers/metadataBasedKeyMapper'
-import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
-import { OmniConfig } from './omniConfig'
-import { ConfresError } from '../errors/confresError'
-import * as process from 'process'
 import path from 'path'
-import { OptionalLoader } from '../loaders/optionalLoader'
+import * as process from 'process'
+import { ConfresError } from '../errors/confresError'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
+import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
+import { MetadataBasedKeyMapper, MetadataBasedKeyMapperOptions } from '../loaders/env/keyMappers/metadataBasedKeyMapper'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
+import { OptionalLoader } from '../loaders/optionalLoader'
+import { OmniConfig } from './omniConfig'
 
 /**
  * Options for loading of .env files.

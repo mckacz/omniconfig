@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { BaseKeyMapper, CommonKeyMapperOptions } from './baseKeyMapper'
 import { Metadata } from '../../../interfaces/metadata'
+import { BaseKeyMapper, CommonKeyMapperOptions } from './baseKeyMapper'
 
 /**
  * Options for MetadataBasedKeyMapper.

@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import type { Chalk } from 'chalk'
-import type { MembersOfType, RecordWithSuffix } from '../utils/helpers'
 import { TextErrorFormatter, TextErrorFormatterPlaceholders, TextErrorFormatterTemplates } from './textErrorFormatter'
+import type { MembersOfType, RecordWithSuffix } from '../utils/helpers'
+import type { Chalk } from 'chalk'
 
 /**
  * Type helper - array of chalk's method call chain.
@@ -28,7 +28,8 @@ type ChalkErrorFormatterStyleKey = keyof ChalkErrorFormatterTheme
  *
  *  Values are chalk's method call chain path or chalk instance itself.
  */
-export interface ChalkErrorFormatterTheme extends Partial<RecordWithSuffix<TextErrorFormatterTemplates, ChalkStylePathOrInstance, 'Template'>>,
+export interface ChalkErrorFormatterTheme
+  extends Partial<RecordWithSuffix<TextErrorFormatterTemplates, ChalkStylePathOrInstance, 'Template'>>,
   Partial<Record<TextErrorFormatterPlaceholders, ChalkStylePathOrInstance>> {
   code?: ChalkStylePathOrInstance
 }
@@ -96,7 +97,10 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
    * @param templateKey Template key.
    * @param dictionary Dictionary with placeholder replacements.
    */
-  protected renderTemplate(templateKey: keyof TextErrorFormatterTemplates, dictionary: Record<string, string> = {}): string {
+  protected renderTemplate(
+    templateKey: keyof TextErrorFormatterTemplates,
+    dictionary: Record<string, string> = {}
+  ): string {
     const templateStyleKey = `${templateKey}Template` as ChalkErrorFormatterStyleKey
 
     for (const placeholder of Object.keys(dictionary)) {
@@ -119,7 +123,7 @@ export class ChalkErrorFormatter extends TextErrorFormatter {
   private formatCode(text: string): string {
     return text.replace(
       /`(.*?)`/g,
-      (_, value: string) => this.applyStyle('code', value),
+      (__, value: string) => this.applyStyle('code', value),
     )
   }
 

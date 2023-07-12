@@ -40,7 +40,7 @@ describe('Yup metadata building helpers', () => {
         path:     ['password'],
         type:     'string',
         required: true,
-      }
+      },
     ])
   })
 
@@ -54,7 +54,7 @@ describe('Yup metadata building helpers', () => {
             port:     yup.number().min(1).max(65535).default(5432),
             username: yup.string().required(),
             password: yup.string().required(),
-          })
+          }),
         })
       )
     ).toEqual([
@@ -84,7 +84,7 @@ describe('Yup metadata building helpers', () => {
         path:     ['db', 'password'],
         type:     'string',
         required: true,
-      }
+      },
     ])
   })
 
@@ -92,10 +92,10 @@ describe('Yup metadata building helpers', () => {
     expect(
       buildMetadata(
         yup.object({
-          host:     yup.string().default('localhost').meta({description: 'Database host'}),
-          port:     yup.number().min(1).max(65535).default(5432).meta({description: 'Database port'}),
-          username: yup.string().required().meta({description: 'Database username'}),
-          password: yup.string().required().meta({description: 'Database password'}),
+          host:     yup.string().default('localhost').meta({ description: 'Database host' }),
+          port:     yup.number().min(1).max(65535).default(5432).meta({ description: 'Database port' }),
+          username: yup.string().required().meta({ description: 'Database username' }),
+          password: yup.string().required().meta({ description: 'Database password' }),
         })
       )
     ).toEqual([
@@ -124,7 +124,7 @@ describe('Yup metadata building helpers', () => {
         type:        'string',
         required:    true,
         description: 'Database password',
-      }
+      },
     ])
   })
 })

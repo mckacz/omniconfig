@@ -1,7 +1,7 @@
-import { ResolverError } from '../errors/resolverError'
-import { BaseResolver } from './baseResolver'
 import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
+import { ResolverError } from '../errors/resolverError'
 import { DataContainer } from '../interfaces/dataContainer'
+import { BaseResolver } from './baseResolver'
 
 /**
  * Asynchronous resolver.

@@ -40,8 +40,8 @@ describe('DotEnvLoader', () => {
   })
 
   test('attempt to load not existing file', () => {
-    const loader = new DotEnvLoader(mapper, notExistingEnvFile)
+    const loader2 = new DotEnvLoader(mapper, notExistingEnvFile)
 
-    expect(() => loader.loadSync()).toThrow(DotEnvLoaderError)
+    expect(() => loader2.loadSync()).toThrow(DotEnvLoaderError)
   })
 })

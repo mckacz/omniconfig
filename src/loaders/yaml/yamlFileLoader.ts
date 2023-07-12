@@ -1,10 +1,10 @@
 import { readFileSync } from 'fs'
+import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
+import { loadDependency } from '../../utils/dependencies'
 import { SyncLoader } from '../syncLoader'
 import { YamlFileLoaderError } from './yamlFileLoaderError'
-import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
-import type { Reference } from '../../interfaces/reference'
 import type{ DataContainer } from '../../interfaces/dataContainer'
-import { loadDependency } from '../../utils/dependencies'
+import type { Reference } from '../../interfaces/reference'
 
 /**
  * Loads configuration from YAML file.

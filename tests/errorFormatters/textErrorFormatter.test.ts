@@ -1,5 +1,5 @@
-import { ResolverError } from '~/errors/resolverError'
 import { TextErrorFormatter, TextErrorFormatterTemplates } from '~/errorFormatters/textErrorFormatter'
+import { ResolverError } from '~/errors/resolverError'
 import {
   processingErrorMock,
   processingErrorWithoutReferencesMock,

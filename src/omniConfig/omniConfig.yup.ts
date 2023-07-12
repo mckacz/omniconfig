@@ -1,6 +1,6 @@
-import type { Asserts, ObjectSchema, ValidateOptions } from 'yup'
-import type { OmniConfig } from './omniConfig'
 import { YupModel } from '../model/yup/yupModel'
+import type { OmniConfig } from './omniConfig'
+import type { Asserts, ObjectSchema, ValidateOptions } from 'yup'
 
 export class OmniConfigYup<TData> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,5 +1,5 @@
-import { Loader } from '~/interfaces/loader'
 import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
+import { Loader } from '~/interfaces/loader'
 import { Reference } from '~/interfaces/reference'
 
 describe('BasicDataContainer', () => {

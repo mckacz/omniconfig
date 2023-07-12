@@ -8,7 +8,7 @@ export class OmniConfigCore<TData> {
   protected model?: Model<TData>
 
   withModel<T>(this: OmniConfig<TData>, model: Model<T>): OmniConfig<T> {
-    const that: OmniConfig<T> = <never>this
+    const that: OmniConfig<T> = <never> this
     that.model = model
 
     return that

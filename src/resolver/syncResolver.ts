@@ -1,6 +1,6 @@
+import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
 import { ResolverError } from '../errors/resolverError'
 import { BaseResolver } from './baseResolver'
-import { MergedDataContainer } from '../dataContainers/mergedDataContainer'
 import type { DataContainer } from '../interfaces/dataContainer'
 
 /**
@@ -64,7 +64,7 @@ export class SyncResolver<T = unknown> extends BaseResolver<T> {
    * @param thing Object to check
    * @param method Method name to check
    */
-  private assertSync<T extends object, M extends keyof T>(thing: T, method: M): thing is T & Required<Pick<T, M>> {
+  private assertSync<U extends object, M extends keyof U>(thing: U, method: M): thing is U & Required<Pick<U, M>> {
     if (typeof thing[method] !== 'function') {
       throw new TypeError(`'${thing.constructor.name}' does not support synchronous mode`)
     }

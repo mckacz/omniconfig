@@ -1,10 +1,10 @@
 import { ResolverError } from '../errors/resolverError'
 import { ValidationError, ValidationErrorType } from '../errors/validationError'
-import type { Loader } from '../interfaces/loader'
-import type { Resolver } from '../interfaces/resolver'
-import type { Reference } from '../interfaces/reference'
 import type { DataContainer } from '../interfaces/dataContainer'
+import type { Loader } from '../interfaces/loader'
 import type { Model } from '../interfaces/model'
+import type { Reference } from '../interfaces/reference'
+import type { Resolver } from '../interfaces/resolver'
 
 /**
  * Common parts of AsyncResolver and SyncResolver.

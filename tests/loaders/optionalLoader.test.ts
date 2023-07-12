@@ -1,6 +1,6 @@
+import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 import { Loader } from '~/interfaces/loader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
-import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 
 describe('OptionalLoader', () => {
   const fakeLoader = {

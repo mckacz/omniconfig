@@ -1,8 +1,8 @@
 import * as yup from 'yup'
-import { YupModel } from '~/model/yup/yupModel'
 import { ValidationError, ValidationErrorType } from '~/errors/validationError'
-import { catchError, catchRejection } from '../../utils'
 import { buildMetadata } from '~/model/yup/metadata'
+import { YupModel } from '~/model/yup/yupModel'
+import { catchError, catchRejection } from '../../utils'
 
 jest.mock('~/model/yup/metadata')
 
@@ -121,12 +121,12 @@ describe('YupModel', () => {
 
   describe('describe()', () => {
     test('call metadata building helpers', () => {
-      jest.mocked(buildMetadata).mockReturnValue(<never>[{meta: 1}])
+      jest.mocked(buildMetadata).mockReturnValue(<never>[{ meta: 1 }])
 
       expect(buildMetadata).not.toHaveBeenCalled()
 
-      expect(model.getMetadata()).toEqual([{meta: 1}])
-      expect(model.getMetadata()).toEqual([{meta: 1}])
+      expect(model.getMetadata()).toEqual([{ meta: 1 }])
+      expect(model.getMetadata()).toEqual([{ meta: 1 }])
 
       expect(buildMetadata).toHaveBeenCalledTimes(1)
       expect(buildMetadata).toHaveBeenCalledWith(schema)

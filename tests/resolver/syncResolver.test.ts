@@ -1,11 +1,11 @@
-import { SyncResolver } from '~/resolver/syncResolver'
-import { ValueLoader } from '~/loaders/valueLoader'
+import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
 import { LoaderError } from '~/errors/loaderError'
 import { ResolverError } from '~/errors/resolverError'
 import { ValidationError, ValidationErrorType } from '~/errors/validationError'
-import { Model } from '~/interfaces/model'
 import { Loader } from '~/interfaces/loader'
-import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
+import { Model } from '~/interfaces/model'
+import { ValueLoader } from '~/loaders/valueLoader'
+import { SyncResolver } from '~/resolver/syncResolver'
 
 describe('SyncResolver', () => {
   const loader1 = new ValueLoader({
@@ -38,19 +38,19 @@ describe('SyncResolver', () => {
   }, 'loader3')
 
   const loader4: Loader<unknown> = {
-    load:          () => Promise.resolve(new BasicDataContainer(loader4, {key: 'value'})),
+    load:          () => Promise.resolve(new BasicDataContainer(loader4, { key: 'value' })),
     getReferences: () => [],
   }
 
   const model: jest.Mocked<Required<Model<any>>> = {
     getMetadata:  jest.fn().mockReturnValue([]),
-    validate:     jest.fn(async (data: any) => ({...data, processed: 1})),
-    validateSync: jest.fn((data: any) => ({...data, processedSync: 1})),
+    validate:     jest.fn(async (data: any) => ({ ...data, processed: 1 })),
+    validateSync: jest.fn((data: any) => ({ ...data, processedSync: 1 })),
   }
 
   const syncOnlyModel: jest.Mocked<Model<any>> = {
     getMetadata: jest.fn().mockReturnValue([]),
-    validate:    jest.fn(async (data: any) => ({...data, processed: 3})),
+    validate:    jest.fn(async (data: any) => ({ ...data, processed: 3 })),
   }
 
   test('empty object if no loaders nor processors have been provided', async () => {

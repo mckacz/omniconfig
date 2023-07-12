@@ -1,12 +1,12 @@
-import type { OmniConfig } from './omniConfig'
-import type { ErrorFormatter } from '../interfaces/errorFormatter'
-import { ResolverError } from '../errors/resolverError'
-import { loadDependency } from '../utils/dependencies'
 import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
+import { ResolverError } from '../errors/resolverError'
 import { AsyncResolver } from '../resolver/asyncResolver'
-import type { Model } from '../interfaces/model'
 import { SyncResolver } from '../resolver/syncResolver'
+import { loadDependency } from '../utils/dependencies'
+import type { OmniConfig } from './omniConfig'
+import type { ErrorFormatter } from '../interfaces/errorFormatter'
+import type { Model } from '../interfaces/model'
 
 export interface OmniConfigResolveErrorLogger {
   (errorMessage: string): void
@@ -98,7 +98,7 @@ export class OmniConfigResolve<TData> {
     const chalk = loadDependency<typeof import('chalk')>('chalk', false)
 
     return chalk
-      ? new ChalkErrorFormatter({chalk})
+      ? new ChalkErrorFormatter({ chalk })
       : new TextErrorFormatter()
   }
 

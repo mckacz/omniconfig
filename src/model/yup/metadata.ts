@@ -1,19 +1,19 @@
+import { Metadata, ValueType } from '../../interfaces/metadata'
 import type {
   ObjectSchema,
   SchemaDescription,
   SchemaFieldDescription,
   SchemaInnerTypeDescription,
-  SchemaObjectDescription
+  SchemaObjectDescription,
 } from 'yup'
 
-import { Metadata, ValueType } from '../../interfaces/metadata'
 
 const OverridableEntryProps: Array<keyof Metadata> = [
   'required',
   'array',
   'type',
   'description',
-  'defaultValue'
+  'defaultValue',
 ]
 
 /**
@@ -45,7 +45,7 @@ function isSimpleSchemaDescription(
 /**
  * Recursively builds configuration options metadata from Yup schema.
  */
-function metadataFromObjectSchemaDescription(path: string[], {fields}: SchemaObjectDescription): Metadata[] {
+function metadataFromObjectSchemaDescription(path: string[], { fields }: SchemaObjectDescription): Metadata[] {
   const metadata: Metadata[] = []
 
   for (const [key, field] of Object.entries(fields)) {
@@ -57,7 +57,7 @@ function metadataFromObjectSchemaDescription(path: string[], {fields}: SchemaObj
     const entry: Metadata = {
       path:     [...path, key],
       type:     ValueType.Mixed,
-      required: !('optional' in field && field.optional)
+      required: !('optional' in field && field.optional),
     }
 
     const innerType = 'innerType' in field ? field.innerType : undefined
@@ -79,7 +79,7 @@ function metadataFromObjectSchemaDescription(path: string[], {fields}: SchemaObj
         const metaValue = (field.meta as Record<string, unknown>)?.[schemaProp]
 
         if (metaValue) {
-          Object.assign(entry, {[schemaProp]: metaValue})
+          Object.assign(entry, { [schemaProp]: metaValue })
         }
       }
     }
@@ -94,6 +94,7 @@ function metadataFromObjectSchemaDescription(path: string[], {fields}: SchemaObj
  * Build metadata from Yup schema
  * @param schema Yup schema to build metadata from.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function buildMetadata(schema: ObjectSchema<any>): Metadata[] {
   return metadataFromObjectSchemaDescription([], schema.describe())
 }
