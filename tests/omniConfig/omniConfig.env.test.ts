@@ -63,67 +63,7 @@ describe('OmniConfig - environment variables', () => {
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: expect.any(MetadataBasedKeyMapper) },
-    ])
-  })
-
-  test('consider .env file with NODE_ENV variant', () => {
-    const om = new OmniConfig()
-    om.withModel(model)
-
-    expect(om).not.toHaveProperty('loaders')
-
-    om.useEnvironmentVariables({
-      processEnv: false,
-
-      dotEnv: {
-        nodeEnvVariant: true,
-      },
-    })
-
-    expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
-    ])
-  })
-
-  test('consider .env file with local variant', () => {
-    const om = new OmniConfig()
-    om.withModel(model)
-
-    expect(om).not.toHaveProperty('loaders')
-
-    om.useEnvironmentVariables({
-      processEnv: false,
-
-      dotEnv: {
-        localVariants: true,
-      },
-    })
-
-    expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.local', mapper: expect.any(MetadataBasedKeyMapper) },
-    ])
-  })
-
-  test('consider .env file with dist variant', () => {
-    const om = new OmniConfig()
-    om.withModel(model)
-
-    expect(om).not.toHaveProperty('loaders')
-
-    om.useEnvironmentVariables({
-      processEnv: false,
-
-      dotEnv: {
-        distVariants: true,
-      },
-    })
-
-    expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env.dist', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedKeyMapper) },
     ])
   })
 
@@ -135,18 +75,14 @@ describe('OmniConfig - environment variables', () => {
 
     om.useEnvironmentVariables({
       processEnv: false,
-
-      dotEnv: {
-        nodeEnvVariant: true,
-        localVariants:  true,
-      },
+      dotEnv:     '.env[.node_env][.local]',
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.local', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.test.local', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.local', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test.local', mapper: expect.any(MetadataBasedKeyMapper) },
     ])
   })
 
@@ -158,36 +94,14 @@ describe('OmniConfig - environment variables', () => {
 
     om.useEnvironmentVariables({
       processEnv: false,
-
-      dotEnv: {
-        nodeEnvVariant: true,
-        distVariants:   true,
-      },
+      dotEnv:     '.env[.node_env][.dist]',
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env.dist', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.test.dist', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '/tmp/.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
-    ])
-  })
-
-  test('load .env file from non-current directory', () => {
-    const om = new OmniConfig()
-    om.withModel(model)
-
-    expect(om).not.toHaveProperty('loaders')
-
-    om.useEnvironmentVariables({
-      processEnv: false,
-      dotEnv:     {
-        directory: '/app',
-      },
-    })
-
-    expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/app/.env', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.dist', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test.dist', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
     ])
   })
 
@@ -209,25 +123,9 @@ describe('OmniConfig - environment variables', () => {
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '/tmp/.env', mapper: customMapper },
+      { optional: true, type: 'dotenv', file: '.env', mapper: customMapper },
       { type: 'process.env', mapper: customMapper },
     ])
-  })
-
-  test('attempt to use local and dist variants together', () => {
-    const om = new OmniConfig()
-    om.withModel(model)
-
-    expect(
-      () => om.useEnvironmentVariables({
-        processEnv: true,
-
-        dotEnv: {
-          localVariants: true,
-          distVariants:  true,
-        },
-      })
-    ).toThrow('Local .env variants cannot be used together with "dist" variants.')
   })
 
   test('attempt to use environment variables with default variable mapper before the model is set', () => {

@@ -7,6 +7,7 @@ export type { EnvKeyMapper } from './loaders/env/keyMappers/envKeyMapper'
 export type { ErrorFormatter } from './interfaces/errorFormatter'
 export type { Resolver } from './interfaces/resolver'
 export type { ValueType, Metadata } from './interfaces/metadata'
+export type { ConfigFileVariantFn, ConfigFileVariantContext } from './utils/variants'
 
 export * from './errors/confresError'
 export * from './errors/loaderError'

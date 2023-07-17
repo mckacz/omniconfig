@@ -31,6 +31,6 @@ applyMixins(
   ]
 )
 
-export type { OmniConfigDotEnvOptions, OmniConfigEnvOptions } from './omniConfig.env'
+export type { OmniConfigEnvOptions } from './omniConfig.env'
 export type { OmniConfigResolveErrorLogger, OmniConfigResolveOptions } from './omniConfig.resolve'
 export { OmniConfig }

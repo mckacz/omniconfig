@@ -1,51 +1,39 @@
-import path from 'path'
-import * as process from 'process'
 import { ConfresError } from '../errors/confresError'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
 import { MetadataBasedKeyMapper, MetadataBasedKeyMapperOptions } from '../loaders/env/keyMappers/metadataBasedKeyMapper'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
+import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../utils/variants'
 import { OmniConfig } from './omniConfig'
-
-/**
- * Options for loading of .env files.
- */
-export interface OmniConfigDotEnvOptions {
-  /**
-   * Base directory of the .env files.
-   * Default: `process.cwd()`
-   */
-  directory?: string
-
-  /**
-   * Load NODE_ENV variant (eg. ".env.development").
-   * Default: `false`
-   */
-  nodeEnvVariant?: boolean
-
-  /**
-   * Load local variants (eg. ".env.local", ".env.development.local").
-   * Default: `false`
-   */
-  localVariants?: boolean
-
-  /**
-   * Load "dist" variants (eg. ".env.dist", ".env.development.dist").
-   * Default: `false`
-   */
-  distVariants?: boolean
-}
 
 /**
  * Options for loading environment variables.
  */
 export interface OmniConfigEnvOptions {
   /**
-   * .env files options or `true` to load .env files using default options.
-   * Default: `false`
+   * Option for .env files.
+   *
+   * If `true` is passed, only `.env` from the current directory will be loaded.
+   *
+   * If string is passed, it is considered as a file name template with optional placeholders and directory.
+   * Check `configFileVariantFnFromTemplate()` for details.
+   *
+   * If function is passed, it is used to generate file name variants.
+   * Check `getConfigFileVariants()` for defaults.
+   *
+   * @examples
+   *  `false`                       - Do not load `.env` files.
+   *  `true`                        - Load only `.env` file.
+   *  `.env[.local]                 - Load `.env` and `.env.local` files.
+   *  `config/[node_env].env[.dist] - Load `config/development.env.dist` and `config/development.env` files
+   *                                  (assuming `NODE_ENV` is `development`).
+   * @default `false`
+   *
+   * @see getConfigFileVariants()
+   * @see configFileVariantFnFromTemplate()
    */
-  dotEnv?: OmniConfigDotEnvOptions | true
+  dotEnv?: true | string | ConfigFileVariantFn
 
   /**
    * Load configuration from `process.env`.
@@ -72,9 +60,11 @@ export class OmniConfigEnv<TData> {
     const files: string[] = []
 
     if (options?.dotEnv === true) {
-      files.push(...this.getDotEnvFiles())
-    } else if (options?.dotEnv) {
-      files.push(...this.getDotEnvFiles(options?.dotEnv))
+      files.push('.env')
+    } else if (typeof options?.dotEnv === 'string') {
+      files.push(...getConfigFileVariants(configFileVariantFnFromTemplate(options?.dotEnv)))
+    } else if (typeof options?.dotEnv === 'function') {
+      files.push(...getConfigFileVariants(options?.dotEnv))
     }
 
     for (const file of files) {
@@ -112,42 +102,5 @@ export class OmniConfigEnv<TData> {
       metadata: this.model.getMetadata?.() ?? mapper?.metadata ?? [],
       ...mapper,
     })
-  }
-
-  /**
-   * Get list of .env files to load.
-   * @param options .env files options.
-   */
-  private getDotEnvFiles(this: OmniConfig<TData>, options?: OmniConfigDotEnvOptions): string[] {
-    if (options?.localVariants && options?.distVariants) {
-      throw new ConfresError('Local .env variants cannot be used together with "dist" variants.')
-    }
-
-    const withVariants = (filename: string) => {
-      const names: string[] = []
-
-      if (options?.distVariants) {
-        names.push(filename + '.dist')
-      }
-
-      names.push(filename)
-
-      if (options?.localVariants) {
-        names.push(filename + '.local')
-      }
-
-      return names
-    }
-
-    const mainFile = path.resolve(options?.directory ?? './', '.env')
-
-    const envFiles: string[] = withVariants(mainFile)
-
-    if (options?.nodeEnvVariant) {
-      const nodeEnv = process.env.NODE_ENV || 'development'
-      envFiles.push(...withVariants(mainFile + '.' + nodeEnv))
-    }
-
-    return envFiles
   }
 }
