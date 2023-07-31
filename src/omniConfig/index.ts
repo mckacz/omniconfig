@@ -5,7 +5,9 @@
 import { OmniConfig } from './omniConfig'
 import { OmniConfigCore } from './omniConfig.core'
 import { OmniConfigEnv } from './omniConfig.env'
+import { OmniConfigJson } from './omniConfig.json'
 import { OmniConfigResolve } from './omniConfig.resolve'
+import { OmniConfigYaml } from './omniConfig.yaml'
 import { OmniConfigYup } from './omniConfig.yup'
 
 function applyMixins(derivedCtor: any, constructors: any[]) {
@@ -27,6 +29,8 @@ applyMixins(
     OmniConfigCore,
     OmniConfigResolve,
     OmniConfigEnv,
+    OmniConfigJson,
+    OmniConfigYaml,
     OmniConfigYup,
   ]
 )
