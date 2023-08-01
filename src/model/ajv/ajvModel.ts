@@ -1,4 +1,6 @@
 import { ValidationError, ValidationErrorType } from '../../errors/validationError'
+import { buildMetadata } from './metadata'
+import type { Metadata } from '../../interfaces/metadata'
 import type { Model } from '../../interfaces/model'
 import type { ErrorObject, ValidationError as AjvValidationError } from 'ajv'
 import type { AnyValidateFunction, DataValidationCxt } from 'ajv/dist/types'
@@ -7,6 +9,11 @@ import type { AnyValidateFunction, DataValidationCxt } from 'ajv/dist/types'
  * Model that uses JSON/JDT schema.
  */
 export class AjvModel<TData> implements Model<TData> {
+  /**
+   * Configuration metadata.
+   */
+  private metadata?: Metadata[]
+
   /**
    * Creates a new instance of AjvModel.
    *
@@ -17,6 +24,17 @@ export class AjvModel<TData> implements Model<TData> {
     private readonly fn: AnyValidateFunction<TData>,
     private readonly context?: DataValidationCxt
   ) {
+  }
+
+  /**
+   * Get model metadata.
+   */
+  getMetadata(): Metadata[] {
+    if (!this.metadata) {
+      this.metadata = buildMetadata(this.fn.schema)
+    }
+
+    return this.metadata
   }
 
   /**

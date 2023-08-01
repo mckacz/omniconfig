@@ -32,10 +32,10 @@ export class OmniConfigAjv<TData> {
   }
 
   /**
-   * Sets JDT schema as a validation model.
+   * Sets JTD schema as a validation model.
    *
-   * @param schema JDT schema.
-   * @param options Ajv JDT options.
+   * @param schema JTD schema.
+   * @param options Ajv JTD options.
    * @param context Ajv data validation context.
    */
   withJTDSchema<JDTSchema, JDTData = JTDDataType<JDTSchema>>(
@@ -72,10 +72,10 @@ export class OmniConfigAjv<TData> {
   }
 
   /**
-   * Compiles JDT schema as validation function.
+   * Compiles JTD schema as validation function.
    *
-   * @param schema JDT schema.
-   * @param options Ajv JDT options.
+   * @param schema JTD schema.
+   * @param options Ajv JTD options.
    */
   private compileJTDSchema(schema: SomeJTDSchemaType, options?: JTDOptions): AnyValidateFunction {
     const Ajv = loadDependency<typeof import('ajv/dist/jtd')>('ajv/dist/jtd').default

@@ -7,7 +7,6 @@ import type {
   SchemaObjectDescription,
 } from 'yup'
 
-
 const OverridableEntryProps: Array<keyof Metadata> = [
   'required',
   'array',

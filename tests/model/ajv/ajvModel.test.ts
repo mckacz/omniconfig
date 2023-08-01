@@ -3,9 +3,13 @@ import { AnyValidateFunction } from 'ajv/dist/types'
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema'
 import { ValidationError, ValidationErrorType } from '~/errors/validationError'
 import { AjvModel } from '~/model/ajv/ajvModel'
+import { buildMetadata } from '~/model/ajv/metadata'
 import { catchError, catchRejection } from '../../utils'
 
+jest.mock('~/model/ajv/metadata')
+
 describe('AjvModel', () => {
+  // region Fixtures
   const schema: SomeJSONSchema = {
     type:     'object',
     required: ['debug', 'db'],
@@ -98,6 +102,8 @@ describe('AjvModel', () => {
     message: 'is required',
   }
 
+  // endregion
+
   const ajv = new Ajv({
     coerceTypes:      true,
     useDefaults:      true,
@@ -107,58 +113,77 @@ describe('AjvModel', () => {
   const fn = ajv.compile(schema)
   const asyncFn = ajv.compile(asyncSchema)
 
-  describe.each([
-    ['synchronous validation function', fn],
-  ])('synchronous validation of %s', (_: string, testFn: AnyValidateFunction) => {
-    const validator = new AjvModel(testFn)
+  describe('validate()', () => {
 
-    test('validate the configuration', () => {
-      expect(validator.validateSync(validPayload)).toEqual(resultOfValidPayload)
+    describe.each([
+      ['synchronous validation function', fn],
+    ])('synchronous validation of %s', (_: string, testFn: AnyValidateFunction) => {
+      const validator = new AjvModel(testFn)
+
+      test('validate the configuration', () => {
+        expect(validator.validateSync(validPayload)).toEqual(resultOfValidPayload)
+      })
+
+      test('invalid value error', () => {
+        const err = catchError(() => validator.validateSync(invalidValuePayload))
+
+        expect(err).toBeInstanceOf(ValidationError)
+        expect(err).toMatchObject(invalidValueErrorData)
+      })
+
+      test('undefined value error', () => {
+        const err = catchError(() => validator.validateSync(undefinedValuePayload))
+
+        expect(err).toBeInstanceOf(ValidationError)
+        expect(err).toMatchObject(undefinedValueErrorData)
+      })
     })
 
-    test('invalid value error', () => {
-      const err = catchError(() => validator.validateSync(invalidValuePayload))
+    describe.each([
+      ['synchronous validation function', fn],
+      ['asynchronous validation function', asyncFn],
+    ])('asynchronous validation using %s', (_: string, testFn: AnyValidateFunction) => {
+      const validator = new AjvModel(testFn)
 
-      expect(err).toBeInstanceOf(ValidationError)
-      expect(err).toMatchObject(invalidValueErrorData)
+      test('validate the configuration', async () => {
+        await expect(validator.validate(validPayload)).resolves.toEqual(resultOfValidPayload)
+      })
+
+      test('invalid value error', async () => {
+        const err = await catchRejection(validator.validate(invalidValuePayload))
+
+        expect(err).toBeInstanceOf(ValidationError)
+        expect(err).toMatchObject(invalidValueErrorData)
+      })
+
+      test('undefined value error', async () => {
+        const err = await catchRejection(validator.validate(undefinedValuePayload))
+
+        expect(err).toBeInstanceOf(ValidationError)
+        expect(err).toMatchObject(undefinedValueErrorData)
+      })
     })
 
-    test('undefined value error', () => {
-      const err = catchError(() => validator.validateSync(undefinedValuePayload))
+    test('attempt to synchronously validate using asynchronous validation function', () => {
+      const validator = new AjvModel(asyncFn)
 
-      expect(err).toBeInstanceOf(ValidationError)
-      expect(err).toMatchObject(undefinedValueErrorData)
+      expect(() => validator.validateSync(validPayload)).toThrow('Validation function is asynchronous')
     })
   })
 
-  describe.each([
-    ['synchronous validation function', fn],
-    ['asynchronous validation function', asyncFn],
-  ])('asynchronous validation using %s', (_: string, testFn: AnyValidateFunction) => {
-    const validator = new AjvModel(testFn)
+  describe('describe()', () => {
+    test('call metadata building helpers', () => {
+      const model = new AjvModel(fn)
 
-    test('validate the configuration', async () => {
-      await expect(validator.validate(validPayload)).resolves.toEqual(resultOfValidPayload)
+      jest.mocked(buildMetadata).mockReturnValue(<never>[{ meta: 1 }])
+
+      expect(buildMetadata).not.toHaveBeenCalled()
+
+      expect(model.getMetadata()).toEqual([{ meta: 1 }])
+      expect(model.getMetadata()).toEqual([{ meta: 1 }])
+
+      expect(buildMetadata).toHaveBeenCalledTimes(1)
+      expect(buildMetadata).toHaveBeenCalledWith(schema)
     })
-
-    test('invalid value error', async () => {
-      const err = await catchRejection(validator.validate(invalidValuePayload))
-
-      expect(err).toBeInstanceOf(ValidationError)
-      expect(err).toMatchObject(invalidValueErrorData)
-    })
-
-    test('undefined value error', async () => {
-      const err = await catchRejection(validator.validate(undefinedValuePayload))
-
-      expect(err).toBeInstanceOf(ValidationError)
-      expect(err).toMatchObject(undefinedValueErrorData)
-    })
-  })
-
-  test('attempt to synchronously validate using asynchronous validation function', () => {
-    const validator = new AjvModel(asyncFn)
-
-    expect(() => validator.validateSync(validPayload)).toThrow('Validation function is asynchronous')
   })
 })
