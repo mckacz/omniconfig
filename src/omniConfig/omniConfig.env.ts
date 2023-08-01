@@ -4,6 +4,7 @@ import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMa
 import { MetadataBasedKeyMapper, MetadataBasedKeyMapperOptions } from '../loaders/env/keyMappers/metadataBasedKeyMapper'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
+import { loadDependency } from '../utils/dependencies'
 import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../utils/variants'
 import { OmniConfig } from './omniConfig'
 
@@ -55,6 +56,7 @@ export class OmniConfigEnv<TData> {
    * @param options Options for loading environment variables.
    */
   useEnvironmentVariables(this: OmniConfig<TData>, options?: OmniConfigEnvOptions): OmniConfig<TData> {
+    const parse = loadDependency<typeof import('dotenv')>('dotenv').parse
     const mapper = this.getEnvKeyMapper(options?.envMapper)
 
     const files: string[] = []
@@ -68,7 +70,7 @@ export class OmniConfigEnv<TData> {
     }
 
     for (const file of files) {
-      this.useLoader(new OptionalLoader(new DotEnvLoader(mapper, file)))
+      this.useLoader(new OptionalLoader(new DotEnvLoader(mapper, file, parse)))
     }
 
     if (options?.processEnv ?? true) {

@@ -1,5 +1,6 @@
 import { OptionalLoader } from '../loaders/optionalLoader'
 import { YamlFileLoader } from '../loaders/yaml/yamlFileLoader'
+import { loadDependency } from '../utils/dependencies'
 import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../utils/variants'
 import type { OmniConfig } from './omniConfig'
 
@@ -25,6 +26,8 @@ export class OmniConfigYaml<TData> {
    * @see configFileVariantFnFromTemplate()
    */
   useYamlFiles(this: OmniConfig<TData>, template: string | ConfigFileVariantFn): OmniConfig<TData> {
+    const load = loadDependency<typeof import('js-yaml')>('js-yaml').load
+
     let files: string[]
 
     if (typeof template === 'function') {
@@ -34,10 +37,9 @@ export class OmniConfigYaml<TData> {
     }
 
     for (const file of files) {
-      this.useLoader(new OptionalLoader(new YamlFileLoader(file)))
+      this.useLoader(new OptionalLoader(new YamlFileLoader(file, load)))
     }
 
     return this
   }
 }
-

@@ -1,3 +1,4 @@
+import { parse } from 'dotenv'
 import { DotEnvLoader } from '~/loaders/env/dotEnvLoader'
 import { DotEnvLoaderError } from '~/loaders/env/dotEnvLoaderError'
 import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
@@ -11,7 +12,7 @@ describe('DotEnvLoader', () => {
     separator: '__',
   })
 
-  const loader = new DotEnvLoader(mapper, validEnvFile)
+  const loader = new DotEnvLoader(mapper, validEnvFile, parse)
 
   test('load configuration', () => {
     const dataContainer = loader.loadSync()
@@ -40,7 +41,7 @@ describe('DotEnvLoader', () => {
   })
 
   test('attempt to load not existing file', () => {
-    const loader2 = new DotEnvLoader(mapper, notExistingEnvFile)
+    const loader2 = new DotEnvLoader(mapper, notExistingEnvFile, parse)
 
     expect(() => loader2.loadSync()).toThrow(DotEnvLoaderError)
   })

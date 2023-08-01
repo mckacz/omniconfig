@@ -1,27 +1,25 @@
 import { readFileSync } from 'fs'
 import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
-import { loadDependency } from '../../utils/dependencies'
 import { SyncLoader } from '../syncLoader'
 import { YamlFileLoaderError } from './yamlFileLoaderError'
-import type{ DataContainer } from '../../interfaces/dataContainer'
+import type { DataContainer } from '../../interfaces/dataContainer'
 import type { Reference } from '../../interfaces/reference'
 
 /**
  * Loads configuration from YAML file.
  */
 export class YamlFileLoader<T = unknown> extends SyncLoader<T> {
-  private readonly jsYaml: typeof import('js-yaml')
   /**
    * Creates a new instance of YAML file loader.
    *
    * @param filename A path to YAML file to load.
+   * @param jsYamlLoad load() function from "js-yaml"
    */
   constructor(
     private readonly filename: string,
+    private readonly jsYamlLoad: typeof import('js-yaml')['load']
   ) {
     super()
-
-    this.jsYaml = loadDependency<typeof import('js-yaml')>('js-yaml')
   }
 
   /**
@@ -30,7 +28,7 @@ export class YamlFileLoader<T = unknown> extends SyncLoader<T> {
   loadSync(): DataContainer<T> {
     try {
       const yaml = readFileSync(this.filename, 'utf-8')
-      const value = this.jsYaml.load(yaml) as T
+      const value = this.jsYamlLoad(yaml) as T
 
       return new BasicDataContainer(this, value)
     } catch (ex) {
