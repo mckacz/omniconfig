@@ -1,3 +1,4 @@
+import type { OmniConfigAjv } from './omniConfig.ajv'
 import type { OmniConfigCore } from './omniConfig.core'
 import type { OmniConfigEnv } from './omniConfig.env'
 import type { OmniConfigJson } from './omniConfig.json'
@@ -14,5 +15,6 @@ export interface OmniConfig<TData = unknown> extends OmniConfigCore<TData>,
   OmniConfigEnv<TData>,
   OmniConfigJson<TData>,
   OmniConfigYaml<TData>,
+  OmniConfigAjv<TData>,
   OmniConfigYup<TData> {
 }

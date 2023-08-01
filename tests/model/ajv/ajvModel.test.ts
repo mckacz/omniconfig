@@ -1,4 +1,4 @@
-import Ajv, { AnySchemaObject, AsyncSchema } from 'ajv'
+import Ajv, { AsyncSchema } from 'ajv'
 import { AnyValidateFunction } from 'ajv/dist/types'
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema'
 import { ValidationError, ValidationErrorType } from '~/errors/validationError'
@@ -109,9 +109,8 @@ describe('AjvModel', () => {
 
   describe.each([
     ['synchronous validation function', fn],
-    ['synchronous schema', schema],
-  ])('synchronous validation of %s', (_: string, fnOrSchema: AnyValidateFunction | AnySchemaObject) => {
-    const validator = new AjvModel(fnOrSchema)
+  ])('synchronous validation of %s', (_: string, testFn: AnyValidateFunction) => {
+    const validator = new AjvModel(testFn)
 
     test('validate the configuration', () => {
       expect(validator.validateSync(validPayload)).toEqual(resultOfValidPayload)
@@ -135,10 +134,8 @@ describe('AjvModel', () => {
   describe.each([
     ['synchronous validation function', fn],
     ['asynchronous validation function', asyncFn],
-    ['synchronous schema', schema],
-    ['asynchronous schema', asyncSchema],
-  ])('asynchronous validation using %s', (_: string, fnOrSchema: AnyValidateFunction | AnySchemaObject) => {
-    const validator = new AjvModel(fnOrSchema)
+  ])('asynchronous validation using %s', (_: string, testFn: AnyValidateFunction) => {
+    const validator = new AjvModel(testFn)
 
     test('validate the configuration', async () => {
       await expect(validator.validate(validPayload)).resolves.toEqual(resultOfValidPayload)
@@ -161,12 +158,6 @@ describe('AjvModel', () => {
 
   test('attempt to synchronously validate using asynchronous validation function', () => {
     const validator = new AjvModel(asyncFn)
-
-    expect(() => validator.validateSync(validPayload)).toThrow('Validation function is asynchronous')
-  })
-
-  test('attempt to synchronously validate using asynchronous schema', () => {
-    const validator = new AjvModel(asyncSchema)
 
     expect(() => validator.validateSync(validPayload)).toThrow('Validation function is asynchronous')
   })

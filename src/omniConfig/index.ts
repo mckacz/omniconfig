@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { OmniConfig } from './omniConfig'
+import { OmniConfigAjv } from './omniConfig.ajv'
 import { OmniConfigCore } from './omniConfig.core'
 import { OmniConfigEnv } from './omniConfig.env'
 import { OmniConfigJson } from './omniConfig.json'
@@ -27,11 +27,12 @@ applyMixins(
   OmniConfig,
   [
     OmniConfigCore,
-    OmniConfigResolve,
     OmniConfigEnv,
     OmniConfigJson,
     OmniConfigYaml,
     OmniConfigYup,
+    OmniConfigAjv,
+    OmniConfigResolve,
   ]
 )
 

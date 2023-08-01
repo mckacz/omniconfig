@@ -44,7 +44,7 @@ describe('Library exports', () => {
   "YamlFileLoader": [Function],
   "YamlFileLoaderError": [Function],
   "YupModel": [Function],
-  "default": OmniConfigYup {},
+  "default": OmniConfigResolve {},
 }
 `)
   })

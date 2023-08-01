@@ -94,7 +94,6 @@ function metadataFromObjectSchemaDescription(path: string[], { fields }: SchemaO
  * Build metadata from Yup schema
  * @param schema Yup schema to build metadata from.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function buildMetadata(schema: ObjectSchema<any>): Metadata[] {
   return metadataFromObjectSchemaDescription([], schema.describe())
 }
