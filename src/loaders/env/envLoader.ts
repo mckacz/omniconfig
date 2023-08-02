@@ -2,8 +2,8 @@ import _ from 'lodash'
 import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
 import { SyncLoader } from '../syncLoader'
 import { EnvMapper } from './envMappers/envMapper'
-import type { DataContainer } from '../../interfaces/dataContainer'
-import type { Reference } from '../../interfaces/reference'
+import type { DataContainer } from '../../dataContainers/dataContainer'
+import type { Reference } from '../../dataContainers/reference'
 
 /**
  * Loads and maps environment variables to configuration object.

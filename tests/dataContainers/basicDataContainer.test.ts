@@ -1,6 +1,6 @@
 import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
-import { Loader } from '~/interfaces/loader'
-import { Reference } from '~/interfaces/reference'
+import { Reference } from '~/dataContainers/reference'
+import { Loader } from '~/loaders/loader'
 
 describe('BasicDataContainer', () => {
   const loader = {

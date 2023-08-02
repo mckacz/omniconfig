@@ -1,25 +1,24 @@
 import { OmniConfig as OmniConfigClass } from './omniConfig'
 
-export type { Loader } from './interfaces/loader'
-export type { Reference } from './interfaces/reference'
-export type { Model } from './interfaces/model'
+export type { ConfigFileVariantFn, ConfigFileVariantContext } from './common/variants'
+export type { Model } from './model/model'
+export type { ValueType, Metadata } from './model/metadata'
+export type { Loader } from './loaders/loader'
+export type { Resolver } from './resolver/resolver'
+export type { Reference } from './dataContainers/reference'
 export type { EnvMapper } from './loaders/env/envMappers/envMapper'
-export type { ErrorFormatter } from './interfaces/errorFormatter'
-export type { Resolver } from './interfaces/resolver'
-export type { ValueType, Metadata } from './interfaces/metadata'
-export type { ConfigFileVariantFn, ConfigFileVariantContext } from './utils/variants'
+export type { ErrorFormatter } from './errorFormatters/errorFormatter'
 
-export * from './errors/confresError'
-export * from './errors/loaderError'
-export * from './errors/resolverError'
-export * from './errors/validationError'
+export * from './common/confresError'
 
 export * from './dataContainers/basicDataContainer'
 export * from './dataContainers/mergedDataContainer'
 
+export * from './resolver/resolverError'
 export * from './resolver/syncResolver'
 export * from './resolver/asyncResolver'
 
+export * from './loaders/loaderError'
 export * from './loaders/valueLoader'
 export * from './loaders/optionalLoader'
 
@@ -39,6 +38,7 @@ export * from './loaders/env/envMappers/metadataBasedEnvMapper'
 
 export * from './model/yup/yupModel'
 export * from './model/ajv/ajvModel'
+export * from './model/validationError'
 
 export * from './errorFormatters/textErrorFormatter'
 export * from './errorFormatters/chalkErrorFormatter'

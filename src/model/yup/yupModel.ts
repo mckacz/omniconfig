@@ -1,7 +1,7 @@
-import { ValidationError, ValidationErrorType } from '../../errors/validationError'
+import { ValidationError, ValidationErrorType } from '../validationError'
 import { buildMetadata } from './metadata'
-import type { Metadata } from '../../interfaces/metadata'
-import type { Model } from '../../interfaces/model'
+import type { Metadata } from '../metadata'
+import type { Model } from '../model'
 import type { Asserts, ObjectSchema, ValidateOptions, ValidationError as YupValidationError } from 'yup'
 
 /**

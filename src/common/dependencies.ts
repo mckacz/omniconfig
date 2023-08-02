@@ -1,4 +1,4 @@
-import { ConfresError } from '../errors/confresError'
+import { ConfresError } from './confresError'
 
 /**
  * Error class for the missing peer dependency.

@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { ValidationError, ValidationErrorType } from '~/errors/validationError'
+import { ValidationError, ValidationErrorType } from '~/model/validationError'
 import { buildMetadata } from '~/model/yup/metadata'
 import { YupModel } from '~/model/yup/yupModel'
 import { catchError, catchRejection } from '../../utils'

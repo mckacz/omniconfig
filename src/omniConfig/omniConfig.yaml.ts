@@ -1,7 +1,7 @@
+import { loadDependency } from '../common/dependencies'
+import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
 import { OptionalLoader } from '../loaders/optionalLoader'
 import { YamlFileLoader } from '../loaders/yaml/yamlFileLoader'
-import { loadDependency } from '../utils/dependencies'
-import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../utils/variants'
 import type { OmniConfig } from './omniConfig'
 
 export class OmniConfigYaml<TData> {

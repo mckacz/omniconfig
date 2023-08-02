@@ -1,6 +1,6 @@
+import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
 import { JsonFileLoader } from '../loaders/json/jsonFileLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
-import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../utils/variants'
 import type { OmniConfig } from './omniConfig'
 
 export class OmniConfigJson<TData> {

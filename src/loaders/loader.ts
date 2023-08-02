@@ -1,5 +1,5 @@
-import type { DataContainer } from './dataContainer'
-import type { Reference } from './reference'
+import type { DataContainer } from '../dataContainers/dataContainer'
+import type { Reference } from '../dataContainers/reference'
 
 /**
  * Configuration loader.

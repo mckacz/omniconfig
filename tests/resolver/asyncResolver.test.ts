@@ -1,9 +1,9 @@
-import { LoaderError } from '~/errors/loaderError'
-import { ResolverError } from '~/errors/resolverError'
-import { ValidationError, ValidationErrorType } from '~/errors/validationError'
-import { Model } from '~/interfaces/model'
+import { LoaderError } from '~/loaders/loaderError'
 import { ValueLoader } from '~/loaders/valueLoader'
+import { Model } from '~/model/model'
+import { ValidationError, ValidationErrorType } from '~/model/validationError'
 import { AsyncResolver } from '~/resolver/asyncResolver'
+import { ResolverError } from '~/resolver/resolverError'
 
 describe('AsyncResolver', () => {
   const loader1 = new ValueLoader({

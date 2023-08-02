@@ -1,5 +1,5 @@
+import { loadDependency } from '../common/dependencies'
 import { AjvModel } from '../model/ajv/ajvModel'
-import { loadDependency } from '../utils/dependencies'
 import type { OmniConfig } from './omniConfig'
 import type { AnySchemaObject, JSONSchemaType, Options } from 'ajv'
 import type { JTDOptions } from 'ajv/dist/jtd'

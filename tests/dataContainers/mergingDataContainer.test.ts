@@ -1,5 +1,5 @@
+import { DataContainer } from '~/dataContainers/dataContainer'
 import { MergedDataContainer } from '~/dataContainers/mergedDataContainer'
-import { DataContainer } from '~/interfaces/dataContainer'
 
 describe('MergedDataContainer', () => {
   const c1: DataContainer<unknown> = {

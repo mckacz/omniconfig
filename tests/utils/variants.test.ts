@@ -1,4 +1,4 @@
-import { configFileVariantFnFromTemplate, getConfigFileVariants } from '~/utils/variants'
+import { configFileVariantFnFromTemplate, getConfigFileVariants } from '~/common/variants'
 
 describe('Configuration file variants util', () => {
   describe('getConfigFileVariants() with template', () => {

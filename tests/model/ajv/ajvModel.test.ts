@@ -1,9 +1,9 @@
 import Ajv, { AsyncSchema } from 'ajv'
 import { AnyValidateFunction } from 'ajv/dist/types'
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema'
-import { ValidationError, ValidationErrorType } from '~/errors/validationError'
 import { AjvModel } from '~/model/ajv/ajvModel'
 import { buildMetadata } from '~/model/ajv/metadata'
+import { ValidationError, ValidationErrorType } from '~/model/validationError'
 import { catchError, catchRejection } from '../../utils'
 
 jest.mock('~/model/ajv/metadata')

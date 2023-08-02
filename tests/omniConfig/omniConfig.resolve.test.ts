@@ -1,13 +1,13 @@
 import { TextErrorFormatter } from '~/errorFormatters/textErrorFormatter'
-import { ResolverError } from '~/errors/resolverError'
-import { ValidationError } from '~/errors/validationError'
+import { ValidationError } from '~/model/validationError'
 import { OmniConfig } from '~/omniConfig'
 import { AsyncResolver } from '~/resolver/asyncResolver'
+import { ResolverError } from '~/resolver/resolverError'
 import { SyncResolver } from '~/resolver/syncResolver'
 
+jest.mock('~/common/dependencies')
 jest.mock('~/resolver/syncResolver')
 jest.mock('~/resolver/asyncResolver')
-jest.mock('~/utils/dependencies')
 jest.mock('~/errorFormatters/textErrorFormatter')
 
 describe('OmniConfig - configuration resolving', () => {

@@ -1,10 +1,10 @@
-import { Metadata } from '~/interfaces/metadata'
-import { Model } from '~/interfaces/model'
 import { DotEnvLoader } from '~/loaders/env/dotEnvLoader'
 import { EnvMapper } from '~/loaders/env/envMappers/envMapper'
 import { MetadataBasedEnvMapper } from '~/loaders/env/envMappers/metadataBasedEnvMapper'
 import { ProcessEnvLoader } from '~/loaders/env/processEnvLoader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
+import { Metadata } from '~/model/metadata'
+import { Model } from '~/model/model'
 import { OmniConfig } from '~/omniConfig'
 
 jest.mock('~/loaders/optionalLoader')

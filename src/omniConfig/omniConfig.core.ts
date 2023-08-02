@@ -1,6 +1,6 @@
-import { Loader } from '../interfaces/loader'
-import { Model } from '../interfaces/model'
+import { Loader } from '../loaders/loader'
 import { OptionalLoader } from '../loaders/optionalLoader'
+import { Model } from '../model/model'
 import { OmniConfig } from './omniConfig'
 
 export class OmniConfigCore<TData> {

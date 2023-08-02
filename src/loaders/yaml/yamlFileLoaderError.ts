@@ -1,4 +1,4 @@
-import { LoaderError } from '../../errors/loaderError'
+import { LoaderError } from '../loaderError'
 
 /**
  * YAML file loader error.

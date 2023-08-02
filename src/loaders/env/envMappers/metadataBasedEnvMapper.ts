@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Metadata } from '../../../interfaces/metadata'
+import { Metadata } from '../../../model/metadata'
 import { BaseEnvMapper, CommonEnvMapperOptions } from './baseEnvMapper'
 
 /**

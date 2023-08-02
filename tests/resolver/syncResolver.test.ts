@@ -1,10 +1,10 @@
 import { BasicDataContainer } from '~/dataContainers/basicDataContainer'
-import { LoaderError } from '~/errors/loaderError'
-import { ResolverError } from '~/errors/resolverError'
-import { ValidationError, ValidationErrorType } from '~/errors/validationError'
-import { Loader } from '~/interfaces/loader'
-import { Model } from '~/interfaces/model'
+import { Loader } from '~/loaders/loader'
+import { LoaderError } from '~/loaders/loaderError'
 import { ValueLoader } from '~/loaders/valueLoader'
+import { Model } from '~/model/model'
+import { ValidationError, ValidationErrorType } from '~/model/validationError'
+import { ResolverError } from '~/resolver/resolverError'
 import { SyncResolver } from '~/resolver/syncResolver'
 
 describe('SyncResolver', () => {

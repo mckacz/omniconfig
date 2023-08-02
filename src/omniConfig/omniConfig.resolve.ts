@@ -1,12 +1,12 @@
+import { loadDependency } from '../common/dependencies'
 import { ChalkErrorFormatter } from '../errorFormatters/chalkErrorFormatter'
 import { TextErrorFormatter } from '../errorFormatters/textErrorFormatter'
-import { ResolverError } from '../errors/resolverError'
 import { AsyncResolver } from '../resolver/asyncResolver'
+import { ResolverError } from '../resolver/resolverError'
 import { SyncResolver } from '../resolver/syncResolver'
-import { loadDependency } from '../utils/dependencies'
 import type { OmniConfig } from './omniConfig'
-import type { ErrorFormatter } from '../interfaces/errorFormatter'
-import type { Model } from '../interfaces/model'
+import type { ErrorFormatter } from '../errorFormatters/errorFormatter'
+import type { Model } from '../model/model'
 
 /**
  * Logger interface.

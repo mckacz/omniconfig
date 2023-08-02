@@ -1,8 +1,8 @@
-import { ConfresError } from './confresError'
-import { ValidationError, ValidationErrorType } from './validationError'
-import type { Loader } from '../interfaces/loader'
-import type { Model } from '../interfaces/model'
-import type { Reference } from '../interfaces/reference'
+import { ConfresError } from '../common/confresError'
+import { ValidationError, ValidationErrorType } from '../model/validationError'
+import type { Reference } from '../dataContainers/reference'
+import type { Loader } from '../loaders/loader'
+import type { Model } from '../model/model'
 
 /**
  * Resolver error.

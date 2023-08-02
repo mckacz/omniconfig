@@ -1,6 +1,6 @@
-import { ResolverError } from '../errors/resolverError'
-import { ErrorFormatter } from '../interfaces/errorFormatter'
-import type { Reference } from '../interfaces/reference'
+import { ResolverError } from '../resolver/resolverError'
+import { ErrorFormatter } from './errorFormatter'
+import type { Reference } from '../dataContainers/reference'
 
 /**
  * Message templates for TextErrorFormatter

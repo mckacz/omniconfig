@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { AnySchema } from 'ajv'
 import { SomeJTDSchemaType } from 'ajv/lib/types/jtd-schema'
-import { Metadata, ValueType } from '../../interfaces/metadata'
+import { Metadata, ValueType } from '../metadata'
 import type { SomeJSONSchema } from 'ajv/dist/types/json-schema'
 
 /**

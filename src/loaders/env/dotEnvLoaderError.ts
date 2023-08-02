@@ -1,4 +1,4 @@
-import { LoaderError } from '../../errors/loaderError'
+import { LoaderError } from '../loaderError'
 
 export class DotEnvLoaderError extends LoaderError {
   constructor(path: string, err: Error | unknown) {

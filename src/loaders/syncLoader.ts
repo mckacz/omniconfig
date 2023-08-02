@@ -1,6 +1,6 @@
-import type { DataContainer } from '../interfaces/dataContainer'
-import type { Loader } from '../interfaces/loader'
-import type { Reference } from '../interfaces/reference'
+import type { Loader } from './loader'
+import type { DataContainer } from '../dataContainers/dataContainer'
+import type { Reference } from '../dataContainers/reference'
 
 /**
  * Base class for synchronous-only loaders.

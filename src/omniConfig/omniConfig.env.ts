@@ -1,11 +1,11 @@
-import { ConfresError } from '../errors/confresError'
+import { ConfresError } from '../common/confresError'
+import { loadDependency } from '../common/dependencies'
+import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { EnvMapper, isEnvKeyMapper } from '../loaders/env/envMappers/envMapper'
 import { MetadataBasedEnvMapper, MetadataBasedEnvMapperOptions } from '../loaders/env/envMappers/metadataBasedEnvMapper'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
-import { loadDependency } from '../utils/dependencies'
-import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../utils/variants'
 import { OmniConfig } from './omniConfig'
 
 /**

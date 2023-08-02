@@ -1,4 +1,4 @@
-import { LoaderError } from '../../errors/loaderError'
+import { LoaderError } from '../loaderError'
 
 /**
  * JSON file loader error.

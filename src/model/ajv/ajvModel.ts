@@ -1,7 +1,7 @@
-import { ValidationError, ValidationErrorType } from '../../errors/validationError'
+import { ValidationError, ValidationErrorType } from '../validationError'
 import { buildMetadata } from './metadata'
-import type { Metadata } from '../../interfaces/metadata'
-import type { Model } from '../../interfaces/model'
+import type { Metadata } from '../metadata'
+import type { Model } from '../model'
 import type { ErrorObject, ValidationError as AjvValidationError } from 'ajv'
 import type { AnyValidateFunction, DataValidationCxt } from 'ajv/dist/types'
 

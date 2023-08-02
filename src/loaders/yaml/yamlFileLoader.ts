@@ -2,8 +2,8 @@ import { readFileSync } from 'fs'
 import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
 import { SyncLoader } from '../syncLoader'
 import { YamlFileLoaderError } from './yamlFileLoaderError'
-import type { DataContainer } from '../../interfaces/dataContainer'
-import type { Reference } from '../../interfaces/reference'
+import type { DataContainer } from '../../dataContainers/dataContainer'
+import type { Reference } from '../../dataContainers/reference'
 
 /**
  * Loads configuration from YAML file.

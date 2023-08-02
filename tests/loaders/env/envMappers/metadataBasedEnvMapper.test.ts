@@ -1,5 +1,5 @@
-import { Metadata } from '~/interfaces/metadata'
 import { MetadataBasedEnvMapper } from '~/loaders/env/envMappers/metadataBasedEnvMapper'
+import { Metadata } from '~/model/metadata'
 
 describe('MetadataBasedEnvMapper', () => {
   const metadata: Metadata[] = [

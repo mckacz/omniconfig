@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { TextErrorFormatter, TextErrorFormatterPlaceholders, TextErrorFormatterTemplates } from './textErrorFormatter'
-import type { MembersOfType, RecordWithSuffix } from '../utils/helpers'
+import type { MembersOfType, RecordWithSuffix } from '../common/helpers'
 import type { Chalk } from 'chalk'
 
 /**
