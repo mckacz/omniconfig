@@ -8,8 +8,12 @@ import type { OmniConfig } from './omniConfig'
 import type { ErrorFormatter } from '../interfaces/errorFormatter'
 import type { Model } from '../interfaces/model'
 
+/**
+ * Logger interface.
+ */
 export interface OmniConfigResolveErrorLogger {
-  (errorMessage: string): void
+  log(message: string): void
+  error(errorMessage: string): void
 }
 
 /**
@@ -75,7 +79,7 @@ export class OmniConfigResolve<TData> {
       const formatter = this.getErrorFormatter(options?.formatter)
       const logger = this.getErrorLogger(options?.logger)
 
-      logger(formatter.format(err))
+      logger.error(formatter.format(err))
 
       if (options?.exitCode !== undefined) {
         process.exit(options.exitCode)
@@ -109,11 +113,14 @@ export class OmniConfigResolve<TData> {
    */
   private getErrorLogger(logger?: OmniConfigResolveErrorLogger | false): OmniConfigResolveErrorLogger {
     if (logger === false) {
-      return () => null
+      return {
+        log: () => null,
+        error: () => null,
+      }
     } else if (logger) {
       return logger
     }
 
-    return console.error
+    return console
   }
 }
