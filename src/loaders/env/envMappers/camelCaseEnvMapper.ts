@@ -1,17 +1,17 @@
 import _ from 'lodash'
-import { SplittingKeyMapper } from './splittingKeyMapper'
+import { SplittingEnvMapper } from './splittingEnvMapper'
 
 /**
  * Maps environment variable names to camelCase object keys.
  */
-export class CamelCaseKeyMapper extends SplittingKeyMapper {
+export class CamelCaseEnvMapper extends SplittingEnvMapper {
   /**
    * Maps environment variable name part to object path part.
    *
-   * @param keyPart Environment variable name part.
+   * @param envPart Environment variable name part.
    */
-  protected keyToPathPart(keyPart: string): string {
-    return _.camelCase(keyPart)
+  protected envToPathPart(envPart: string): string {
+    return _.camelCase(envPart)
   }
 
   /**
@@ -19,7 +19,7 @@ export class CamelCaseKeyMapper extends SplittingKeyMapper {
    *
    * @param pathPart Object path part.
    */
-  protected pathToKeyPart(pathPart: string): string {
+  protected pathToEnvPart(pathPart: string): string {
     return _.snakeCase(pathPart).toUpperCase()
   }
 }

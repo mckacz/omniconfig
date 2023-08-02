@@ -1,8 +1,8 @@
 import { Metadata } from '~/interfaces/metadata'
 import { Model } from '~/interfaces/model'
 import { DotEnvLoader } from '~/loaders/env/dotEnvLoader'
-import { EnvKeyMapper } from '~/loaders/env/keyMappers/envKeyMapper'
-import { MetadataBasedKeyMapper } from '~/loaders/env/keyMappers/metadataBasedKeyMapper'
+import { EnvMapper } from '~/loaders/env/envMappers/envMapper'
+import { MetadataBasedEnvMapper } from '~/loaders/env/envMappers/metadataBasedEnvMapper'
 import { ProcessEnvLoader } from '~/loaders/env/processEnvLoader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
 import { OmniConfig } from '~/omniConfig'
@@ -10,7 +10,7 @@ import { OmniConfig } from '~/omniConfig'
 jest.mock('~/loaders/optionalLoader')
 jest.mock('~/loaders/env/dotEnvLoader')
 jest.mock('~/loaders/env/processEnvLoader')
-jest.mock('~/loaders/env/keyMappers/metadataBasedKeyMapper')
+jest.mock('~/loaders/env/envMappers/metadataBasedEnvMapper')
 
 describe('OmniConfig - environment variables', () => {
   const originalCWD = process.cwd()
@@ -47,7 +47,7 @@ describe('OmniConfig - environment variables', () => {
     om.useEnvironmentVariables()
 
     expect(om).toHaveProperty('loaders', [
-      { type: 'process.env', mapper: expect.any(MetadataBasedKeyMapper) },
+      { type: 'process.env', mapper: expect.any(MetadataBasedEnvMapper) },
     ])
   })
 
@@ -63,7 +63,7 @@ describe('OmniConfig - environment variables', () => {
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedEnvMapper) },
     ])
   })
 
@@ -79,10 +79,10 @@ describe('OmniConfig - environment variables', () => {
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '.env.local', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '.env.test.local', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedEnvMapper) },
+      { optional: true, type: 'dotenv', file: '.env.local', mapper: expect.any(MetadataBasedEnvMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test', mapper: expect.any(MetadataBasedEnvMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test.local', mapper: expect.any(MetadataBasedEnvMapper) },
     ])
   })
 
@@ -98,10 +98,10 @@ describe('OmniConfig - environment variables', () => {
     })
 
     expect(om).toHaveProperty('loaders', [
-      { optional: true, type: 'dotenv', file: '.env.dist', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '.env.test.dist', mapper: expect.any(MetadataBasedKeyMapper) },
-      { optional: true, type: 'dotenv', file: '.env.test', mapper: expect.any(MetadataBasedKeyMapper) },
+      { optional: true, type: 'dotenv', file: '.env.dist', mapper: expect.any(MetadataBasedEnvMapper) },
+      { optional: true, type: 'dotenv', file: '.env', mapper: expect.any(MetadataBasedEnvMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test.dist', mapper: expect.any(MetadataBasedEnvMapper) },
+      { optional: true, type: 'dotenv', file: '.env.test', mapper: expect.any(MetadataBasedEnvMapper) },
     ])
   })
 
@@ -111,9 +111,9 @@ describe('OmniConfig - environment variables', () => {
 
     expect(om).not.toHaveProperty('loaders')
 
-    const customMapper: EnvKeyMapper = {
-      keyToPath: (key: string) => [key],
-      pathToKey: (path: string[]) => path?.[0],
+    const customMapper: EnvMapper = {
+      envToPath: (key: string) => [key],
+      pathToEnv: (path: string[]) => path?.[0],
     }
 
     om.useEnvironmentVariables({

@@ -1,7 +1,7 @@
 import { Metadata } from '~/interfaces/metadata'
-import { MetadataBasedKeyMapper } from '~/loaders/env/keyMappers/metadataBasedKeyMapper'
+import { MetadataBasedEnvMapper } from '~/loaders/env/envMappers/metadataBasedEnvMapper'
 
-describe('MetadataBasedKeyMapper', () => {
+describe('MetadataBasedEnvMapper', () => {
   const metadata: Metadata[] = [
     { path: ['debug'] },
     { path: ['some', 'nested'] },
@@ -16,9 +16,9 @@ describe('MetadataBasedKeyMapper', () => {
       [['someService', 'enabled'], 'SOME_SERVICE__ENABLED'],
       [['someService', 'nested', 'option'], 'SOME_SERVICE__NESTED__OPTION'],
       [['notExistingKey'], undefined],
-    ])('pathToKey() maps %p to %p', (path: string[], expectedKey?: string) => {
+    ])('pathToEnv() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
-        new MetadataBasedKeyMapper({ metadata: metadata }).pathToKey(path)
+        new MetadataBasedEnvMapper({ metadata: metadata }).pathToEnv(path)
       ).toEqual(expectedKey)
     })
 
@@ -29,9 +29,9 @@ describe('MetadataBasedKeyMapper', () => {
       ['SOME_SERVICE__NESTED__OPTION', ['someService', 'nested', 'option']],
       ['SOME_SERVICE_NESTED_OPTION',   undefined],
       ['NOT_EXISTING_KEY',             undefined],
-    ])('keyToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
+    ])('envToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
       expect(
-        new MetadataBasedKeyMapper({ metadata: metadata }).keyToPath(key)
+        new MetadataBasedEnvMapper({ metadata: metadata }).envToPath(key)
       ).toEqual(expectedPath)
     })
   })
@@ -43,14 +43,14 @@ describe('MetadataBasedKeyMapper', () => {
       [['someService', 'enabled'], 'APP_SOME_SERVICE_ENABLED'],
       [['someService', 'nested', 'option'], 'APP_SOME_SERVICE_NESTED_OPTION'],
       [['notExistingKey'], undefined],
-    ])('pathToKey() maps %p to %p', (path: string[], expectedKey?: string) => {
+    ])('pathToEnv() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
-        new MetadataBasedKeyMapper({
+        new MetadataBasedEnvMapper({
           metadata:      metadata,
           prefix:        'APP_',
           separator:     '_',
           wordSeparator: '_',
-        }).pathToKey(path)
+        }).pathToEnv(path)
       ).toEqual(expectedKey)
     })
 
@@ -62,14 +62,14 @@ describe('MetadataBasedKeyMapper', () => {
       ['SOME_SERVICE_NESTED_OPTION',       undefined],
       ['APP__SOME_SERVICE__NESTED_OPTION', undefined],
       ['APP_NOT_EXISTING_KEY',             undefined],
-    ])('keyToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
+    ])('envToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
       expect(
-        new MetadataBasedKeyMapper({
+        new MetadataBasedEnvMapper({
           metadata:      metadata,
           prefix:        'APP_',
           separator:     '_',
           wordSeparator: '_',
-        }).keyToPath(key)
+        }).envToPath(key)
       ).toEqual(expectedPath)
     })
   })

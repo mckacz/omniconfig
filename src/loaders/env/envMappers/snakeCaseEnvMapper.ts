@@ -1,15 +1,15 @@
-import { SplittingKeyMapper } from './splittingKeyMapper'
+import { SplittingEnvMapper } from './splittingEnvMapper'
 
 /**
  * Maps environment variable names to lower snakeCase object keys.
  */
-export class SnakeCaseKeyMapper extends SplittingKeyMapper {
+export class SnakeCaseEnvMapper extends SplittingEnvMapper {
   /**
    * Maps environment variable name part to object path part.
    *
    * @param keyPart Environment variable name part.
    */
-  protected keyToPathPart(keyPart: string): string {
+  protected envToPathPart(keyPart: string): string {
     return keyPart.toLowerCase()
   }
 
@@ -18,7 +18,7 @@ export class SnakeCaseKeyMapper extends SplittingKeyMapper {
    *
    * @param pathPart Object path part.
    */
-  protected pathToKeyPart(pathPart: string): string {
+  protected pathToEnvPart(pathPart: string): string {
     return pathPart.toUpperCase()
   }
 }

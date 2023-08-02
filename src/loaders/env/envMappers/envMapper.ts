@@ -1,30 +1,30 @@
 /**
  * Maps environment variable name to object path and vice-versa.
  */
-export interface EnvKeyMapper {
+export interface EnvMapper {
   /**
    * Maps environment variable name to object path.
    * May return `undefined` if provided environment variable name is not supported.
    *
-   * @param key Environment variable name.
+   * @param env Environment variable name.
    */
-  keyToPath(key: string): string[] | undefined
+  envToPath(env: string): string[] | undefined
 
   /**
    * Maps object path to environment variable name.
    *
    * @param path Object path to map.
    */
-  pathToKey(path: string[]): string  | undefined
+  pathToEnv(path: string[]): string  | undefined
 }
 
 /**
- * Checks if given thing is an instance of EnvKeyMapper.
+ * Checks if given thing is an instance of EnvMapper.
  */
-export function isEnvKeyMapper(thing: EnvKeyMapper | unknown): thing is EnvKeyMapper {
+export function isEnvKeyMapper(thing: EnvMapper | unknown): thing is EnvMapper {
   return thing !== undefined
     && thing !== null
     && typeof thing === 'object'
-    && 'keyToPath' in thing
-    && 'pathToKey' in thing
+    && 'envToPath' in thing
+    && 'pathToEnv' in thing
 }

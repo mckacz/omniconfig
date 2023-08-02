@@ -1,7 +1,7 @@
 import { ConfresError } from '../errors/confresError'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
-import { EnvKeyMapper, isEnvKeyMapper } from '../loaders/env/keyMappers/envKeyMapper'
-import { MetadataBasedKeyMapper, MetadataBasedKeyMapperOptions } from '../loaders/env/keyMappers/metadataBasedKeyMapper'
+import { EnvMapper, isEnvKeyMapper } from '../loaders/env/envMappers/envMapper'
+import { MetadataBasedEnvMapper, MetadataBasedEnvMapperOptions } from '../loaders/env/envMappers/metadataBasedEnvMapper'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
 import { OptionalLoader } from '../loaders/optionalLoader'
 import { loadDependency } from '../utils/dependencies'
@@ -46,7 +46,7 @@ export interface OmniConfigEnvOptions {
    * Env key mapper instance OR options for `MetadataBasedKeyMapper`.
    * Default: `MetadataBasedKeyMapper` created using default options.
    */
-  envMapper?: EnvKeyMapper | Partial<MetadataBasedKeyMapperOptions>
+  envMapper?: EnvMapper | Partial<MetadataBasedEnvMapperOptions>
 }
 
 export class OmniConfigEnv<TData> {
@@ -86,8 +86,8 @@ export class OmniConfigEnv<TData> {
    */
   private getEnvKeyMapper(
     this: OmniConfig<TData>,
-    mapper?: EnvKeyMapper | Partial<MetadataBasedKeyMapperOptions>
-  ): EnvKeyMapper {
+    mapper?: EnvMapper | Partial<MetadataBasedEnvMapperOptions>
+  ): EnvMapper {
     if (isEnvKeyMapper(mapper)) {
       return mapper
     }
@@ -100,7 +100,7 @@ export class OmniConfigEnv<TData> {
       throw new ConfresError('Model does not support returning metadata and metadata has not been provided.')
     }
 
-    return new MetadataBasedKeyMapper({
+    return new MetadataBasedEnvMapper({
       metadata: this.model.getMetadata?.() ?? mapper?.metadata ?? [],
       ...mapper,
     })

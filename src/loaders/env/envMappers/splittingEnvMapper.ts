@@ -1,23 +1,23 @@
-import { BaseKeyMapper } from './baseKeyMapper'
+import { BaseEnvMapper } from './baseEnvMapper'
 
 /**
  * Maps environment variable names by splitting them using provided separator.
  */
-export abstract class SplittingKeyMapper extends BaseKeyMapper {
+export abstract class SplittingEnvMapper extends BaseEnvMapper {
   /**
    * Maps environment variable name to object path.
    * May return `undefined` if provided environment variable name does not start with configured prefix.
    *
    * @param key Environment variable name.
    */
-  keyToPath(key: string): string[] | undefined {
+  envToPath(key: string): string[] | undefined {
     if (!key.startsWith(this.prefix)) {
       return
     }
 
     return key.substring(this.prefix.length)
       .split(this.separator)
-      .map(part => this.keyToPathPart(part))
+      .map(part => this.envToPathPart(part))
   }
 
   /**
@@ -25,9 +25,9 @@ export abstract class SplittingKeyMapper extends BaseKeyMapper {
    *
    * @param path Object path to map.
    */
-  pathToKey(path: string[]): string {
+  pathToEnv(path: string[]): string {
     const key = path
-      .map(part => this.pathToKeyPart(part))
+      .map(part => this.pathToEnvPart(part))
       .join(this.separator)
 
     return this.prefix + key
@@ -38,12 +38,12 @@ export abstract class SplittingKeyMapper extends BaseKeyMapper {
    *
    * @param keyPart Environment variable name part.
    */
-  protected abstract keyToPathPart(keyPart: string): string
+  protected abstract envToPathPart(keyPart: string): string
 
   /**
    * Maps object path part to environment variable name part.
    *
    * @param pathPart Object path part.
    */
-  protected abstract pathToKeyPart(pathPart: string): string
+  protected abstract pathToEnvPart(pathPart: string): string
 }

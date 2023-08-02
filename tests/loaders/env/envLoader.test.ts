@@ -1,12 +1,12 @@
 import { EnvLoader } from '~/loaders/env/envLoader'
-import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
-import { EnvKeyMapper } from '~/loaders/env/keyMappers/envKeyMapper'
+import { CamelCaseEnvMapper } from '~/loaders/env/envMappers/camelCaseEnvMapper'
+import { EnvMapper } from '~/loaders/env/envMappers/envMapper'
 
 describe('EnvLoader', () => {
   class InlineEnvLoader extends EnvLoader {
     constructor(
       private readonly value: Record<string, string>,
-      mapper: EnvKeyMapper,
+      mapper: EnvMapper,
     ) {
       super(mapper)
     }
@@ -20,7 +20,7 @@ describe('EnvLoader', () => {
     }
   }
 
-  const mapper = new CamelCaseKeyMapper({
+  const mapper = new CamelCaseEnvMapper({
     prefix:    '',
     separator: '__',
   })

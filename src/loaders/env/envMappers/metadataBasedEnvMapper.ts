@@ -1,45 +1,45 @@
 import _ from 'lodash'
 import { Metadata } from '../../../interfaces/metadata'
-import { BaseKeyMapper, CommonKeyMapperOptions } from './baseKeyMapper'
+import { BaseEnvMapper, CommonEnvMapperOptions } from './baseEnvMapper'
 
 /**
  * Options for MetadataBasedKeyMapper.
  */
-export interface MetadataBasedKeyMapperOptions extends CommonKeyMapperOptions {
+export interface MetadataBasedEnvMapperOptions extends CommonEnvMapperOptions {
   /**
    * Definitions use by the the mapper.
    */
   metadata: Metadata[]
 
   /**
-   * Word separator to be used in env keys.
+   * Word separator to be used in env name.
    */
   wordSeparator?: string
 }
 
 /**
- * Key mapper that uses metadata of supported configuration paths.
+ * Env mapper that uses metadata of supported configuration paths.
  */
-export class MetadataBasedKeyMapper extends BaseKeyMapper {
+export class MetadataBasedEnvMapper extends BaseEnvMapper {
   /**
-   * Mapping of env key to configuration path.
+   * Mapping of env name to configuration path.
    */
-  private keyToPathDictionary: Record<string, string[]> = {}
+  private envToPathDictionary: Record<string, string[]> = {}
 
   /**
-   * Mapping of configuration path key to env key.
+   * Mapping of configuration path key to env name.
    */
-  private pathKeyToKeyDictionary: Record<string, string> = {}
+  private pathKeyToEnvDictionary: Record<string, string> = {}
 
   /**
-   * Word separator to be used in env keys.
+   * Word separator to be used in envs.
    */
   private wordSeparator: string
 
   /**
-   * Creates a new instance of MetadataBasedKeyMapper.
+   * Creates a new instance of MetadataBasedEnvMapper.
    */
-  constructor(options: Partial<MetadataBasedKeyMapperOptions> & Pick<MetadataBasedKeyMapperOptions, 'metadata'>) {
+  constructor(options: Partial<MetadataBasedEnvMapperOptions> & Pick<MetadataBasedEnvMapperOptions, 'metadata'>) {
     super(options)
 
     this.wordSeparator = options.wordSeparator ?? '_'
@@ -53,8 +53,8 @@ export class MetadataBasedKeyMapper extends BaseKeyMapper {
    *
    * @param key Environment variable name.
    */
-  keyToPath(key: string): string[] | undefined {
-    return this.keyToPathDictionary[key]
+  envToPath(key: string): string[] | undefined {
+    return this.envToPathDictionary[key]
   }
 
   /**
@@ -62,8 +62,8 @@ export class MetadataBasedKeyMapper extends BaseKeyMapper {
    *
    * @param path Object path to map.
    */
-  pathToKey(path: string[]): string {
-    return this.pathKeyToKeyDictionary[this.getPathDictionaryKey(path)]
+  pathToEnv(path: string[]): string {
+    return this.pathKeyToEnvDictionary[this.getPathDictionaryKey(path)]
   }
 
   /**
@@ -74,8 +74,8 @@ export class MetadataBasedKeyMapper extends BaseKeyMapper {
       const key = this.getPathKey(entry.path)
       const dictKey = this.getPathDictionaryKey(entry.path)
 
-      this.keyToPathDictionary[key] = entry.path
-      this.pathKeyToKeyDictionary[dictKey] = key
+      this.envToPathDictionary[key] = entry.path
+      this.pathKeyToEnvDictionary[dictKey] = key
     }
   }
 
@@ -87,7 +87,7 @@ export class MetadataBasedKeyMapper extends BaseKeyMapper {
   }
 
   /**
-   * Creates env key from given configuration path.
+   * Creates env name from given configuration path.
    */
   private getPathKey(path: string[]): string {
     const key = path

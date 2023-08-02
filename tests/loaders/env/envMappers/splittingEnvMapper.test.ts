@@ -1,9 +1,9 @@
-import { SplittingKeyMapper } from '~/loaders/env/keyMappers/splittingKeyMapper'
+import { SplittingEnvMapper } from '~/loaders/env/envMappers/splittingEnvMapper'
 
-describe('SplittingKeyMapper', () => {
-  class JustSplittingKeyMapper extends SplittingKeyMapper {
-    protected keyToPathPart = (keyPart: string): string => keyPart
-    protected pathToKeyPart = (pathPart: string): string => pathPart
+describe('SplittingEnvMapper', () => {
+  class JustSplittingKeyMapper extends SplittingEnvMapper {
+    protected envToPathPart = (envPart: string): string => envPart
+    protected pathToEnvPart = (pathPart: string): string => pathPart
   }
 
   const defaultConfig = {}
@@ -13,7 +13,7 @@ describe('SplittingKeyMapper', () => {
     separator: '___',
   }
 
-  describe('keyToPath()', () => {
+  describe('envToPath()', () => {
     test.each([
       [defaultConfig, 'PATH', ['PATH']],
       [defaultConfig, 'PREFIX_PATH', ['PREFIX_PATH']],
@@ -27,11 +27,11 @@ describe('SplittingKeyMapper', () => {
       [customConfig, 'PREFIX___FOO__BAR___BAZ', ['FOO__BAR', 'BAZ']],
     ])('Case %#', (config, key, path) => {
       const mapper = new JustSplittingKeyMapper(config)
-      expect(mapper.keyToPath(key)).toEqual(path)
+      expect(mapper.envToPath(key)).toEqual(path)
     })
   })
 
-  describe('pathToKey()', () => {
+  describe('pathToEnv()', () => {
     test.each([
       [defaultConfig, ['PATH'], 'PATH'],
       [defaultConfig, ['FOO', 'BAR', 'BAZ'], 'FOO__BAR__BAZ'],
@@ -40,7 +40,7 @@ describe('SplittingKeyMapper', () => {
       [customConfig, ['FOO', 'BAR', 'BAZ'], 'PREFIX___FOO___BAR___BAZ'],
     ])('Case %#', (config, path, key) => {
       const mapper = new JustSplittingKeyMapper(config)
-      expect(mapper.pathToKey(path)).toEqual(key)
+      expect(mapper.pathToEnv(path)).toEqual(key)
     })
   })
 })

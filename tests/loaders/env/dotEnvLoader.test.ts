@@ -1,13 +1,13 @@
 import { parse } from 'dotenv'
 import { DotEnvLoader } from '~/loaders/env/dotEnvLoader'
 import { DotEnvLoaderError } from '~/loaders/env/dotEnvLoaderError'
-import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
+import { CamelCaseEnvMapper } from '~/loaders/env/envMappers/camelCaseEnvMapper'
 
 const validEnvFile = 'fixtures/data/.env'
 const notExistingEnvFile = 'fixtures/data/.env.foo'
 
 describe('DotEnvLoader', () => {
-  const mapper = new CamelCaseKeyMapper({
+  const mapper = new CamelCaseEnvMapper({
     prefix:    'APP__',
     separator: '__',
   })

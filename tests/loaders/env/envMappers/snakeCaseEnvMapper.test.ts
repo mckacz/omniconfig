@@ -1,12 +1,12 @@
-import { SnakeCaseKeyMapper } from '~/loaders/env/keyMappers/snakeCaseKeyMapper'
+import { SnakeCaseEnvMapper } from '~/loaders/env/envMappers/snakeCaseEnvMapper'
 
-describe('SnakeCaseKeyMapper', () => {
-  const mapper = new SnakeCaseKeyMapper({
+describe('SnakeCaseEnvMapper', () => {
+  const mapper = new SnakeCaseEnvMapper({
     prefix:    'APP__',
     separator: '__',
   })
 
-  describe('keyToPath()', () => {
+  describe('envToPath()', () => {
     test.each([
       ['PATH', undefined],
       ['APP_PATH', undefined],
@@ -14,17 +14,17 @@ describe('SnakeCaseKeyMapper', () => {
       ['APP__SOME_VAR', ['some_var']],
       ['APP__NESTED_OBJ__VAR', ['nested_obj', 'var']],
     ])('Environment variable %s maps to %s', (key, path) => {
-      expect(mapper.keyToPath(key)).toEqual(path)
+      expect(mapper.envToPath(key)).toEqual(path)
     })
   })
 
-  describe('pathToKey()', () => {
+  describe('pathToEnv()', () => {
     test.each([
       [['path'], 'APP__PATH'],
       [['some_var'], 'APP__SOME_VAR'],
       [['nested_obj', 'var'], 'APP__NESTED_OBJ__VAR'],
     ])('Path %s maps to %s', (path, key) => {
-      expect(mapper.pathToKey(path)).toEqual(key)
+      expect(mapper.pathToEnv(path)).toEqual(key)
     })
   })
 })

@@ -1,12 +1,12 @@
-import { CamelCaseKeyMapper } from '~/loaders/env/keyMappers/camelCaseKeyMapper'
+import { CamelCaseEnvMapper } from '~/loaders/env/envMappers/camelCaseEnvMapper'
 
-describe('CamelCaseKeyMapper', () => {
-  const mapper = new CamelCaseKeyMapper({
+describe('CamelCaseEnvMapper', () => {
+  const mapper = new CamelCaseEnvMapper({
     prefix:    'APP__',
     separator: '__',
   })
 
-  describe('keyToPath()', () => {
+  describe('envToPath()', () => {
     test.each([
       ['PATH', undefined],
       ['APP_PATH', undefined],
@@ -14,17 +14,17 @@ describe('CamelCaseKeyMapper', () => {
       ['APP__SOME_VAR', ['someVar']],
       ['APP__NESTED_OBJ__VAR', ['nestedObj', 'var']],
     ])('Environment variable %s maps to %s', (key, path) => {
-      expect(mapper.keyToPath(key)).toEqual(path)
+      expect(mapper.envToPath(key)).toEqual(path)
     })
   })
 
-  describe('pathToKey()', () => {
+  describe('pathToEnv()', () => {
     test.each([
       [['path'], 'APP__PATH'],
       [['someVar'], 'APP__SOME_VAR'],
       [['nestedObj', 'var'], 'APP__NESTED_OBJ__VAR'],
     ])('Path %s maps to %s', (path, key) => {
-      expect(mapper.pathToKey(path)).toEqual(key)
+      expect(mapper.pathToEnv(path)).toEqual(key)
     })
   })
 })

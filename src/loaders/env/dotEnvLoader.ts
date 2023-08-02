@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { DotEnvLoaderError } from './dotEnvLoaderError'
 import { EnvLoader } from './envLoader'
-import type { EnvKeyMapper } from './keyMappers/envKeyMapper'
+import type { EnvMapper } from './envMappers/envMapper'
 
 /**
  * Loads configuration from .env files.
@@ -15,7 +15,7 @@ export class DotEnvLoader<T = unknown> extends EnvLoader<T> {
    * @param dotEnvParse parse() function from "dotenv".
    */
   constructor(
-    mapper: EnvKeyMapper,
+    mapper: EnvMapper,
     private readonly filename: string,
     private readonly dotEnvParse: typeof import('dotenv')['parse'],
   ) {

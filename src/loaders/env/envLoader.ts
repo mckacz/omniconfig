@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { BasicDataContainer } from '../../dataContainers/basicDataContainer'
 import { SyncLoader } from '../syncLoader'
-import { EnvKeyMapper } from './keyMappers/envKeyMapper'
+import { EnvMapper } from './envMappers/envMapper'
 import type { DataContainer } from '../../interfaces/dataContainer'
 import type { Reference } from '../../interfaces/reference'
 
@@ -10,7 +10,7 @@ import type { Reference } from '../../interfaces/reference'
  */
 export abstract class EnvLoader<T = unknown> extends SyncLoader<T> {
   protected constructor(
-    protected readonly mapper: EnvKeyMapper,
+    protected readonly mapper: EnvMapper,
   ) {
     super()
   }
@@ -34,7 +34,7 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T> {
       return []
     }
 
-    const identifier = this.mapper.pathToKey(path)
+    const identifier = this.mapper.pathToEnv(path)
 
     return [{
       source,
@@ -65,7 +65,7 @@ export abstract class EnvLoader<T = unknown> extends SyncLoader<T> {
     const values: Record<string, unknown> = {}
 
     for (const key of Object.getOwnPropertyNames(env)) {
-      const path = this.mapper.keyToPath(key)
+      const path = this.mapper.envToPath(key)
 
       if (path) {
         _.set(values, path, env[key])

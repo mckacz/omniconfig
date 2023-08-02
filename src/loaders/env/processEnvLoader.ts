@@ -1,5 +1,5 @@
 import { EnvLoader } from './envLoader'
-import { EnvKeyMapper } from './keyMappers/envKeyMapper'
+import { EnvMapper } from './envMappers/envMapper'
 
 /**
  * Loads configuration from Node `process.env`.
@@ -14,7 +14,7 @@ export class ProcessEnvLoader<T = unknown> extends EnvLoader<T> {
    * @param source Dictionary with environment variables (defaults to process.env).
    */
   constructor(
-    mapper: EnvKeyMapper,
+    mapper: EnvMapper,
     private readonly source = process.env,
   ) {
     super(mapper)
