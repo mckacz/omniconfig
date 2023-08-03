@@ -40,6 +40,11 @@ export class MetadataBasedEnvMapper extends BaseEnvMapper {
    * Creates a new instance of MetadataBasedEnvMapper.
    */
   constructor(options: Partial<MetadataBasedEnvMapperOptions> & Pick<MetadataBasedEnvMapperOptions, 'metadata'>) {
+    options = {
+      separator: '_',
+      ...options,
+    }
+
     super(options)
 
     this.wordSeparator = options.wordSeparator ?? '_'

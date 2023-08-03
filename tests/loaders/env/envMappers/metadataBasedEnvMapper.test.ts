@@ -12,9 +12,9 @@ describe('MetadataBasedEnvMapper', () => {
   describe('default options', () => {
     test.each([
       [['debug'], 'DEBUG'],
-      [['some', 'nested'], 'SOME__NESTED'],
-      [['someService', 'enabled'], 'SOME_SERVICE__ENABLED'],
-      [['someService', 'nested', 'option'], 'SOME_SERVICE__NESTED__OPTION'],
+      [['some', 'nested'], 'SOME_NESTED'],
+      [['someService', 'enabled'], 'SOME_SERVICE_ENABLED'],
+      [['someService', 'nested', 'option'], 'SOME_SERVICE_NESTED_OPTION'],
       [['notExistingKey'], undefined],
     ])('pathToEnv() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
@@ -24,10 +24,10 @@ describe('MetadataBasedEnvMapper', () => {
 
     test.each([
       ['DEBUG',                        ['debug']],
-      ['SOME__NESTED',                 ['some', 'nested']],
-      ['SOME_SERVICE__ENABLED',        ['someService', 'enabled']],
-      ['SOME_SERVICE__NESTED__OPTION', ['someService', 'nested', 'option']],
-      ['SOME_SERVICE_NESTED_OPTION',   undefined],
+      ['SOME_NESTED',                  ['some', 'nested']],
+      ['SOME_SERVICE_ENABLED',         ['someService', 'enabled']],
+      ['SOME_SERVICE_NESTED_OPTION',   ['someService', 'nested', 'option']],
+      ['SOME_SERVICE__NESTED_OPTION',  undefined],
       ['NOT_EXISTING_KEY',             undefined],
     ])('envToPath() maps %p to %p', (key: string, expectedPath?: string[]) => {
       expect(
@@ -38,17 +38,17 @@ describe('MetadataBasedEnvMapper', () => {
 
   describe('prefix, different separators', () => {
     test.each([
-      [['debug'], 'APP_DEBUG'],
-      [['some', 'nested'], 'APP_SOME_NESTED'],
-      [['someService', 'enabled'], 'APP_SOME_SERVICE_ENABLED'],
-      [['someService', 'nested', 'option'], 'APP_SOME_SERVICE_NESTED_OPTION'],
-      [['notExistingKey'], undefined],
+      [['debug'],                           'APP_DEBUG'],
+      [['some', 'nested'],                  'APP_SOME__NESTED'],
+      [['someService', 'enabled'],          'APP_SOME_SERVICE__ENABLED'],
+      [['someService', 'nested', 'option'], 'APP_SOME_SERVICE__NESTED__OPTION'],
+      [['notExistingKey'],                   undefined],
     ])('pathToEnv() maps %p to %p', (path: string[], expectedKey?: string) => {
       expect(
         new MetadataBasedEnvMapper({
           metadata:      metadata,
           prefix:        'APP_',
-          separator:     '_',
+          separator:     '__',
           wordSeparator: '_',
         }).pathToEnv(path)
       ).toEqual(expectedKey)
