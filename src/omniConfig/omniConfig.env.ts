@@ -42,7 +42,7 @@ export interface OmniConfigEnvOptions {
   processEnv?: boolean
 
   /**
-   * Env key mapper instance OR options for `MetadataBasedKeyMapper`.
+   * Environment variable mapper instance OR options for `MetadataBasedKeyMapper`.
    * Default: `MetadataBasedKeyMapper` created using default options.
    */
   envMapper?: EnvMapper | Partial<MetadataBasedEnvMapperOptions>
@@ -58,7 +58,6 @@ export class OmniConfigEnv<TData> {
    * @param options Options for loading environment variables.
    */
   useEnvironmentVariables(this: OmniConfig<TData>, options?: OmniConfigEnvOptions): OmniConfig<TData> {
-    const parse = loadDependency<typeof import('dotenv')>('dotenv').parse
     const mapper = this.getEnvKeyMapper(options?.envMapper)
 
     const files: string[] = []
@@ -71,8 +70,12 @@ export class OmniConfigEnv<TData> {
       files.push(...getConfigFileVariants(options?.dotEnv))
     }
 
-    for (const file of files) {
-      this.useOptionalLoader(new DotEnvLoader(mapper, file, parse))
+    if (files.length > 0) {
+      const parse = loadDependency<typeof import('dotenv')>('dotenv').parse
+
+      for (const file of files) {
+        this.useOptionalLoader(new DotEnvLoader(mapper, file, parse))
+      }
     }
 
     if (options?.processEnv ?? true) {

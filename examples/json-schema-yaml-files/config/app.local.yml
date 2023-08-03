@@ -1,0 +1,7 @@
+# local overrides
+debug: true
+
+db:
+  host: localhost
+  pass: foo
+#  port: foo # try to uncomment this line

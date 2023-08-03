@@ -1,0 +1,7 @@
+{
+  "db": {
+    "host": "my.db.host",
+    "user": "some_user",
+    "pass": "hax0r"
+  }
+}

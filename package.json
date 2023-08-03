@@ -71,6 +71,7 @@
     "@typescript-eslint/parser": "^6.2.1",
     "ajv": "^8.12.0",
     "chalk": "^4.1.2",
+    "doctoc": "^2.2.1",
     "dotenv": "^16.3.1",
     "eslint": "^8.46.0",
     "eslint-plugin-import": "^2.28.0",

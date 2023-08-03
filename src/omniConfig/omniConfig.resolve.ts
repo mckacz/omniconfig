@@ -22,7 +22,7 @@ export interface OmniConfigResolveErrorLogger {
 export interface OmniConfigResolveOptions {
   /**
    * Error logger.
-   * Default: `console.error()`.
+   * Default: `console`.
    */
   logger?: OmniConfigResolveErrorLogger | false
 

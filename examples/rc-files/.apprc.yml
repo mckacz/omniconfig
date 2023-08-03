@@ -1,0 +1,5 @@
+# main configuration file
+db:
+  host: my.db.host
+  user: some_user # try comment this line
+  pass: hax0r

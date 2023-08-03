@@ -7,7 +7,7 @@ import type { OmniConfig } from './omniConfig'
  */
 export class OmniConfigJson<TData> {
   /**
-   * Load configuration from JSON files.
+   * Loads configuration from JSON files.
    *
    * If string is passed, it is considered as a file name template with optional placeholders and directory.
    * Check `configFileVariantFnFromTemplate()` for details.
