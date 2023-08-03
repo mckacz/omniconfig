@@ -9,7 +9,7 @@ export type { Reference } from './dataContainers/reference'
 export type { EnvMapper } from './loaders/env/envMappers/envMapper'
 export type { ErrorFormatter } from './errorFormatters/errorFormatter'
 
-export * from './common/confresError'
+export * from './common/omniConfigError'
 
 export * from './dataContainers/basicDataContainer'
 export * from './dataContainers/mergedDataContainer'

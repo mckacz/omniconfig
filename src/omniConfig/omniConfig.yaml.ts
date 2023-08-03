@@ -1,9 +1,11 @@
 import { loadDependency } from '../common/dependencies'
 import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
-import { OptionalLoader } from '../loaders/optionalLoader'
 import { YamlFileLoader } from '../loaders/yaml/yamlFileLoader'
 import type { OmniConfig } from './omniConfig'
 
+/**
+ * OmniConfig - YAML file support.
+ */
 export class OmniConfigYaml<TData> {
   /**
    * Load configuration from YAML files.
@@ -37,7 +39,7 @@ export class OmniConfigYaml<TData> {
     }
 
     for (const file of files) {
-      this.useLoader(new OptionalLoader(new YamlFileLoader(file, load)))
+      this.useOptionalLoader(new YamlFileLoader(file, load))
     }
 
     return this

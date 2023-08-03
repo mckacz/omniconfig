@@ -14,6 +14,12 @@ export class MergedDataContainer<T> implements DataContainer<T> {
     this.value = _.merge({}, ...containers.map(c => c.value)) as T
   }
 
+  /**
+   * Returns a reference for given configuration object path,
+   * or `undefined` if the path is not supported.
+   *
+   * @param path Object path parts.
+   */
   getDefinition(path: string[]): Reference | undefined {
     for (let i = this.containers.length - 1; i >= 0; i--) {
       const container = this.containers[i]

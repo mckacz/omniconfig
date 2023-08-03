@@ -1,8 +1,10 @@
 import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
 import { JsonFileLoader } from '../loaders/json/jsonFileLoader'
-import { OptionalLoader } from '../loaders/optionalLoader'
 import type { OmniConfig } from './omniConfig'
 
+/**
+ * OmniConfig - JSON file support.
+ */
 export class OmniConfigJson<TData> {
   /**
    * Load configuration from JSON files.
@@ -34,7 +36,7 @@ export class OmniConfigJson<TData> {
     }
 
     for (const file of files) {
-      this.useLoader(new OptionalLoader(new JsonFileLoader(file)))
+      this.useOptionalLoader(new JsonFileLoader(file))
     }
 
     return this

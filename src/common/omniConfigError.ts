@@ -1,7 +1,7 @@
 /**
  * Base class for all errors thrown by this library.
  */
-export class ConfresError extends Error {
+export class OmniConfigError extends Error {
   constructor(
     message: string,
     readonly error?: Error | unknown

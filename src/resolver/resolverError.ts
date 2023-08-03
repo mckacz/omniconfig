@@ -1,4 +1,4 @@
-import { ConfresError } from '../common/confresError'
+import { OmniConfigError } from '../common/omniConfigError'
 import { ValidationError, ValidationErrorType } from '../model/validationError'
 import type { Reference } from '../dataContainers/reference'
 import type { Loader } from '../loaders/loader'
@@ -7,7 +7,7 @@ import type { Model } from '../model/model'
 /**
  * Resolver error.
  */
-export class ResolverError extends ConfresError {
+export class ResolverError extends OmniConfigError {
   /**
    * Create a new instance of resolver error.
    *

@@ -3,7 +3,7 @@ import type { OmniConfig } from './omniConfig'
 import type { Asserts, ObjectSchema, ValidateOptions } from 'yup'
 
 /**
- * OmniConfig - Yup integration
+ * OmniConfig - Yup integration.
  */
 export class OmniConfigYup<TData> {
   /**

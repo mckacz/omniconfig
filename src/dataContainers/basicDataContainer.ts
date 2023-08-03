@@ -12,6 +12,12 @@ export class BasicDataContainer<T> implements DataContainer<T> {
   ) {
   }
 
+  /**
+   * Returns a reference for given configuration object path,
+   * or `undefined` if the path is not supported.
+   *
+   * @param path Object path parts.
+   */
   getDefinition(path: string[]): Reference | undefined {
     const references = this.loader.getReferences(path)
 

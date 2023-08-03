@@ -1,11 +1,10 @@
-import { ConfresError } from '../common/confresError'
 import { loadDependency } from '../common/dependencies'
+import { OmniConfigError } from '../common/omniConfigError'
 import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
 import { DotEnvLoader } from '../loaders/env/dotEnvLoader'
 import { EnvMapper, isEnvKeyMapper } from '../loaders/env/envMappers/envMapper'
 import { MetadataBasedEnvMapper, MetadataBasedEnvMapperOptions } from '../loaders/env/envMappers/metadataBasedEnvMapper'
 import { ProcessEnvLoader } from '../loaders/env/processEnvLoader'
-import { OptionalLoader } from '../loaders/optionalLoader'
 import { OmniConfig } from './omniConfig'
 
 /**
@@ -49,6 +48,9 @@ export interface OmniConfigEnvOptions {
   envMapper?: EnvMapper | Partial<MetadataBasedEnvMapperOptions>
 }
 
+/**
+ * OmniConfig - environment variable support.
+ */
 export class OmniConfigEnv<TData> {
   /**
    * Load configuration from environment variables and optionally .env files.
@@ -70,7 +72,7 @@ export class OmniConfigEnv<TData> {
     }
 
     for (const file of files) {
-      this.useLoader(new OptionalLoader(new DotEnvLoader(mapper, file, parse)))
+      this.useOptionalLoader(new DotEnvLoader(mapper, file, parse))
     }
 
     if (options?.processEnv ?? true) {
@@ -82,6 +84,7 @@ export class OmniConfigEnv<TData> {
 
   /**
    * Get environment variable mapper or create a default one.
+   *
    * @param mapper Mapper or options for the default mapper.
    */
   private getEnvKeyMapper(
@@ -93,11 +96,11 @@ export class OmniConfigEnv<TData> {
     }
 
     if (!this.model) {
-      throw new ConfresError('Model must be set before .useEnvironmentVariables() is called.')
+      throw new OmniConfigError('Model must be set before .useEnvironmentVariables() is called.')
     }
 
     if (!this.model.getMetadata && !mapper?.metadata) {
-      throw new ConfresError('Model does not support returning metadata and metadata has not been provided.')
+      throw new OmniConfigError('Model does not support returning metadata and metadata has not been provided.')
     }
 
     return new MetadataBasedEnvMapper({

@@ -1,4 +1,4 @@
-import { ConfresError } from '../common/confresError'
+import { OmniConfigError } from '../common/omniConfigError'
 
 /**
  * Validation error type.
@@ -17,7 +17,7 @@ export enum ValidationErrorType {
 /**
  * Represents a validation error.
  */
-export class ValidationError extends ConfresError {
+export class ValidationError extends OmniConfigError {
   /**
    * Creates a new instance of validation error.
    *

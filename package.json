@@ -1,12 +1,12 @@
 {
-  "name": "confres",
-  "version": "3.1.0",
+  "name": "omniconfig",
+  "version": "0.0.0",
   "author": "Maciej Kaczmarek <maciej@kaczmarek.io>",
   "license": "MIT",
-  "description": "Painless configuration resolver.",
+  "description": "Universal configuration loader and validator.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mckacz/confres.git"
+    "url": "https://github.com/mckacz/omniconfig.git"
   },
   "main": "./lib/exports.js",
   "types": "./lib/exports.d.ts",
@@ -51,15 +51,16 @@
   ],
   "keywords": [
     "config",
-    "resolver",
     "env",
-    "environment",
+    "dotenv",
     "json",
-    "validation",
+    "yaml",
     "yup",
-    "chalk",
     "ajv",
-    "json-schema"
+    "resolver",
+    "validator",
+    "json-schema",
+    "jtd-schema"
   ],
   "devDependencies": {
     "@types/jest": "^29.5.2",

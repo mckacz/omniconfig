@@ -39,9 +39,19 @@ export interface OmniConfigResolveOptions {
   exitCode?: number
 }
 
+/**
+ * OmniConfig - configuration resolving.
+ */
 export class OmniConfigResolve<TData> {
   /**
    * Load and validate the configuration asynchronously.
+   *
+   * Resolving process consists of:
+   *   1. load configuration objects using registered loaders
+   *   2. merge each object - options loaded by the next loader overwrites the previous values
+   *   3. validate the merged configuration object using registered model
+   *   4. optionally handle validation errors
+   *
    * @param options Error handling options.
    */
   async resolve(this: OmniConfig<TData>, options?: OmniConfigResolveOptions): Promise<TData> {
@@ -56,6 +66,13 @@ export class OmniConfigResolve<TData> {
 
   /**
    * Load and validate the configuration synchronously.
+   *
+   * Resolving process consists of:
+   *   1. load configuration objects using registered loaders
+   *   2. merge each object - options loaded by the next loader overwrites the previous values
+   *   3. validate the merged configuration object using registered model
+   *   4. optionally handle validation errors
+   *
    * @param options Error handling options.
    */
   resolveSync(this: OmniConfig<TData>, options?: OmniConfigResolveOptions): TData {

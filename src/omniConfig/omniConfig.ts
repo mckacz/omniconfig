@@ -6,10 +6,16 @@ import type { OmniConfigResolve } from './omniConfig.resolve'
 import type { OmniConfigYaml } from './omniConfig.yaml'
 import type { OmniConfigYup } from './omniConfig.yup'
 
-export class OmniConfig {
+/**
+ * OmniConfig high-level interface.
+ *
+ * The implementation of specific functionalities can be found in mixins.
+ */
+export class OmniConfig { }
 
-}
-
+/**
+ * OmniConfig high-level interface.
+ */
 export interface OmniConfig<TData = unknown> extends OmniConfigCore<TData>,
   OmniConfigResolve<TData>,
   OmniConfigEnv<TData>,

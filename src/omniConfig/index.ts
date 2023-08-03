@@ -10,6 +10,9 @@ import { OmniConfigResolve } from './omniConfig.resolve'
 import { OmniConfigYaml } from './omniConfig.yaml'
 import { OmniConfigYup } from './omniConfig.yup'
 
+/**
+ * @see https://www.typescriptlang.org/docs/handbook/mixins.html
+ */
 function applyMixins(derivedCtor: any, constructors: any[]) {
   constructors.forEach((baseCtor) => {
     Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {

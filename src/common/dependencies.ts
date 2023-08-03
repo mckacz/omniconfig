@@ -1,9 +1,9 @@
-import { ConfresError } from './confresError'
+import { OmniConfigError } from './omniConfigError'
 
 /**
  * Error class for the missing peer dependency.
  */
-export class MissingDependencyError extends ConfresError {
+export class MissingDependencyError extends OmniConfigError {
   constructor(readonly pkg: string, originalError?: unknown) {
     super(`Missing dependency "${pkg}". Please install it to use current configuration.`, originalError)
   }
