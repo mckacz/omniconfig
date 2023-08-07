@@ -6,9 +6,6 @@ Load and merge configuration from:
 * [config/app.local.json](config/app.local.json) file
 * `process.env`
 
-**TypeScript version:** [main.ts](main.ts)  
-**JavaScript version:** [main.js](main.js)
-
 # Usage
 
 ```shell

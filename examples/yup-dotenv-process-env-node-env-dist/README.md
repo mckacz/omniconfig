@@ -9,9 +9,6 @@ Load and merge configuration from:
 
 Use `APP_` prefix for environment variables. Validate merged object using Yup.
 
-**TypeScript version:** [main.ts](main.ts)  
-**JavaScript version:** [main.js](main.js)
-
 # Usage
 
 ```shell
