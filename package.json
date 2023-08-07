@@ -1,6 +1,6 @@
 {
   "name": "omniconfig.js",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "author": "Maciej Kaczmarek <maciej@kaczmarek.io>",
   "license": "MIT",
   "description": "Load, merge and validate configuration from environment variables and/or .env, JSON, YAML files",
