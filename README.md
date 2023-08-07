@@ -5,6 +5,7 @@ Define schema and configuration sources. Use merged and valid configuration obje
 
 **Key features:**
 
+* simple, universal and predictable
 * load, normalize and merge configuration from multiple sources (environment variables, .env files, JSON files, YAML files)
 * validate configuration object using [Yup](https://github.com/jquense/yup) or JSON/JTD schema (through [Ajv](https://github.com/ajv-validator/ajv))
 * get meaningful error messages
@@ -24,8 +25,19 @@ Use `APP_` prefix for environment variables. Validate merged object using Yup.
 import * as yup from 'yup'
 import OmniConfig from 'omniconfig.js'
 
+const schema = yup.object({
+  debug: yup.boolean().default(false),
+
+  db: yup.object({
+    host: yup.string().required(),
+    port: yup.number().min(0).default(5432),
+    user: yup.string().required(),
+    pass: yup.string()
+  })
+})
+
 const config = OmniConfig
-  .withYup(yup.object({/*...*/}))
+  .withYup(schema)
   .useEnvironmentVariables({
     processEnv: true,
     envMapper:  { prefix: 'APP_' },
