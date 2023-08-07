@@ -22,7 +22,7 @@ Use `APP_` prefix for environment variables. Validate merged object using Yup.
 
 ```ts
 import * as yup from 'yup'
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   .withYup(yup.object({/*...*/}))
@@ -40,8 +40,13 @@ Get normalized and merged config object - like this:
 
 ```json5
 {
-  db: { host: 'localhost', port: 5432, user: 'some_user', pass: 'foo' },
-  debug: true
+  debug: true,
+  db: { 
+    host: 'localhost', 
+    port: 5432, 
+    user: 'some_user', 
+    pass: 'foo'
+  },
 }
 ```
 
@@ -99,25 +104,25 @@ You can find more examples in [examples](./examples) directory.
 ## Installation
 
 ```shell
-npm i omniconfig --save   # this library
+npm i omniconfig.js --save # this library
 
-npm i dotenv --save       # optional .env file support 
-npm i js-yaml --save      # optional YAML file support 
-npm i yup --save          # optional Yup support 
-npm i ajv --save          # optional JSON schema and JDT schema support 
-npm i chalk@^4.1.2 --save # optional error message coloring 
+npm i dotenv --save        # optional .env file support 
+npm i js-yaml --save       # optional YAML file support 
+npm i yup --save           # optional Yup support 
+npm i ajv --save           # optional JSON schema and JDT schema support 
+npm i chalk@^4.1.2 --save  # optional error message coloring 
 ```
 
 or 
 
 ```shell
-yarn add omniconfig   # this library
+yarn add omniconfig.js # this library
 
-yarn add dotenv       # optional .env file support 
-yarn add js-yaml      # optional YAML file support 
-yarn add yup          # optional Yup support 
-yarn add ajv          # optional JSON schema and JDT schema support 
-yarn add chalk@^4.1.2 # optional error message coloring 
+yarn add dotenv        # optional .env file support 
+yarn add js-yaml       # optional YAML file support 
+yarn add yup           # optional Yup support 
+yarn add ajv           # optional JSON schema and JDT schema support 
+yarn add chalk@^4.1.2  # optional error message coloring 
 ```
 
 ## High level API
@@ -127,7 +132,7 @@ yarn add chalk@^4.1.2 # optional error message coloring
 High level class with builder-like API.
 
 ```ts
-import { OmniConfig } from 'omniconfig'
+import { OmniConfig } from 'omniconfig.js'
 
 const config = new OmniConfig()
   .withModel(/*...*/)
@@ -139,7 +144,7 @@ const config = new OmniConfig()
 Ready-to-use instance if also exported using a default export.
 
 ```ts
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   .withModel(/*...*/)
@@ -178,7 +183,7 @@ Sets Yup object schema as a validation model. Dynamic schemas are not supported.
 
 ```ts
 import * as yup from 'yup'
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const schema = yup.object({
   debug: yup.boolean().default(false),
@@ -213,7 +218,7 @@ Sets JSON schema as a validation model. Using following default options for Ajv:
 Example that uses Ajv default JSON schema version:
 
 ```ts
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 interface Config {
   debug: boolean
@@ -255,7 +260,7 @@ You can also customize Ajv behaviour (change schema, add keywords, etc...):
 
 ```ts
 import Ajv from 'ajv'
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 import { AjvModel } from './ajvModel'
 
 const ajv = new Ajv({
@@ -308,7 +313,7 @@ When enables, this loader is always added after .env files, so process environme
 variables from .env files. 
 
 ```ts
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   //...
@@ -327,7 +332,7 @@ Enable loading of .env files. Supports following value:
 * `ConfigFileVariantFn` - function returns path to file for given [context](src/common/variants.ts#L4)
 
 ```ts
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   //...
@@ -349,7 +354,7 @@ object keys. This approach allows to use same separator for configuration levels
 
 ```ts
 import * as yup from 'yup'
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const schema = yup.object({
   db: yup.object({
@@ -409,7 +414,7 @@ As the template, you can pass:
 * `ConfigFileVariantFn` - function returns path to file for given [context](src/common/variants.ts#L4)
 
 ```ts
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   //...
@@ -429,7 +434,7 @@ As the template, you can pass:
 * `ConfigFileVariantFn` - function returns path to file for given [context](src/common/variants.ts#L4)
 
 ```ts
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   //...

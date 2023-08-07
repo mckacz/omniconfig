@@ -1,9 +1,9 @@
 {
-  "name": "omniconfig",
-  "version": "0.0.0",
+  "name": "omniconfig.js",
+  "version": "1.0.0-rc.2",
   "author": "Maciej Kaczmarek <maciej@kaczmarek.io>",
   "license": "MIT",
-  "description": "Universal configuration loader and validator.",
+  "description": "Load, merge and validate configuration from environment variables and/or .env, JSON, YAML files",
   "repository": {
     "type": "git",
     "url": "https://github.com/mckacz/omniconfig.git"
@@ -50,13 +50,13 @@
     "README.md"
   ],
   "keywords": [
+    "omniconfig",
     "config",
     "env",
     "dotenv",
     "json",
     "yaml",
     "yup",
-    "ajv",
     "resolver",
     "validator",
     "json-schema",

@@ -8,7 +8,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "dotenv": "^16.3.1",
-    "omniconfig": "file:../..",
+    "omniconfig.js": "latest",
     "yup": "^1.2.0"
   },
   "devDependencies": {

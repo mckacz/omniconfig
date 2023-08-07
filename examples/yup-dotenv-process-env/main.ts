@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import OmniConfig from 'omniconfig'
+import OmniConfig from 'omniconfig.js'
 
 /*
  Load and merge configuration from:

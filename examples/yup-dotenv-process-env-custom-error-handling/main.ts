@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import OmniConfig, { ResolverError } from 'omniconfig'
+import OmniConfig, { ResolverError } from 'omniconfig.js'
 
 /*
  Load and merge configuration from:
