@@ -16,7 +16,7 @@ Define schema and configuration sources. Use merged and valid configuration obje
 * extend the library and use your own loader or validator 
 * minimal footprint - only install dependencies that you need
 
-## Example
+## Example [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/mckacz/omniconfig/tree/main/examples/yup-dotenv-process-env)
 
 Load and merge configuration (in order) from `.env`, `.env.local` and `process.env`.  
 Use `APP_` prefix for environment variables. Validate merged object using Yup.

@@ -7,7 +7,9 @@ Load and merge configuration from:
 
 Use `APP_` prefix for environment variables. Validate merged object using Yup.
 
-# Usage
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mckacz/omniconfig/tree/main/examples/yup-dotenv-process-env)
+
+## Local usage
 
 ```shell
 npm i     # yarn

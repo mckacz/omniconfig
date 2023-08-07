@@ -6,7 +6,9 @@ Load and merge configuration from:
 * [config/app.local.yml](config/app.local.yml) file
 * `process.env`
 
-# Usage
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mckacz/omniconfig/tree/main/examples/json-schema-yaml-files)
+
+## Local usage
 
 ```shell
 npm i     # yarn

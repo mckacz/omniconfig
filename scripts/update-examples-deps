@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set +ex
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+EXAMPLES_DIR="${SCRIPT_DIR}/../examples"
+
+for EXAMPLE in "${EXAMPLES_DIR}"/*; do
+  rm -f "${EXAMPLE}/package-lock.json"
+  rm -f "${EXAMPLE}/yarn.lock"
+
+  cd "${EXAMPLE}" && npm install omniconfig.js@latest --save
+done
