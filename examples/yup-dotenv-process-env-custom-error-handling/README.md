@@ -1,5 +1,7 @@
 # Example: Yup + environment variables with custom error handling
 
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mckacz/omniconfig/tree/main/examples/yup-dotenv-process-env-custom-error-handling?file=main.ts)
+
 Load and merge configuration from:
  
 * [.env](.env) file
@@ -7,11 +9,15 @@ Load and merge configuration from:
 
 Use `APP_` prefix for environment variables. Validate merged object using Yup.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mckacz/omniconfig/tree/main/examples/yup-dotenv-process-env-custom-error-handling)
-
 ## Local usage
 
 ```shell
 npm i     # yarn
 npm start # yarn start
 ```
+
+## Actions
+
+* check the schema used and modify it
+* make invalid changes in .env files (e.g. set `db.port` to `foo` or `-1234`)
+* remove some required variable (e.g. `db.user` from [.env](./.env))
