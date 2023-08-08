@@ -8,5 +8,5 @@ for EXAMPLE in "${EXAMPLES_DIR}"/*; do
   rm -f "${EXAMPLE}/package-lock.json"
   rm -f "${EXAMPLE}/yarn.lock"
 
-  cd "${EXAMPLE}" && npm install omniconfig.js@latest --save
+  cd "${EXAMPLE}" && npm install omniconfig.js --save
 done
