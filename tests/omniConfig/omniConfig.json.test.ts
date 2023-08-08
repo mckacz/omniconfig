@@ -1,16 +1,16 @@
-import { JsonFileLoader } from '~/loaders/json/jsonFileLoader'
+import { JsonFileLoader } from '~/loaders/file/jsonFileLoader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
 import { OmniConfig } from '~/omniConfig'
 
 jest.mock('~/loaders/optionalLoader')
-jest.mock('~/loaders/json/jsonFileLoader')
+jest.mock('~/loaders/file/jsonFileLoader')
 
 describe('OmniConfig - JSON', () => {
   const originalCWD = process.cwd()
   process.chdir('/tmp')
 
   jest.mocked(OptionalLoader).mockImplementation(loader => ({ optional: true, ...loader }) as never)
-  jest.mocked(JsonFileLoader).mockImplementation((file) => ({ type: 'json', file }) as never)
+  jest.mocked(JsonFileLoader).mockImplementation((file, section) => ({ type: 'json', file, section }) as never)
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -59,6 +59,21 @@ describe('OmniConfig - JSON', () => {
       { optional: true, type: 'json', file: 'app.json' },
       { optional: true, type: 'json', file: 'app.test.json.dist' },
       { optional: true, type: 'json', file: 'app.test.json' },
+    ])
+  })
+
+  test('consider JSON file with section specified', () => {
+    const om = new OmniConfig()
+
+    expect(om).not.toHaveProperty('loaders')
+
+    om.useJsonFiles({
+      template: 'app.json',
+      section:  'custom.app',
+    })
+
+    expect(om).toHaveProperty('loaders', [
+      { optional: true, type: 'json', file: 'app.json', section: 'custom.app' },
     ])
   })
 })

@@ -1,7 +1,8 @@
 import { loadDependency } from '../common/dependencies'
 import { ConfigFileVariantFn, configFileVariantFnFromTemplate, getConfigFileVariants } from '../common/variants'
-import { YamlFileLoader } from '../loaders/yaml/yamlFileLoader'
+import { YamlFileLoader } from '../loaders/file/yamlFileLoader'
 import type { OmniConfig } from './omniConfig'
+import type { OmniConfigFileOptions } from './omniConfig.json'
 
 /**
  * OmniConfig - YAML file support.
@@ -10,25 +11,25 @@ export class OmniConfigYaml<TData> {
   /**
    * Load configuration from YAML files.
    *
-   * If string is passed, it is considered as a file name template with optional placeholders and directory.
-   * Check `configFileVariantFnFromTemplate()` for details.
+   * @param templateOrOptions File name template or file options.
    *
-   * If function is passed, it is used to generate file name variants.
-   * Check `getConfigFileVariants()` for defaults.
-   *
-   * @param template File name template or function resolving the name.
-   *
-   * @examples
-   *  `app.yml                      - Load only `app.yml`.
-   *  `app[.local].yml              - Load `app.yml` and `app.local.yml` files.
-   *  `config/[node_env].yml[.dist] - Load `config/development.yml.dist` and `config/development.yml` files
-   *                                  (assuming `NODE_ENV` is `development`).
-   *
-   * @see getConfigFileVariants()
-   * @see configFileVariantFnFromTemplate()
+   * @see OmniConfigFileOptions
    */
-  useYamlFiles(this: OmniConfig<TData>, template: string | ConfigFileVariantFn): OmniConfig<TData> {
+  useYamlFiles(
+    this: OmniConfig<TData>,
+    templateOrOptions: string | ConfigFileVariantFn | OmniConfigFileOptions,
+  ): OmniConfig<TData> {
     const load = loadDependency<typeof import('js-yaml')>('js-yaml').load
+
+    let template: string | ConfigFileVariantFn
+    let section: string | string[] | undefined
+
+    if (typeof templateOrOptions === 'object') {
+      template = templateOrOptions.template
+      section = templateOrOptions.section
+    } else {
+      template = templateOrOptions
+    }
 
     let files: string[]
 
@@ -39,7 +40,7 @@ export class OmniConfigYaml<TData> {
     }
 
     for (const file of files) {
-      this.useOptionalLoader(new YamlFileLoader(file, load))
+      this.useOptionalLoader(new YamlFileLoader(load, file, section))
     }
 
     return this

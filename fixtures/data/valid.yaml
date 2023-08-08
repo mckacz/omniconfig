@@ -1,1 +1,4 @@
 foo: bar
+some:
+  nested:
+    value: 123

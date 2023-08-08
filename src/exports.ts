@@ -25,11 +25,10 @@ export * from './loaders/optionalLoader'
 export * from './loaders/module/moduleLoader'
 export * from './loaders/module/moduleLoaderError'
 
-export * from './loaders/json/jsonFileLoader'
-export * from './loaders/json/jsonFileLoaderError'
-
-export * from './loaders/yaml/yamlFileLoader'
-export * from './loaders/yaml/yamlFileLoaderError'
+export * from './loaders/file/fileLoader'
+export * from './loaders/file/jsonFileLoader'
+export * from './loaders/file/yamlFileLoader'
+export * from './loaders/file/fileLoaderError'
 
 export * from './loaders/env/envLoader'
 export * from './loaders/env/processEnvLoader'

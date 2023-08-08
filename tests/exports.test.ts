@@ -11,8 +11,9 @@ describe('Library exports', () => {
   "ChalkErrorFormatter": [Function],
   "DotEnvLoader": [Function],
   "EnvLoader": [Function],
+  "FileLoader": [Function],
+  "FileLoaderError": [Function],
   "JsonFileLoader": [Function],
-  "JsonFileLoaderError": [Function],
   "LoaderError": [Function],
   "MergedDataContainer": [Function],
   "MetadataBasedEnvMapper": [Function],
@@ -45,7 +46,6 @@ describe('Library exports', () => {
   },
   "ValueLoader": [Function],
   "YamlFileLoader": [Function],
-  "YamlFileLoaderError": [Function],
   "YupModel": [Function],
   "default": OmniConfigResolve {},
 }

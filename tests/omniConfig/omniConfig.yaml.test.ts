@@ -1,16 +1,16 @@
+import { YamlFileLoader } from '~/loaders/file/yamlFileLoader'
 import { OptionalLoader } from '~/loaders/optionalLoader'
-import { YamlFileLoader } from '~/loaders/yaml/yamlFileLoader'
 import { OmniConfig } from '~/omniConfig'
 
 jest.mock('~/loaders/optionalLoader')
-jest.mock('~/loaders/yaml/yamlFileLoader')
+jest.mock('~/loaders/file/yamlFileLoader')
 
 describe('OmniConfig - YAML', () => {
   const originalCWD = process.cwd()
   process.chdir('/tmp')
 
   jest.mocked(OptionalLoader).mockImplementation(loader => ({ optional: true, ...loader }) as never)
-  jest.mocked(YamlFileLoader).mockImplementation((file) => ({ type: 'yaml', file }) as never)
+  jest.mocked(YamlFileLoader).mockImplementation((load, file, section) => ({ type: 'yaml', file, section }) as never)
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -59,6 +59,21 @@ describe('OmniConfig - YAML', () => {
       { optional: true, type: 'yaml', file: 'app.yml' },
       { optional: true, type: 'yaml', file: 'app.test.yml.dist' },
       { optional: true, type: 'yaml', file: 'app.test.yml' },
+    ])
+  })
+
+  test('consider a YAML file with section specified', () => {
+    const om = new OmniConfig()
+
+    expect(om).not.toHaveProperty('loaders')
+
+    om.useYamlFiles({
+      template: 'app.yml',
+      section:  ['nested', 'section'],
+    })
+
+    expect(om).toHaveProperty('loaders', [
+      { optional: true, type: 'yaml', file: 'app.yml', section: ['nested', 'section'] },
     ])
   })
 })

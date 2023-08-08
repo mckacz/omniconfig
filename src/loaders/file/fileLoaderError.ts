@@ -1,13 +1,13 @@
 import { LoaderError } from '../loaderError'
 
 /**
- * JSON file loader error.
+ * File loader error.
  */
-export class JsonFileLoaderError extends LoaderError {
+export class FileLoaderError extends LoaderError {
   /**
    * Create a new instance of this error.
    *
-   * @param filename A path to JSON file that was attempted to load.
+   * @param filename A path of file that was attempted to load.
    * @param err The original error.
    */
   constructor(

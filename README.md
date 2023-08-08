@@ -101,10 +101,17 @@ You can find more examples in [examples](./examples) directory.
       - [`processEnv: boolean = true`](#processenv-boolean--true)
       - [`dotEnv: true | string | ConfigFileVariantFn`](#dotenv-true--string--configfilevariantfn)
       - [`envMapper: EnvMapper | Partial<MetadataBasedEnvMapperOptions>`](#envmapper-envmapper--partialmetadatabasedenvmapperoptions)
-  - [`.useJsonFiles(template: string | ConfigFileVariantFn): OmniConfig`](#usejsonfilestemplate-string--configfilevariantfn-omniconfig)
-  - [`.useYamlFiles(template: string | ConfigFileVariantFn): OmniConfig`](#useyamlfilestemplate-string--configfilevariantfn-omniconfig)
-  - [`.resolve(options?: OmniConfigResolveOptions): Promise<Config>`](#resolveoptions-omniconfigresolveoptions-promiseconfig)
+  - [`.useJsonFiles(templateOrOptions: string | ConfigFileVariantFn | OmniConfigFileOptions): OmniConfig`](#usejsonfilestemplateoroptions-string--configfilevariantfn--omniconfigfileoptions-omniconfig)
     - [Options](#options-1)
+      - [`template: string | ConfigFileVariantFn`](#template-string--configfilevariantfn)
+      - [`section?: string | string[]`](#section-string--string)
+  - [`.useYamlFiles(template: string | ConfigFileVariantFn | OmniConfigFileOptions): OmniConfig`](#useyamlfilestemplate-string--configfilevariantfn--omniconfigfileoptions-omniconfig)
+    - [Options](#options-2)
+      - [`template: string | ConfigFileVariantFn`](#template-string--configfilevariantfn-1)
+      - [`section?: string | string[]`](#section-string--string-1)
+  - [`.useJsFiles(template: string | ConfigFileVariantFn): OmniConfig`](#usejsfilestemplate-string--configfilevariantfn-omniconfig)
+  - [`.resolve(options?: OmniConfigResolveOptions): Promise<Config>`](#resolveoptions-omniconfigresolveoptions-promiseconfig)
+    - [Options](#options-3)
       - [`logger: OmniConfigResolveErrorLogger`](#logger-omniconfigresolveerrorlogger)
       - [`formatter: ErrorFormatter`](#formatter-errorformatter)
       - [`exitCode: number`](#exitcode-number)
@@ -179,8 +186,9 @@ Adds new loader to the end of loader list. Values loaded with it overwrite the p
 Built-in loaders:
 * [ProcessEnvLoader](src/loaders/env/processEnvLoader.ts) - loads process environment variables
 * [DotEnvLoader](src/loaders/env/dotEnvLoader.ts) - loads environment variables .env files (requires [dotenv](https://github.com/motdotla/dotenv))
-* [JsonFileLoader](src/loaders/json/jsonFileLoader.ts) - loads JSON files
-* [YamlFileLoader](src/loaders/yaml/yamlFileLoader.ts) - loads YAML files (requires [js-yaml](https://github.com/nodeca/js-yaml))
+* [ModuleLoader](src/loaders/module/moduleLoader.ts) - loads JS files
+* [JsonFileLoader](src/loaders/file/jsonFileLoader.ts) - loads JSON files
+* [YamlFileLoader](src/loaders/file/yamlFileLoader.ts) - loads YAML files (requires [js-yaml](https://github.com/nodeca/js-yaml))
 * [OptionalLoader](src/loaders/optionalLoader.ts) - loader wrapper that ignores errors thrown by inner loader
 
 ### `.useOptionalLoader(loader: Loader): OmniConfig`
@@ -417,41 +425,89 @@ Alternatively, you can use mappers that does not rely on the metadata (so you ca
   * [CamelCaseEnvMapper](src/loaders/env/envMappers/snakeCaseEnvMapper.ts) - to map camelcase object keys to environment variables
   * [SnakeCaseEnvMapper](src/loaders/env/envMappers/snakeCaseEnvMapper.ts) - to map snakecase object keys to environment variables
 
-### `.useJsonFiles(template: string | ConfigFileVariantFn): OmniConfig`
+### `.useJsonFiles(templateOrOptions: string | ConfigFileVariantFn | OmniConfigFileOptions): OmniConfig`
 
 Loads configuration from JSON files. 
+
+#### Options
+
+##### `template: string | ConfigFileVariantFn`
 
 As the template, you can pass:
 * `string` - file name template for JSON files ([syntax](#file-name-template-syntax)) 
 * `ConfigFileVariantFn` - function returns path to file for given [context](src/common/variants.ts#L4)
 
+##### `section?: string | string[]`
+
+Optional section of file to load. Useful to load options from a key of `package.json`.
+
+Section can be provided as:
+  * `string` - dot separated list of properties (like `foo.bar` to load property `bar` that is nested in property `foo`) 
+  * `string[]` - where each element represents property (like `['foo', 'bar']` to load property `bar` that is nested in property `foo`)
+
 ```ts
 import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   //...
+        
+  // load JSON files with NODE_ENV based variants and dist variants        
   .useJsonFiles('config/app[.node_env].json[.dist]')
-  //.useJsonFiles(({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.json' : 'app.json')
+  
+  // load JSON files returned by a custom function
+  .useJsonFiles({
+    template: ({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.json' : 'app.json',
+  })
+        
+  // load configuration from `custom.myApp` in `package.json`
+  .useJsonFiles({
+    template: 'package.json',
+    section: 'custom.myApp', // same as ['custom', 'myApp']
+  })
   //...
 ```
 
-### `.useYamlFiles(template: string | ConfigFileVariantFn): OmniConfig`
+### `.useYamlFiles(template: string | ConfigFileVariantFn | OmniConfigFileOptions): OmniConfig`
 
 > Required dependency: [js-yaml](https://github.com/nodeca/js-yaml)
 
 Loads configuration from YAML files. 
 
+#### Options
+
+##### `template: string | ConfigFileVariantFn`
+
 As the template, you can pass:
-* `string` - file name template for YAML files ([syntax](#file-name-template-syntax)) 
+* `string` - file name template for YAML files ([syntax](#file-name-template-syntax))
 * `ConfigFileVariantFn` - function returns path to file for given [context](src/common/variants.ts#L4)
+
+##### `section?: string | string[]`
+
+Optional section of file to load. Useful to load options from a nested property of the file.
+
+Section can be provided as:
+* `string` - dot separated list of properties (like `foo.bar` to load property `bar` that is nested in property `foo`)
+* `string[]` - where each element represents property (like `['foo', 'bar']` to load property `bar` that is nested in property `foo`)
 
 ```ts
 import OmniConfig from 'omniconfig.js'
 
 const config = OmniConfig
   //...
+
+  // load YAML files with NODE_ENV based variants and dist variants   
   .useYamlFiles('config/app[.node_env].yml[.dist]')
-  //.useJsonFiles(({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.yml' : 'app.yml')
+
+  // load YAML files returned by a custom function
+  .useYamlFiles({
+    template: ({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.yml' : 'app.yml',
+  })
+        
+  // load options from `someKey` of `app.yml` file
+  .useYamlFiles({
+    template: 'app.yml',
+    section:  'someKey' // same as ['someKey']
+  })
   //...
 ```
 
@@ -471,7 +527,7 @@ import OmniConfig from 'omniconfig.js'
 const config = OmniConfig
   //...
   .useJsFiles('config/app[.node_env].js[.dist]')
-  //.useJsonFiles(({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.js' : 'app.js')
+  //.useJsFiles(({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.js' : 'app.js')
   //...
 ```
 
