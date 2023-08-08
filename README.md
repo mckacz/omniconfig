@@ -6,7 +6,7 @@ Define schema and configuration sources. Use merged and valid configuration obje
 **Key features:**
 
 * simple, universal and predictable
-* load, normalize and merge configuration from multiple sources (environment variables, .env files, JSON files, YAML files)
+* load, normalize and merge configuration from multiple sources (environment variables, and .env, JSON, YAML, JS files)
 * validate configuration object using [Yup](https://github.com/jquense/yup) or JSON/JTD schema (through [Ajv](https://github.com/ajv-validator/ajv))
 * get meaningful error messages
   * for invalid values: where the value comes from
@@ -452,6 +452,26 @@ const config = OmniConfig
   //...
   .useYamlFiles('config/app[.node_env].yml[.dist]')
   //.useJsonFiles(({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.yml' : 'app.yml')
+  //...
+```
+
+### `.useJsFiles(template: string | ConfigFileVariantFn): OmniConfig`
+
+Loads configuration from JavaScript files.
+
+As the template, you can pass:
+* `string` - file name template for JS files ([syntax](#file-name-template-syntax))
+* `ConfigFileVariantFn` - function returns path to file for given [context](src/common/variants.ts#L4)
+
+JS file path should be absolute or relative to the current working directory.
+
+```ts
+import OmniConfig from 'omniconfig.js'
+
+const config = OmniConfig
+  //...
+  .useJsFiles('config/app[.node_env].js[.dist]')
+  //.useJsonFiles(({ local, dist, nodeEnv }) => local ? 'very-custom-local-name.js' : 'app.js')
   //...
 ```
 

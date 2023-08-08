@@ -6,6 +6,7 @@ import OmniConfig from 'omniconfig.js'
    - .apprc.yml
    - .apprc.json
    - .apprc.env
+   - .apprc.js
 
  Validate merged object using Yup.
  */
@@ -26,6 +27,7 @@ const config = OmniConfig
   .useYamlFiles('.apprc.yml')
   .useJsonFiles('.apprc.json')
   .useEnvironmentVariables({dotEnv: '.apprc.env'})
+  .useJsFiles('.apprc.js')
   .resolveSync({ exitCode: 1 })
 
 console.log(config)

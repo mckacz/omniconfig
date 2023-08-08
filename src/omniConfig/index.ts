@@ -5,6 +5,7 @@ import { OmniConfig } from './omniConfig'
 import { OmniConfigAjv } from './omniConfig.ajv'
 import { OmniConfigCore } from './omniConfig.core'
 import { OmniConfigEnv } from './omniConfig.env'
+import { OmniConfigJs } from './omniConfig.jsModule'
 import { OmniConfigJson } from './omniConfig.json'
 import { OmniConfigResolve } from './omniConfig.resolve'
 import { OmniConfigYaml } from './omniConfig.yaml'
@@ -31,6 +32,7 @@ applyMixins(
   [
     OmniConfigCore,
     OmniConfigEnv,
+    OmniConfigJs,
     OmniConfigJson,
     OmniConfigYaml,
     OmniConfigYup,

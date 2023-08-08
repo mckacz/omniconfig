@@ -22,6 +22,9 @@ export * from './loaders/loaderError'
 export * from './loaders/valueLoader'
 export * from './loaders/optionalLoader'
 
+export * from './loaders/module/moduleLoader'
+export * from './loaders/module/moduleLoaderError'
+
 export * from './loaders/json/jsonFileLoader'
 export * from './loaders/json/jsonFileLoaderError'
 
