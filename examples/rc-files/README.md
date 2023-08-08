@@ -5,7 +5,9 @@
 Load and merge configuration from:
  
 * [.apprc.yml](.apprc.yml) file
-* [.apprc.js](.apprc.json) file
+* [.apprc.json](.apprc.json) file
+* [.apprc.env](.apprc.env) file
+* [.apprc.js](.apprc.js) file
 
 Use `APP_` prefix for environment variables. Validate merged object using Yup.
 
