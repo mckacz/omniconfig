@@ -189,6 +189,7 @@ Built-in loaders:
 * [ModuleLoader](src/loaders/module/moduleLoader.ts) - loads JS files
 * [JsonFileLoader](src/loaders/file/jsonFileLoader.ts) - loads JSON files
 * [YamlFileLoader](src/loaders/file/yamlFileLoader.ts) - loads YAML files (requires [js-yaml](https://github.com/nodeca/js-yaml))
+* [ValueLoader](src/loaders/valueLoader.ts) - static value loader
 * [OptionalLoader](src/loaders/optionalLoader.ts) - loader wrapper that ignores errors thrown by inner loader
 
 ### `.useOptionalLoader(loader: Loader): OmniConfig`
@@ -305,9 +306,32 @@ const config = OmniConfig
 
 Sets JTD schema as a validation model.
 
+### `.useValue(value: object, sourceOrFrameIndex?: string | number): OmniConfig`
+
+Loads configuration from a static value.   
+The library will attempt to determine file name and line number where this method is called using a stack trace.
+You can specify number of stack frames to skip (e.g. if you can some additional facade) or specify the source name as a string.  
+
+```ts
+import OmniConfig from 'omniconfig.js'
+
+const config = OmniConfig
+  //...
+  .useValue({
+    myOption: 'myValue',
+    
+    some: {
+      nested: {
+        value: true,
+      }
+    }
+  })
+//...
+```
+
 ### `.useEnvironmentVariables(options?: OmniConfigEnvOptions): OmniConfig`
 
-Load configuration from environment variables and optionally .env files.
+Loads configuration from environment variables and optionally .env files.
 
 #### Options
 

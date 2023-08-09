@@ -4,6 +4,7 @@ import type { OmniConfigEnv } from './omniConfig.env'
 import type { OmniConfigJs } from './omniConfig.jsModule'
 import type { OmniConfigJson } from './omniConfig.json'
 import type { OmniConfigResolve } from './omniConfig.resolve'
+import type { OmniConfigValue } from './omniConfig.value'
 import type { OmniConfigYaml } from './omniConfig.yaml'
 import type { OmniConfigYup } from './omniConfig.yup'
 
@@ -22,6 +23,7 @@ export interface OmniConfig<TData = unknown> extends OmniConfigCore<TData>,
   OmniConfigEnv<TData>,
   OmniConfigJs<TData>,
   OmniConfigJson<TData>,
+  OmniConfigValue<TData>,
   OmniConfigYaml<TData>,
   OmniConfigAjv<TData>,
   OmniConfigYup<TData> {
