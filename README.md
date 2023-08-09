@@ -3,6 +3,11 @@
 OmniConfig is a universal runtime configuration loader and validator.  
 Define schema and configuration sources. Use merged and valid configuration object for your application. 
 
+[![npm](https://img.shields.io/npm/v/omniconfig.js)](https://www.npmjs.com/package/omniconfig.js)
+[![License](https://img.shields.io/github/license/mckacz/omniconfig)](./LICENSE)
+[![CI](https://github.com/mckacz/omniconfig/actions/workflows/ci.yml/badge.svg)](https://github.com/mckacz/omniconfig/actions/workflows/ci.yml)
+[![Known Vulnerabilities](https://snyk.io/test/github/mckacz/omniconfig/badge.svg)](https://snyk.io/test/github/mckacz/omniconfig)
+
 **Key features:**
 
 * simple, universal and predictable
@@ -96,6 +101,7 @@ You can find more examples in [examples](./examples) directory.
   - [`.withYup(schema: yup.ObjectSchema, options?: yup.ValidateOptions): OmniConfig`](#withyupschema-yupobjectschema-options-yupvalidateoptions-omniconfig)
   - [`.withJsonSchema(schema: ajv.JSONSchemaType, options?: ajv.Options, context?: ajv.DataValidationCxt): OmniConfig`](#withjsonschemaschema-ajvjsonschematype-options-ajvoptions-context-ajvdatavalidationcxt-omniconfig)
   - [`.withJTDSchema(schema: ajv.JDTSchema, options?: ajv.JTDOptions, context?: ajv.DataValidationCxt): OmniConfig`](#withjtdschemaschema-ajvjdtschema-options-ajvjtdoptions-context-ajvdatavalidationcxt-omniconfig)
+  - [`.useValue(value: object, sourceOrFrameIndex?: string | number): OmniConfig`](#usevaluevalue-object-sourceorframeindex-string--number-omniconfig)
   - [`.useEnvironmentVariables(options?: OmniConfigEnvOptions): OmniConfig`](#useenvironmentvariablesoptions-omniconfigenvoptions-omniconfig)
     - [Options](#options)
       - [`processEnv: boolean = true`](#processenv-boolean--true)
