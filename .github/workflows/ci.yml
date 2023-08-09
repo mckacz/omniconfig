@@ -1,0 +1,32 @@
+---
+name: "CI"
+
+on:
+  push:
+
+jobs:
+  ci:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build the library
+        run: yarn build
+
+      - name: Run linters
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn test
